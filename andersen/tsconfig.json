@@ -28,5 +28,37 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "references": [
+    {
+      "path": "./projects/auth/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/auth/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/history/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/history/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/todo/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/todo/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/ui/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/ui/tsconfig.spec.json"
+    }
+  ]
 }
