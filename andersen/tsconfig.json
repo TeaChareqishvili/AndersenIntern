@@ -14,6 +14,14 @@
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+    "paths": {
+      "shared": [
+        "./dist/shared"
+      ],
+      "ui": [
+        "./dist/ui"
+      ]
+    },
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
@@ -29,36 +37,28 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "references": [
-    {
-      "path": "./projects/auth/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/auth/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/history/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/history/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/shared/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/shared/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/todo/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/todo/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/ui/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/ui/tsconfig.spec.json"
-    }
-  ]
+"references": [
+  {
+    "path": "./projects/auth/tsconfig.app.json"
+  },
+  {
+    "path": "./projects/history/tsconfig.app.json"
+  },
+  {
+    "path": "./projects/todo/tsconfig.app.json"
+  },
+  {
+    "path": "./projects/shared/tsconfig.lib.json"
+  },
+  {
+    "path": "./projects/shared/tsconfig.spec.json"
+  },
+  {
+    "path": "./projects/ui/tsconfig.lib.json"
+  },
+  {
+    "path": "./projects/ui/tsconfig.spec.json"
+  }
+]
+
 }
