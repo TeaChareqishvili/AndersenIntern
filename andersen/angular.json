@@ -20,18 +20,11 @@
             "outputPath": "dist/shell",
             "index": "projects/shell/src/index.html",
             "browser": "projects/shell/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/shell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/shell/src/favicon.ico",
-              "projects/shell/src/assets"
-            ],
-            "styles": [
-              "projects/shell/src/styles.scss"
-            ],
+            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
+            "styles": ["projects/shell/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -60,6 +53,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 8000
+          },
           "configurations": {
             "production": {
               "buildTarget": "shell:build:production"
@@ -79,19 +75,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/shell/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/shell/src/favicon.ico",
-              "projects/shell/src/assets"
-            ],
-            "styles": [
-              "projects/shell/src/styles.scss"
-            ],
+            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
+            "styles": ["projects/shell/src/styles.scss"],
             "scripts": []
           }
         }
@@ -112,9 +100,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/auth/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/auth/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -123,9 +109,7 @@
                 "input": "projects/auth/public"
               }
             ],
-            "styles": [
-              "projects/auth/src/styles.scss"
-            ]
+            "styles": ["projects/auth/src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -153,6 +137,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 8001
+          },
           "configurations": {
             "production": {
               "buildTarget": "auth:build:production"
@@ -169,10 +156,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/auth/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -181,9 +165,7 @@
                 "input": "projects/auth/public"
               }
             ],
-            "styles": [
-              "projects/auth/src/styles.scss"
-            ]
+            "styles": ["projects/auth/src/styles.scss"]
           }
         }
       }
@@ -203,9 +185,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/history/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/history/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -214,9 +194,7 @@
                 "input": "projects/history/public"
               }
             ],
-            "styles": [
-              "projects/history/src/styles.scss"
-            ]
+            "styles": ["projects/history/src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -244,6 +222,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 8002
+          },
           "configurations": {
             "production": {
               "buildTarget": "history:build:production"
@@ -260,10 +241,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/history/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -272,9 +250,7 @@
                 "input": "projects/history/public"
               }
             ],
-            "styles": [
-              "projects/history/src/styles.scss"
-            ]
+            "styles": ["projects/history/src/styles.scss"]
           }
         }
       }
@@ -294,9 +270,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "projects/todo/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/todo/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -305,9 +279,7 @@
                 "input": "projects/todo/public"
               }
             ],
-            "styles": [
-              "projects/todo/src/styles.scss"
-            ]
+            "styles": ["projects/todo/src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -335,6 +307,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 8003
+          },
           "configurations": {
             "production": {
               "buildTarget": "todo:build:production"
@@ -351,10 +326,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/todo/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -363,9 +335,7 @@
                 "input": "projects/todo/public"
               }
             ],
-            "styles": [
-              "projects/todo/src/styles.scss"
-            ]
+            "styles": ["projects/todo/src/styles.scss"]
           }
         }
       }
@@ -392,10 +362,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/shared/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
       }
@@ -422,10 +389,7 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "projects/ui/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
       }
