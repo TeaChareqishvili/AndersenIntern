@@ -21,8 +21,11 @@
             "index": "projects/shell/src/index.html",
             "browser": "projects/shell/src/main.ts",
             "polyfills": ["zone.js"],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/shell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
+            "styles": ["projects/shell/src/styles.scss"],
             "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
             "styles": ["projects/shell/src/styles.scss"],
             "scripts": []
@@ -53,6 +56,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 8000
+          },
           "configurations": {
             "production": {
               "buildTarget": "shell:build:production"
@@ -140,6 +146,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 8001
+          },
           "configurations": {
             "production": {
               "buildTarget": "auth:build:production"
@@ -222,6 +231,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 8002
+          },
           "configurations": {
             "production": {
               "buildTarget": "history:build:production"
@@ -304,6 +316,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 8003
+          },
           "configurations": {
             "production": {
               "buildTarget": "todo:build:production"
