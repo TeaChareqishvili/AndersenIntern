@@ -19,7 +19,7 @@
         "./dist/shared"
       ],
       "ui": [
-        "./dist/ui"
+        "./projects/ui/src/public-api.ts"
       ]
     },
     "importHelpers": true,
