@@ -1,0 +1,88 @@
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 48px !important;
+  }
+
+  .mat-mdc-form-field-label {
+    color: white !important;
+    display: none !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+  }
+
+  .mat-mdc-input-element {
+    color: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.6) !important;
+      line-height: 1.5 !important;
+      opacity: 1 !important;
+    }
+  }
+
+  .mdc-text-field__input {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .mdc-text-field {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .mat-mdc-form-field-outline {
+    display: none !important;
+  }
+
+  .mat-mdc-form-field-outline-thick {
+    display: none !important;
+  }
+}
+
+.mat-mdc-form-field-error {
+  color: #ffcdd2 !important;
+}
+
+.mat-mdc-raised-button {
+  background-color: rgba(253, 216, 53, 0.8) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  backdrop-filter: blur(4px) !important;
+  color: #1f2937 !important;
+  border-radius: 9999px !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  .mdc-button__label {
+    color: #1f2937 !important;
+  }
+
+  &:disabled {
+    background-color: rgba(253, 216, 53, 0.3) !important;
+    color: rgba(31, 41, 55, 0.4) !important;
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+
+    .mdc-button__label {
+      color: rgba(31, 41, 55, 0.4) !important;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    background-color: rgba(253, 216, 53, 0.9) !important;
+  }
+}

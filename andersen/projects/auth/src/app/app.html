@@ -1,8 +1,17 @@
 <main class="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed"
   [style.background-image]="'url(/background.webp)'">
-  <lib-header />
+  <lib-header>
+    <div header-navigation class="flex gap-4 items-center">
+      <button mat-raised-button (click)="navigateToSignIn()">
+        Sign In
+      </button>
+      <button mat-raised-button (click)="navigateToSignUp()">
+        Sign Up
+      </button>
+    </div>
+  </lib-header>
   <div class="flex-1">
     <router-outlet />
   </div>
-  <lib-footer />
+  <lib-footer>Teona 2026</lib-footer>
 </main>

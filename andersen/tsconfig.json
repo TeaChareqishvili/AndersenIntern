@@ -15,21 +15,14 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "paths": {
-      "shared": [
-        "./dist/shared"
-      ],
-      "ui": [
-        "./projects/ui/src/public-api.ts"
-      ]
+      "shared": ["./dist/shared"],
+      "@ui": ["./projects/ui/src/public-api.ts"]
     },
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -37,28 +30,27 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-"references": [
-  {
-    "path": "./projects/auth/tsconfig.app.json"
-  },
-  {
-    "path": "./projects/history/tsconfig.app.json"
-  },
-  {
-    "path": "./projects/todo/tsconfig.app.json"
-  },
-  {
-    "path": "./projects/shared/tsconfig.lib.json"
-  },
-  {
-    "path": "./projects/shared/tsconfig.spec.json"
-  },
-  {
-    "path": "./projects/ui/tsconfig.lib.json"
-  },
-  {
-    "path": "./projects/ui/tsconfig.spec.json"
-  }
-]
-
+  "references": [
+    {
+      "path": "./projects/auth/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/history/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/todo/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/ui/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/ui/tsconfig.spec.json"
+    }
+  ]
 }

@@ -1,9 +1,23 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
+import { ErrorComponent } from './pages/error/error';
+
+export enum AppRoutes {
+  HOME = '',
+  LOGIN = 'signIn',
+  REGISTER = 'signUp',
+}
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: AppRoutes.HOME, redirectTo: AppRoutes.LOGIN, pathMatch: 'full' },
+  {
+    path: AppRoutes.LOGIN,
+    component: LoginComponent,
+  },
+  {
+    path: AppRoutes.REGISTER,
+    component: RegisterComponent,
+  },
+  { path: '**', component: ErrorComponent },
 ];
