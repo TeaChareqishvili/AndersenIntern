@@ -5,6 +5,11 @@ export type AuthFormModel = {
   password: FormControl<string>;
 };
 
+export type RegistrationData = {
+  email: string;
+  password: string;
+};
+
 export const createAuthForm = (): FormGroup<AuthFormModel> =>
   new FormGroup<AuthFormModel>({
     email: new FormControl('', {

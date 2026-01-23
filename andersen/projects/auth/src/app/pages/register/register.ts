@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { AuthComponent } from '../../form/auth';
-import { createAuthForm } from '../../models/auth.models';
+import { createAuthForm, RegistrationData } from '../../models/auth.models';
+import { RegistrationService } from '../../services/registration';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,17 @@ import { createAuthForm } from '../../models/auth.models';
 })
 export class RegisterComponent {
   readonly form = createAuthForm();
-  onRegister(data: { email: string; password: string }) {
-    alert(`Registration successful \n\n Email: ${data.email}\n\nPassword: ${data.password}`);
+  private registrationService = inject(RegistrationService);
+
+  onRegister(data: RegistrationData): void {
+    this.registrationService.registerUser(data).subscribe({
+      next: () => {
+        alert(`Registration successful!\n\nEmail: ${data.email}`);
+      },
+      error: (err) => {
+        console.error(err);
+        alert(` Registration failed. Please try again\n\nEmail: ${data.email}`);
+      },
+    });
   }
 }
