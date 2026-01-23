@@ -25,6 +25,7 @@
     width: 100% !important;
     height: auto !important;
     line-height: 1.5 !important;
+    padding: 2px 12px !important;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.6) !important;
@@ -46,10 +47,10 @@
   .mat-mdc-form-field-outline {
     display: none !important;
   }
+}
 
-  .mat-mdc-form-field-outline-thick {
-    display: none !important;
-  }
+.mat-mdc-form-field-outline-thick {
+  display: none !important;
 }
 
 .mat-mdc-form-field-error {

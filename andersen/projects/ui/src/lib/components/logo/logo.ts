@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-error',
-  standalone: true,
+  selector: 'lib-logo',
   imports: [],
-  templateUrl: './error.html',
+  templateUrl: './logo.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ErrorComponent {}
+export class LogoComponent {
+  logoPath = '/logo.webp';
+}

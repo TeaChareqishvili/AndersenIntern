@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent, FooterComponent } from '@ui';
+import { AppRoutes } from './app.routes';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,10 @@ export class App {
   private router = inject(Router);
 
   navigateToSignUp() {
-    this.router.navigate(['/signUp']);
+    this.router.navigate([AppRoutes.REGISTER]);
   }
 
   navigateToSignIn() {
-    this.router.navigate(['/signIn']);
+    this.router.navigate([AppRoutes.LOGIN]);
   }
 }

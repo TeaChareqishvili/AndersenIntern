@@ -8,13 +8,11 @@ import { createAuthForm } from '../../models/auth.models';
   standalone: true,
   imports: [AuthComponent],
   templateUrl: './register.html',
-  styleUrl: './register.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  form = createAuthForm();
+  readonly form = createAuthForm();
   onRegister(data: { email: string; password: string }) {
     alert(`Registration successful \n\n Email: ${data.email}\n\nPassword: ${data.password}`);
-    console.log('REGISTER', data);
   }
 }

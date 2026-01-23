@@ -5,8 +5,8 @@ import { ErrorComponent } from './pages/error/error';
 
 export enum AppRoutes {
   HOME = '',
-  LOGIN = 'signIn',
-  REGISTER = 'signUp',
+  LOGIN = 'sign-in',
+  REGISTER = 'sign-up',
 }
 
 export const routes: Routes = [

@@ -6,13 +6,11 @@ import { createAuthForm } from '../../models/auth.models';
   standalone: true,
   imports: [AuthComponent],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  form = createAuthForm();
+  readonly form = createAuthForm();
   onLogin(data: { email: string; password: string }) {
     alert(`Log In  successful \n\n Email: ${data.email}\n\nPassword: ${data.password}`);
-    console.log('LOGIN', data);
   }
 }

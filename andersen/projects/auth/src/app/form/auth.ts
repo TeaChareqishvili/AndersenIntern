@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,16 +9,15 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './auth.html',
-  styleUrl: './auth.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
-  form = input.required<FormGroup>();
+  readonly form = input.required<FormGroup>();
 
   title = input.required<string>();
   submitText = input.required<string>();
 
-  @Output() submitForm = new EventEmitter<{
+  readonly submitForm = output<{
     email: string;
     password: string;
   }>();
