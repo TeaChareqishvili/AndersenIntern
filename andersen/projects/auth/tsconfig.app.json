@@ -5,9 +5,7 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
     "types": [],
-     "composite": true,
-  "declaration": true,
-  "declarationMap": true
+    "rootDir": "../../"
   },
   "include": [
     "src/**/*.ts"

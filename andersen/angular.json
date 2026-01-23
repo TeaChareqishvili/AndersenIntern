@@ -21,6 +21,7 @@
             "index": "projects/shell/src/index.html",
             "browser": "projects/shell/src/main.ts",
             "polyfills": ["zone.js"],
+
             "tsConfig": "projects/shell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
@@ -106,10 +107,20 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/auth/public"
+                "input": "projects/auth/public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/auth/src/assets",
+                "output": "/assets"
               }
             ],
-            "styles": ["projects/auth/src/styles.scss"]
+            "styles": [
+              "projects/ui/src/styles/tailwind.css",
+              "projects/auth/src/styles.scss",
+              "projects/auth/src/styles/index.scss"
+            ]
           },
           "configurations": {
             "production": {
