@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
-  readonly form = input.required<FormGroup>();
+  form = input.required<FormGroup>();
 
   title = input.required<string>();
   submitText = input.required<string>();
