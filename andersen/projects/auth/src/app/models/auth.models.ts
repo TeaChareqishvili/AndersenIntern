@@ -5,7 +5,7 @@ export type AuthFormModel = {
   password: FormControl<string>;
 };
 
-export type RegistrationData = {
+export type AuthResponse = {
   email: string;
   password: string;
 };

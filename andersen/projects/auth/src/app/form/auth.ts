@@ -14,6 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
 export class AuthComponent {
   form = input.required<FormGroup>();
 
+  showRessetButton = input<boolean>(false);
+  ressetText = input<string | null>(null);
+
   title = input.required<string>();
   submitText = input.required<string>();
 

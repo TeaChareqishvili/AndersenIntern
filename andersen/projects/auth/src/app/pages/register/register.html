@@ -1,1 +1,7 @@
-<app-auth-form [form]="form" [title]="'Sign Up'" [submitText]="'Register'" (submitForm)="onRegister($event)" />
+<app-auth-form [form]="form" [title]="'Sign Up'" [showRessetButton]="false" [submitText]="'Register'"
+  (submitForm)="onRegister($event)" />
+
+
+@if (loading()) {
+<lib-loader />
+}

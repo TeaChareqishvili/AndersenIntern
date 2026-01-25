@@ -26,8 +26,13 @@
       }
     </mat-form-field>
 
-    <button mat-raised-button type="submit" class="w-full" [disabled]="form().invalid">
+    <button mat-raised-button type="submit" class="w-full mb-3.5" [disabled]="form().invalid">
       {{ submitText() }}
     </button>
+    @if (showRessetButton()) {
+    <button mat-raised-button type="submit" class="w-full" [disabled]="form().invalid">
+      {{ ressetText() }}
+    </button>
+    }
   </form>
 </div>
