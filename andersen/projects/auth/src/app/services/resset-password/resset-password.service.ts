@@ -7,21 +7,22 @@ import { environment } from '../../environment/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class SignInService {
+export class RessetPasswordService {
   private http = inject(HttpClient);
 
-  private readonly apiUrl = `${environment.apiUrl}/sign-in`;
+  private readonly apiUrl = `${environment.apiUrl}/sign-in/reset`;
 
-  SignInUser(userData: AuthResponse): Observable<HttpResponse<AuthResponse>> {
+  ressetPassword(userdata: AuthResponse): Observable<HttpResponse<AuthResponse>> {
     return this.http
-      .post<AuthResponse>(this.apiUrl, userData, {
+      .post<AuthResponse>(this.apiUrl, userdata, {
         observe: 'response',
       })
       .pipe(
         tap((response) => {
-          console.log('User sign in  successfully TAp', response);
+          console.log('password resset successfully TAp', response);
         }),
         catchError((error) => {
+          console.error('Password resset failed', error.body);
           return throwError(() => error);
         }),
       );

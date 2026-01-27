@@ -1,5 +1,5 @@
 <app-auth-form [form]="form" [title]="'Sign Up'" [showRessetButton]="false" [submitText]="'Register'"
-  (submitForm)="onRegister($event)" />
+  [loading]="loading()" (submitForm)="onRegister($event)" />
 
 
 @if (loading()) {

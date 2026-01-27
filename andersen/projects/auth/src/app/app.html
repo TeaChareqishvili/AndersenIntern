@@ -2,6 +2,11 @@
   [style.background-image]="'url(/background.webp)'">
   <lib-header>
     <div header-navigation class="flex gap-4 items-center">
+      @if(user()) {
+      <button mat-raised-button (click)="onLogout()">
+        Sign Out
+      </button>
+      }
       <button mat-raised-button (click)="navigateToSignIn()">
         Sign In
       </button>

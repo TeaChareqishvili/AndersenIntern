@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,15 +19,28 @@ export class AuthComponent {
 
   title = input.required<string>();
   submitText = input.required<string>();
+  loading = input<boolean>(false);
 
   readonly submitForm = output<{
     email: string;
     password: string;
+    action: 'submit' | 'reset';
   }>();
 
   onSubmit(): void {
-    if (this.form().valid) {
-      this.submitForm.emit(this.form().getRawValue());
+    if (this.form().valid && !this.loading()) {
+      this.submitForm.emit({ ...this.form().getRawValue(), action: 'submit' });
+    } else {
+      this.form().markAllAsTouched();
+    }
+  }
+
+  onReset(): void {
+    const email = this.form().get('email')?.value;
+    const password = this.form().get('password')?.value;
+
+    if (email && password && !this.loading()) {
+      this.submitForm.emit({ email, password, action: 'reset' });
     } else {
       this.form().markAllAsTouched();
     }
