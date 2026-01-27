@@ -29,7 +29,12 @@ export class RegisterComponent {
       .registerUser(data)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: () => {
+        next: (response) => {
+          const token = response.headers.get('T-Auth');
+
+          if (token) {
+            localStorage.setItem('auth_token', token);
+          }
           this.snackBar
             .open('Registration successful 🎉', undefined, {
               duration: 4000,

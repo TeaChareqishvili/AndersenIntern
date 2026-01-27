@@ -42,7 +42,7 @@ export class App {
       .subscribe({
         next: () => {
           this.authService.clearUser();
-
+          localStorage.removeItem('auth_token');
           const snackRef = this.snackBar.open('Logged out successfully 👋', undefined, {
             duration: 2000,
           });
