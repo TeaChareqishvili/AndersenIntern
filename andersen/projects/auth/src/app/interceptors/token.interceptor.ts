@@ -1,17 +1,29 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { TokenService } from '../services/token-service/token-service.service';
+import { inject } from '@angular/core';
+import { tap } from 'rxjs';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('auth_token');
+  const storage = inject(TokenService);
+  const token = storage.getToken();
 
-  if (!token) {
-    return next(req);
-  }
+  const authReq = token
+    ? req.clone({
+        setHeaders: {
+          'T-Auth': token,
+        },
+      })
+    : req;
 
-  const authReq = req.clone({
-    setHeaders: {
-      'T-Auth': token,
-    },
-  });
+  return next(authReq).pipe(
+    tap((event) => {
+      if (event instanceof HttpResponse) {
+        const newToken = event.headers.get('T-Auth');
 
-  return next(authReq);
+        if (newToken) {
+          storage.setToken(newToken);
+        }
+      }
+    }),
+  );
 };

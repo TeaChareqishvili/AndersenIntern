@@ -7,12 +7,15 @@
         Sign Out
       </button>
       }
+      @if(!user()){
       <button mat-raised-button (click)="navigateToSignIn()">
         Sign In
       </button>
       <button mat-raised-button (click)="navigateToSignUp()">
         Sign Up
       </button>
+      }
+
     </div>
   </lib-header>
   <div class="flex-1">

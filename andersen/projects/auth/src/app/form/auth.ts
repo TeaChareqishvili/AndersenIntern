@@ -21,15 +21,12 @@ export class AuthComponent {
   submitText = input.required<string>();
   loading = input<boolean>(false);
 
-  readonly submitForm = output<{
-    email: string;
-    password: string;
-    action: 'submit' | 'reset';
-  }>();
+  readonly submitUser = output<{ email: string; password: string }>();
+  readonly submitReset = output<{ email: string; password: string }>();
 
   onSubmit(): void {
     if (this.form().valid && !this.loading()) {
-      this.submitForm.emit({ ...this.form().getRawValue(), action: 'submit' });
+      this.submitUser.emit({ ...this.form().getRawValue() });
     } else {
       this.form().markAllAsTouched();
     }
@@ -40,7 +37,7 @@ export class AuthComponent {
     const password = this.form().get('password')?.value;
 
     if (email && password && !this.loading()) {
-      this.submitForm.emit({ email, password, action: 'reset' });
+      this.submitReset.emit({ email, password });
     } else {
       this.form().markAllAsTouched();
     }

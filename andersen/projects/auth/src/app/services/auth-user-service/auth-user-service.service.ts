@@ -4,7 +4,7 @@ import { AuthResponse } from '../../models/auth.models';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthUserService {
   private readonly _user = signal<AuthResponse | null>(null);
 
   setUser(user: AuthResponse) {

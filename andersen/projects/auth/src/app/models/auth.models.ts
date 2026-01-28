@@ -10,6 +10,11 @@ export type AuthResponse = {
   password: string;
 };
 
+export type BackendError = {
+  // message: string;
+  // statusCode: number;
+  error: string;
+};
 export const createAuthForm = (): FormGroup<AuthFormModel> =>
   new FormGroup<AuthFormModel>({
     email: new FormControl('', {

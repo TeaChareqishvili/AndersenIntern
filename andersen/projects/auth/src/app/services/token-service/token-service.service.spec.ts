@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { SignOutService } from './sign-out.service';
+import { TokenService } from './token-service.service';
 
-describe('SignOutService', () => {
-  let service: SignOutService;
+describe('TokenService', () => {
+  let service: TokenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SignOutService);
+    service = TestBed.inject(TokenService);
   });
 
   it('should be created', () => {

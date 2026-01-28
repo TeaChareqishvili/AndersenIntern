@@ -3,10 +3,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent, FooterComponent } from '@ui';
 import { AUTH_ROUTES } from './app.routes';
-import { AuthService } from './services/auth-service/auth-service.service';
-import { SignOutService } from './services/sign-out/sign-out.service';
+import { AuthUserService } from './services/auth-user-service/auth-user-service.service';
+
 import { finalize } from 'rxjs/internal/operators/finalize';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { TokenService } from './services/token-service/token-service.service';
+import { AuthService } from './services/auth-service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +18,11 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class App {
   protected readonly title = signal('auth');
-  private authService = inject(AuthService);
+  private authService = inject(AuthUserService);
   private router = inject(Router);
-  private signOutService = inject(SignOutService);
+  private signOutService = inject(AuthService);
   private snackBar = inject(MatSnackBar);
-
+  private readonly storage = inject(TokenService);
   readonly loading = signal(false);
 
   user = this.authService.user;
@@ -42,7 +44,7 @@ export class App {
       .subscribe({
         next: () => {
           this.authService.clearUser();
-          localStorage.removeItem('auth_token');
+          this.storage.clearToken();
           const snackRef = this.snackBar.open('Logged out successfully 👋', undefined, {
             duration: 2000,
           });
