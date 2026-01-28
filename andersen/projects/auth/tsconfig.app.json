@@ -7,6 +7,6 @@
     "types": [],
     "rootDir": "../../"
   },
-  "include": ["src/**/*.ts", "src/app/environment"],
+  "include": ["src/**/*.ts", "../environment"],
   "exclude": ["src/**/*.spec.ts"]
 }

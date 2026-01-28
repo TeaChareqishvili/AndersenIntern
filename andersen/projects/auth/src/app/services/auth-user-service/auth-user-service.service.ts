@@ -7,13 +7,8 @@ import { AuthResponse } from '../../models/auth.models';
 export class AuthUserService {
   private readonly _user = signal<AuthResponse | null>(null);
 
-  setUser(user: AuthResponse) {
+  setUser(user: AuthResponse | null) {
     this._user.set(user);
   }
-
-  clearUser() {
-    this._user.set(null);
-  }
-
   user = this._user.asReadonly();
 }

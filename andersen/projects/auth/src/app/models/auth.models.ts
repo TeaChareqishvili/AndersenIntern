@@ -11,9 +11,12 @@ export type AuthResponse = {
 };
 
 export type BackendError = {
-  // message: string;
-  // statusCode: number;
   error: string;
+};
+
+export type ResponseMessage = {
+  message: string;
+  navigateTo?: string;
 };
 export const createAuthForm = (): FormGroup<AuthFormModel> =>
   new FormGroup<AuthFormModel>({

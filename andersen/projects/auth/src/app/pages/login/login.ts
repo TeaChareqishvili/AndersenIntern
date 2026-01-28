@@ -1,21 +1,22 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
 import { AuthResponse, BackendError, createAuthForm } from '../../models/auth.models';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { finalize } from 'rxjs';
+
+import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
 import { LoaderComponent } from '@ui';
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+
 import { AUTH_ROUTES } from '../../app.routes';
 import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
+import { ResponseMessageService } from '../../services/response-message/response-message.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [AuthComponent, LoaderComponent, MatSnackBarModule],
+  imports: [AuthComponent, LoaderComponent],
   templateUrl: './login.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -24,54 +25,43 @@ export class LoginComponent {
   readonly loading = signal(false);
 
   private readonly authUser = inject(AuthService);
+  private readonly responseMessage = inject(ResponseMessageService);
 
-  private readonly snackBar = inject(MatSnackBar);
-  private readonly router = inject(Router);
   private readonly authService = inject(AuthUserService);
   private readonly destroyRef = inject(DestroyRef);
 
-  private showSuccess(user: string) {
-    return this.snackBar.open(`Welcome ${user} 🎉`, undefined, { duration: 4000 });
-  }
-
-  private showError(error: string): void {
-    this.snackBar.open(`${error} 🛑`, undefined, { duration: 4000 });
-  }
-
-  onLogin(data: { email: string; password: string }): void {
+  onLogin(data: AuthResponse): void {
     this.loading.set(true);
 
     this.authUser
       .signInUser(data)
       .pipe(
+        tap((user: AuthResponse) => {
+          this.authService.setUser(user);
+        }),
+
+        switchMap((user: AuthResponse) =>
+          this.responseMessage.success({
+            message: `Welcome ${user.email} 🎉`,
+            navigateTo: AUTH_ROUTES.USER,
+          }),
+        ),
+
+        catchError((err: HttpErrorResponse) => {
+          const backendError = err.error as BackendError;
+          const message = backendError?.error ?? 'Login failed';
+
+          this.responseMessage.error(message);
+          return EMPTY;
+        }),
+
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-
-      .subscribe({
-        next: (user: AuthResponse) => {
-          this.authService.setUser(user);
-
-          const snackRef = this.showSuccess(user?.email || 'Login successful');
-
-          snackRef
-            .afterDismissed()
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => {
-              this.router.navigate([AUTH_ROUTES.USER]);
-            });
-        },
-
-        error: (err: HttpErrorResponse) => {
-          const backendError = err.error as BackendError;
-          const message = backendError.error;
-
-          this.showError(message);
-        },
-      });
+      .subscribe();
   }
 
-  onResetPassword(data: { email: string; password: string }): void {
+  onResetPassword(data: AuthResponse): void {
     this.loading.set(true);
 
     this.authUser
@@ -82,13 +72,13 @@ export class LoginComponent {
       )
       .subscribe({
         next: () => {
-          this.snackBar.open('Password reset link sent to your email 📩', undefined, {
-            duration: 4000,
+          this.responseMessage.success({
+            message: 'Password reset link sent to your email 📩',
           });
         },
         error: (err: HttpErrorResponse) => {
           const backendError = err.error as BackendError;
-          this.showError(backendError.error ?? 'Reset password failed');
+          this.responseMessage.error(backendError.error ?? 'Reset password failed');
         },
       });
   }

@@ -33,11 +33,10 @@ export class AuthComponent {
   }
 
   onReset(): void {
-    const email = this.form().get('email')?.value;
-    const password = this.form().get('password')?.value;
+    const resetPass = this.form().getRawValue();
 
-    if (email && password && !this.loading()) {
-      this.submitReset.emit({ email, password });
+    if (resetPass && !this.loading()) {
+      this.submitReset.emit(resetPass);
     } else {
       this.form().markAllAsTouched();
     }
