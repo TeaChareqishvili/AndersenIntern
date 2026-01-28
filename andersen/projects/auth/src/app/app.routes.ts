@@ -7,6 +7,7 @@ export enum AUTH_ROUTES {
   HOME = '',
   LOGIN = 'sign-in',
   REGISTER = 'sign-up',
+  USER = 'user',
 }
 
 export const routes: Routes = [
@@ -18,6 +19,10 @@ export const routes: Routes = [
   {
     path: AUTH_ROUTES.REGISTER,
     component: RegisterComponent,
+  },
+  {
+    path: AUTH_ROUTES.USER,
+    loadComponent: () => import('./pages/user/user').then((m) => m.UserComponent),
   },
   { path: '**', component: ErrorComponent },
 ];

@@ -5,6 +5,19 @@ export type AuthFormModel = {
   password: FormControl<string>;
 };
 
+export type AuthResponse = {
+  email: string;
+  password: string;
+};
+
+export type BackendError = {
+  error: string;
+};
+
+export type ResponseMessage = {
+  message: string;
+  navigateTo?: string;
+};
 export const createAuthForm = (): FormGroup<AuthFormModel> =>
   new FormGroup<AuthFormModel>({
     email: new FormControl('', {

@@ -1,0 +1,8 @@
+<div class="w-full flex items-center justify-center m-10">
+  @if (user()) {
+  <h2 class="font-bold  text-4xl text-cyan-50">Welcome {{ user()!.email }}</h2>
+  }
+  @else {
+  <h2 class="font-bold  text-4xl text-cyan-50">Session Expired sign in again !</h2>
+  }
+</div>
