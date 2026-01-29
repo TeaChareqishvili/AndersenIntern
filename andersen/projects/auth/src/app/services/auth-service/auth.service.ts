@@ -1,45 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ENVIRONMENT } from '../../../../../environment/envionment.token';
-import { AuthResponse, BackendError } from '../../models/auth.models';
-import { catchError, Observable, throwError } from 'rxjs';
+import { AuthResponse } from '../../models/auth.models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private http = inject(HttpClient);
-  private env = inject(ENVIRONMENT);
-
-  private readonly apiUrl = this.env.apiUrl;
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = inject(ENVIRONMENT);
 
   signInUser(userData: AuthResponse): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in`, userData).pipe(
-      catchError((error: BackendError) => {
-        return throwError(() => error);
-      }),
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in`, userData);
   }
 
   signOut(): Observable<void> {
-    return this.http
-      .delete<void>(`${this.apiUrl}/sign-in/out`)
-      .pipe(catchError((error: BackendError) => throwError(() => error)));
+    return this.http.delete<void>(`${this.apiUrl}/sign-in/out`);
   }
 
   registerUser(userData: AuthResponse): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-up`, userData).pipe(
-      catchError((error: BackendError) => {
-        return throwError(() => error);
-      }),
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-up`, userData);
   }
 
   ressetPassword(userdata: AuthResponse): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in/reset`, userdata).pipe(
-      catchError((error: BackendError) => {
-        return throwError(() => error);
-      }),
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in/reset`, userdata);
   }
 }

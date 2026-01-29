@@ -9,7 +9,7 @@ import { AuthUserService } from '../../services/auth-user-service/auth-user-serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent {
-  private authService = inject(AuthUserService);
+  private readonly authService = inject(AuthUserService);
 
   user = this.authService.user;
 }

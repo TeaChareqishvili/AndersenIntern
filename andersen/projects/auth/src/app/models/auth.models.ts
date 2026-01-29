@@ -18,6 +18,11 @@ export type ResponseMessage = {
   message: string;
   navigateTo?: string;
 };
+
+export type SessionState = {
+  token?: string;
+};
+
 export const createAuthForm = (): FormGroup<AuthFormModel> =>
   new FormGroup<AuthFormModel>({
     email: new FormControl('', {

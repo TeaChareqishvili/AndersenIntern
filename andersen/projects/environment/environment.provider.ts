@@ -1,7 +1,7 @@
 import { Provider } from '@angular/core';
-import { Environment, ENVIRONMENT } from './envionment.token';
+import { ENVIRONMENT } from './envionment.token';
 
-export const provideEnvironment = (environment: Environment): Provider => ({
+export const provideEnvironment = (environment: string): Provider => ({
   provide: ENVIRONMENT,
   useValue: environment,
 });

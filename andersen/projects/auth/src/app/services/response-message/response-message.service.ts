@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
@@ -8,8 +8,8 @@ import { ResponseMessage } from '../../models/auth.models';
   providedIn: 'root',
 })
 export class ResponseMessageService {
-  private snackBar = inject(MatSnackBar);
-  private router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
+  private readonly router = inject(Router);
 
   success(payload: ResponseMessage) {
     const ref = this.snackBar.open(payload.message, undefined, {

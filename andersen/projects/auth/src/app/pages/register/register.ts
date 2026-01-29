@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
-import { AuthResponse, BackendError, createAuthForm } from '../../models/auth.models';
+import { AuthResponse, createAuthForm } from '../../models/auth.models';
 import { LoaderComponent } from '@ui';
 import { AUTH_ROUTES } from '../../app.routes';
-import { catchError, EMPTY, finalize, switchMap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { finalize, switchMap } from 'rxjs';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ResponseMessageService } from '../../services/response-message/response-message.service';
@@ -36,16 +36,10 @@ export class RegisterComponent {
             navigateTo: AUTH_ROUTES.LOGIN,
           }),
         ),
-        catchError((err: HttpErrorResponse) => {
-          const backendError = err.error as BackendError;
-          const message = backendError?.error ?? 'Registration failed';
-          this.responseMessage.error(message);
 
-          return EMPTY;
-        }),
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe();
+      .subscribe({});
   }
 }

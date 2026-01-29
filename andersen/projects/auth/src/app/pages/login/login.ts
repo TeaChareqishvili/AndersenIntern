@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
-import { AuthResponse, BackendError, createAuthForm } from '../../models/auth.models';
+import { AuthResponse, createAuthForm } from '../../models/auth.models';
 
-import { catchError, EMPTY, finalize, switchMap, tap } from 'rxjs';
+import { finalize, switchMap } from 'rxjs';
 import { LoaderComponent } from '@ui';
-
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { AUTH_ROUTES } from '../../app.routes';
 import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
@@ -36,10 +34,6 @@ export class LoginComponent {
     this.authUser
       .signInUser(data)
       .pipe(
-        tap((user: AuthResponse) => {
-          this.authService.setUser(user);
-        }),
-
         switchMap((user: AuthResponse) =>
           this.responseMessage.success({
             message: `Welcome ${user.email} 🎉`,
@@ -47,18 +41,10 @@ export class LoginComponent {
           }),
         ),
 
-        catchError((err: HttpErrorResponse) => {
-          const backendError = err.error as BackendError;
-          const message = backendError?.error ?? 'Login failed';
-
-          this.responseMessage.error(message);
-          return EMPTY;
-        }),
-
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe();
+      .subscribe(() => this.authService.setUser(data));
   }
 
   onResetPassword(data: AuthResponse): void {
@@ -75,10 +61,6 @@ export class LoginComponent {
           this.responseMessage.success({
             message: 'Password reset link sent to your email 📩',
           });
-        },
-        error: (err: HttpErrorResponse) => {
-          const backendError = err.error as BackendError;
-          this.responseMessage.error(backendError.error ?? 'Reset password failed');
         },
       });
   }

@@ -9,9 +9,7 @@ import { StorageService } from './services/storage-service/storage-service.servi
 import { AuthService } from './services/auth-service/auth.service';
 import { ResponseMessageService } from './services/response-message/response-message.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, EMPTY, switchMap, tap } from 'rxjs';
-import { BackendError } from './models/auth.models';
-import { HttpErrorResponse } from '@angular/common/http';
+import { switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -58,17 +56,9 @@ export class App {
           }),
         ),
 
-        catchError((err: HttpErrorResponse) => {
-          const backendError = err.error as BackendError;
-          const message = backendError?.error ?? 'Logout failed ❌';
-
-          this.responseMessage.error(message);
-          return EMPTY;
-        }),
-
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe();
+      .subscribe({});
   }
 }
