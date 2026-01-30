@@ -1,1 +1,7 @@
-<app-auth-form [form]="form" [title]="'Sign In'" [submitText]="'Log In'" (submitForm)="onLogin($event)" />
+<app-auth-form [form]="form" [title]="'Sign In'" [showRessetButton]="true" [submitText]="'Log In'"
+  [ressetText]="'Reset Password'" [loading]="loading()" (submitUser)="onLogin($event)"
+  (submitReset)="onResetPassword($event)" />
+
+@if (loading()) {
+<lib-loader />
+}
