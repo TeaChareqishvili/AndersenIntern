@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 
 import { inject } from '@angular/core';
-import { from, switchMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { StorageService } from '../../services/storage-service/storage-service.service';
 import { SessionState } from '../../models/auth.models';
 
