@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ENVIRONMENT } from '../../../../../environment/envionment.token';
+import { BASE_URL } from '@env';
 import { AuthResponse } from '../../models/auth.models';
 import { Observable } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = inject(ENVIRONMENT);
+  private readonly apiUrl = inject(BASE_URL);
 
   signInUser(userData: AuthResponse): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in`, userData);

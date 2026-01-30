@@ -16,7 +16,8 @@
     "moduleResolution": "bundler",
     "paths": {
       "shared": ["./dist/shared"],
-      "@ui": ["./projects/ui/src/public-api.ts"]
+      "@ui": ["./projects/ui/src/public-api.ts"],
+      "@env": ["./projects/environment/index.ts"]
     },
     "importHelpers": true,
     "target": "ES2022",

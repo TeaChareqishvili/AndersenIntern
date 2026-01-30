@@ -10,8 +10,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authTokenInterceptor } from './interceptors/token/token.interceptor';
 import { errorInterceptor } from './interceptors/errors/error.interceptor';
 import { GlobalErrorHandler } from './interceptors/errors/global-error.handler';
-import { provideEnvironment } from '../../../environment/environment.provider';
-import { environment } from './url/url';
+import { baseUrlProvider } from '@env';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +19,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authTokenInterceptor, errorInterceptor])),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    provideEnvironment(environment),
+    baseUrlProvider,
   ],
 };
