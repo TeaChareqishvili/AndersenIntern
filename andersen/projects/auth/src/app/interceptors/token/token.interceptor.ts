@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 
 import { inject } from '@angular/core';
-import { from, switchMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { StorageService } from '../../services/storage-service/storage-service.service';
 import { SessionState } from '../../models/auth.models';
 
@@ -35,7 +35,6 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         storage.setItem<SessionState>(APP_SESSION_STATE_KEY, { token });
-        storage.setData((state) => ({ ...state, token }));
       }
     }),
   );
