@@ -5,7 +5,7 @@ import { from, switchMap, tap } from 'rxjs';
 import { StorageService } from '../../services/storage-service/storage-service.service';
 import { SessionState } from '../../models/auth.models';
 
-const APP_SESSION_STATE_KEY = 'APP_SESSION_STATE_X';
+const APP_SESSION_STATE_KEY = 'APP_SESSION_STATE';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const storage = inject(StorageService);
@@ -35,7 +35,6 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         storage.setItem<SessionState>(APP_SESSION_STATE_KEY, { token });
-        storage.setData((state) => ({ ...state, token }));
       }
     }),
   );
