@@ -46,7 +46,6 @@ export class App {
       .pipe(
         tap(() => {
           this.authService.setUser(null);
-          this.storage.clearData();
         }),
 
         switchMap(() =>
