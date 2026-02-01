@@ -5,7 +5,7 @@ import { HeaderComponent, FooterComponent } from '@ui';
 import { AUTH_ROUTES } from './app.routes';
 import { AuthUserService } from './services/auth-user-service/auth-user-service.service';
 import { finalize } from 'rxjs/internal/operators/finalize';
-import { StorageService } from './services/storage-service/storage-service.service';
+
 import { AuthService } from './services/auth-service/auth.service';
 import { ResponseMessageService } from './services/response-message/response-message.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,16 +19,16 @@ import { switchMap, tap } from 'rxjs';
 })
 export class App {
   protected readonly title = signal('auth');
-  private readonly authService = inject(AuthUserService);
+  private readonly authUserService = inject(AuthUserService);
   private readonly router = inject(Router);
   private readonly signOutService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly storage = inject(StorageService);
+
   private readonly responseMessage = inject(ResponseMessageService);
 
   readonly loading = signal(false);
 
-  user = this.authService.user;
+  user = this.authUserService.user;
 
   navigateToSignUp(): void {
     this.router.navigate([AUTH_ROUTES.REGISTER]);
@@ -45,7 +45,7 @@ export class App {
       .signOut()
       .pipe(
         tap(() => {
-          this.authService.setUser(null);
+          this.authUserService.setUser(null);
         }),
 
         switchMap(() =>
