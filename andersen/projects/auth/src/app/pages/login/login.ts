@@ -36,7 +36,7 @@ export class LoginComponent {
       .pipe(
         switchMap((user: AuthResponse) =>
           this.responseMessage.success({
-            message: `Welcome ${user.email} 🎉`,
+            message: `Welcome ${user?.email} 🎉`,
             navigateTo: AUTH_ROUTES.USER,
           }),
         ),

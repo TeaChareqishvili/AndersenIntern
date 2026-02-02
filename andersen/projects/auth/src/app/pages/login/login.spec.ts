@@ -15,7 +15,7 @@ const fakeData: AuthResponse = {
 };
 
 const fakeAuthService = {
-  signInUser: jasmine.createSpy('signInUser').and.returnValue(of(null)),
+  signInUser: jasmine.createSpy('signInUser').and.returnValue(of(fakeData)),
   ressetPassword: jasmine.createSpy('ressetPassword').and.returnValue(of(null)),
 };
 
@@ -105,7 +105,7 @@ describe('LoginComponent', () => {
   });
 
   it('should set  user data on log in ', () => {
-    fakeAuthService.signInUser.and.returnValue(of(null));
+    fakeAuthService.signInUser.and.returnValue(of(fakeData));
     component.onLogin(fakeData);
     expect(fakeUserService.setUser).toHaveBeenCalledWith(fakeData);
   });

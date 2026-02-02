@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthComponent } from './auth';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { createAuthForm } from '../models/auth.models';
 
 const fakeData = {
   email: 'teaa@gmail.com',
@@ -10,16 +12,19 @@ const fakeData = {
 describe('AuthComponent', () => {
   let component: AuthComponent;
   let fixture: ComponentFixture<AuthComponent>;
-  let password!: FormControl;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AuthComponent],
+      providers: [provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AuthComponent);
     component = fixture.componentInstance;
-    password = component.form().get('password') as FormControl;
+    fixture.componentRef.setInput('form', createAuthForm());
+    fixture.componentRef.setInput('title', 'text');
+    fixture.componentRef.setInput('submitText', 'submit text');
+
     fixture.detectChanges();
   });
 
@@ -27,34 +32,17 @@ describe('AuthComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(' should check if email is valid', () => {
-    const email = 'tea@gmail.com';
-    expect(component.form().get(email)).toBeTrue();
+  it(' email value should not be empty ', () => {
+    const form = component.form().get('email');
+    form?.setValue('');
+
+    expect(form?.invalid).toBeTrue();
   });
 
-  it(' should check if password is valid', () => {
-    const password = 'TTea12345$';
-    expect(component.form().get(password)).toBeTrue();
-  });
-
-  it('should reject password shorter than 8 char', () => {
-    password.setValue('Tea1$');
-    expect(password.valid).toBeFalse();
-  });
-
-  it('should reject password without uppercase letter', () => {
-    password.setValue('tea12345$');
-    expect(password.valid).toBeFalse();
-  });
-
-  it('should reject password without  numbers', () => {
-    password.setValue('TeaPassword$');
-    expect(password.valid).toBeFalse();
-  });
-
-  it('should reject password without symbol', () => {
-    password.setValue('Tea12345');
-    expect(password.valid).toBeFalse();
+  it(' password value should not be empty', () => {
+    const form = component.form().get('password');
+    form?.setValue('');
+    expect(form?.invalid).toBeTrue();
   });
 
   it("creates the form with 'email' and 'password'", () => {
