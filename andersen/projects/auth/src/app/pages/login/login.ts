@@ -22,21 +22,21 @@ export class LoginComponent {
   readonly form = createAuthForm();
   readonly loading = signal(false);
 
-  private readonly authUser = inject(AuthService);
+  private readonly authService = inject(AuthService);
   private readonly responseMessage = inject(ResponseMessageService);
 
-  private readonly authService = inject(AuthUserService);
+  private readonly authUser = inject(AuthUserService);
   private readonly destroyRef = inject(DestroyRef);
 
   onLogin(data: AuthResponse): void {
     this.loading.set(true);
 
-    this.authUser
+    this.authService
       .signInUser(data)
       .pipe(
         switchMap((user: AuthResponse) =>
           this.responseMessage.success({
-            message: `Welcome ${user.email} 🎉`,
+            message: `Welcome ${user?.email} 🎉`,
             navigateTo: AUTH_ROUTES.USER,
           }),
         ),
@@ -44,13 +44,13 @@ export class LoginComponent {
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(() => this.authService.setUser(data));
+      .subscribe(() => this.authUser?.setUser(data));
   }
 
   onResetPassword(data: AuthResponse): void {
     this.loading.set(true);
 
-    this.authUser
+    this.authService
       .ressetPassword(data)
       .pipe(
         finalize(() => this.loading.set(false)),
