@@ -28,7 +28,7 @@ export class App {
 
   readonly loading = signal(false);
 
-  user = this.authUserService.user;
+  user = this.authUserService?.user;
 
   navigateToSignUp(): void {
     this.router.navigate([AUTH_ROUTES.REGISTER]);

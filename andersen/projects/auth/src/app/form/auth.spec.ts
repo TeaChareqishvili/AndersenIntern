@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthComponent } from './auth';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { createAuthForm } from '../models/auth.models';
-
-const fakeData = {
-  email: 'teaa@gmail.com',
-  password: 'Tea12345$',
-};
+import { fakeData } from '../pages/register/register.spec';
 
 describe('AuthComponent', () => {
   let component: AuthComponent;
@@ -32,14 +28,13 @@ describe('AuthComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(' email value should not be empty ', () => {
+  it('email value should not be empty', () => {
     const form = component.form().get('email');
     form?.setValue('');
-
     expect(form?.invalid).toBeTrue();
   });
 
-  it(' password value should not be empty', () => {
+  it('password value should not be empty', () => {
     const form = component.form().get('password');
     form?.setValue('');
     expect(form?.invalid).toBeTrue();
@@ -63,7 +58,7 @@ describe('AuthComponent', () => {
 
     component.onSubmit();
 
-    expect(component.submitUser.emit).toHaveBeenCalledWith(fakeData);
+    expect(component.submitUser.emit).toHaveBeenCalledOnceWith(fakeData);
   });
 
   it('should reset the password value ', () => {
@@ -76,6 +71,6 @@ describe('AuthComponent', () => {
 
     component.onReset();
 
-    expect(component.submitReset.emit).toHaveBeenCalledWith(fakeData);
+    expect(component.submitReset.emit).toHaveBeenCalledOnceWith(fakeData);
   });
 });

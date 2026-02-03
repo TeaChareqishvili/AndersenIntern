@@ -44,7 +44,7 @@ export class LoginComponent {
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(() => this.authUser.setUser(data));
+      .subscribe(() => this.authUser?.setUser(data));
   }
 
   onResetPassword(data: AuthResponse): void {

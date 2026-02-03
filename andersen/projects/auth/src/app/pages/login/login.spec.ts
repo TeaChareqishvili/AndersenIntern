@@ -6,33 +6,27 @@ import { NEVER, of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { AUTH_ROUTES } from '../../app.routes';
 import { ResponseMessageService } from '../../services/response-message/response-message.service';
-import { signal } from '@angular/core';
-import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
 
-const fakeData: AuthResponse = {
-  email: 'tea@gmail.com',
-  password: 'Tea12345',
-};
+import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
+import { createFakeUserService } from '../../app.spec';
+import { fakeData } from '../register/register.spec';
 
 const fakeAuthService = {
-  signInUser: jasmine.createSpy('signInUser').and.returnValue(of(fakeData)),
-  ressetPassword: jasmine.createSpy('ressetPassword').and.returnValue(of(null)),
+  signInUser: jasmine.createSpy('signInUser'),
+  ressetPassword: jasmine.createSpy('ressetPassword'),
 };
 
 const fakeResponseMessageService = {
   success: jasmine.createSpy('success').and.returnValue(of(null)),
 };
 
-const fakeUserService = {
-  user: signal(null),
-  setUser: jasmine.createSpy('setUser'),
-};
-
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let fakeUserService: ReturnType<typeof createFakeUserService>;
 
   beforeEach(async () => {
+    fakeUserService = createFakeUserService();
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
@@ -44,8 +38,6 @@ describe('LoginComponent', () => {
 
     fixture = TestBed.createComponent(LoginComponent);
 
-    fakeAuthService.signInUser.and.returnValue(NEVER);
-    fakeAuthService.ressetPassword.and.returnValue(NEVER);
     fakeResponseMessageService.success.calls.reset();
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -56,17 +48,19 @@ describe('LoginComponent', () => {
   });
 
   it('when login is submitted we expect loader to be true', () => {
+    fakeAuthService.signInUser.and.returnValue(NEVER);
     component.onLogin(fakeData);
     expect(component.loading()).toBeTrue();
   });
 
   it('when password reset is submitted we expect loader to be true', () => {
+    fakeAuthService.ressetPassword.and.returnValue(NEVER);
     component.onResetPassword(fakeData);
     expect(component.loading()).toBeTrue();
   });
 
   it('when sign in is successful loader expected to be false', () => {
-    fakeAuthService.signInUser.and.returnValue(of(null));
+    fakeAuthService.signInUser.and.returnValue(of(fakeData));
     component.onLogin(fakeData);
     expect(component.loading()).toBeFalse();
   });
@@ -81,7 +75,7 @@ describe('LoginComponent', () => {
     fakeAuthService.signInUser.and.returnValue(of(fakeData));
     component.onLogin(fakeData);
 
-    expect(fakeResponseMessageService.success).toHaveBeenCalledWith({
+    expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: `Welcome ${fakeData.email} 🎉`,
       navigateTo: AUTH_ROUTES.USER,
     });
@@ -95,11 +89,11 @@ describe('LoginComponent', () => {
     });
   });
 
-  it("if success with resset password  it should show snackbar with 'Password reset link sent to your email 📩'", () => {
+  it("if success with reset password  it should show snackbar with 'Password reset link sent to your email 📩'", () => {
     fakeAuthService.ressetPassword.and.returnValue(of(null));
     component.onResetPassword(fakeData);
 
-    expect(fakeResponseMessageService.success).toHaveBeenCalledWith({
+    expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: 'Password reset link sent to your email 📩',
     });
   });
@@ -107,6 +101,6 @@ describe('LoginComponent', () => {
   it('should set  user data on log in ', () => {
     fakeAuthService.signInUser.and.returnValue(of(fakeData));
     component.onLogin(fakeData);
-    expect(fakeUserService.setUser).toHaveBeenCalledWith(fakeData);
+    expect(fakeUserService.setUser).toHaveBeenCalledOnceWith(fakeData);
   });
 });

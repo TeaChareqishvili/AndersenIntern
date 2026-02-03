@@ -7,13 +7,13 @@ import { AuthService } from '../../services/auth-service/auth.service';
 import { ResponseMessageService } from '../../services/response-message/response-message.service';
 import { AUTH_ROUTES } from '../../app.routes';
 
-const fakeData: AuthResponse = {
+export const fakeData: AuthResponse = {
   email: 'tea@gmail.com',
   password: 'Tea12345',
 };
 
 const fakeAuthService = {
-  registerUser: jasmine.createSpy('registerUser').and.returnValue(of(null)),
+  registerUser: jasmine.createSpy('registerUser'),
 };
 
 const fakeResponseMessageService = {
@@ -33,7 +33,6 @@ describe('RegisterComponent', () => {
       ],
     }).compileComponents();
 
-    fakeAuthService.registerUser.and.returnValue(NEVER);
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -43,7 +42,8 @@ describe('RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('when registration submited we expect loader to be true', () => {
+  it('when registration submitted we expect loader to be true', () => {
+    fakeAuthService.registerUser.and.returnValue(NEVER);
     component.onRegister(fakeData);
     expect(component.loading()).toBeTrue();
   });
@@ -66,7 +66,7 @@ describe('RegisterComponent', () => {
     fakeAuthService.registerUser.and.returnValue(of(null));
     component.onRegister(fakeData);
 
-    expect(fakeResponseMessageService.success).toHaveBeenCalledWith({
+    expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: 'Registration successful 🎉',
       navigateTo: AUTH_ROUTES.LOGIN,
     });
