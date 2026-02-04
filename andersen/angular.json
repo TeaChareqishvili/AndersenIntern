@@ -149,7 +149,7 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "port": 2026
+            "port": 8001
           },
           "configurations": {
             "production": {

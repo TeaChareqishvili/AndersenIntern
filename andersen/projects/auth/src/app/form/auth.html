@@ -19,7 +19,14 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-full mb-6">
-      <input matInput type="password" formControlName="password" placeholder="Enter your password" />
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+        placeholder="Enter your password" />
+      <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="!hidePassword">
+        <mat-icon>
+          {{ hidePassword ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+      </button>
 
       @if (form().get('password')?.hasError('required') && form().get('password')?.touched) {
       <mat-error>Password is required</mat-error>
