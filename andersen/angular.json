@@ -290,7 +290,11 @@
                 "input": "projects/todo/public"
               }
             ],
-            "styles": ["projects/todo/src/styles.scss"]
+            "styles": [
+              "projects/todo/src/styles.scss",
+              "projects/ui/src/styles/tailwind.css",
+              "projects/auth/src/styles/index.scss"
+            ]
           },
           "configurations": {
             "production": {

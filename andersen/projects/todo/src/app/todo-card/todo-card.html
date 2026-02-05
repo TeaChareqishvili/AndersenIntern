@@ -1,0 +1,69 @@
+<div
+  class=" w-full  max-w-100 mx-auto p-6 bg-[#4a4e69] rounded-2xl shadow-md border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+  [class.bg-gray-50]="todo().completed" [class.border-gray-200]="todo().completed">
+
+
+  <div class="flex items-center justify-between mb-5 pb-4 border-b-2 border-[#f7ede2]">
+    <div class="flex items-center gap-3 flex-1">
+      <h2 class="text-xl font-semibold text-[#f7ede2] tracking-wide transition-all duration-300">
+        {{ todo().title }}
+      </h2>
+    </div>
+    <button mat-icon-button (click)="deleteTodo()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  @if (todo().subtasks.length > 0) {
+  <div class="my-5 p-4 bg-[#4a4e69] rounded-xl">
+
+    <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">Subtasks</p>
+
+    <ul class="flex flex-col gap-2 list-none p-0 m-0">
+      @for (sub of todo().subtasks; track sub.id) {
+      <li
+        class="flex items-center justify-between p-3 bg-[#f7ede2] rounded-lg border border-gray-200 transition-all duration-300  hover:translate-x-1 hover:border-gray-300"
+        [class.bg-gray-50]="sub.completed">
+
+        @if (editingSubtaskId() === sub.id) {
+        <div class="flex items-center gap-2 w-full flex-1">
+          <mat-form-field appearance="outline" class="flex-1 m-0">
+            <input matInput [(ngModel)]="editSubtaskTitle" (keydown.enter)="saveSubtask(sub.id)"
+              (keydown.escape)="cancelEditing()" class="text-[0.95rem] text-gray-700" />
+          </mat-form-field>
+          <div class="flex items-center gap-1">
+            <button mat-button (click)="saveSubtask(sub.id)">
+              Save
+            </button>
+            <button mat-button (click)="cancelEditing()">
+              Cancel
+            </button>
+          </div>
+        </div>
+        } @else {
+        <mat-checkbox [checked]="sub.completed" class="flex-1">
+          <span class="text-gray-700 font-medium text-[0.95rem] transition-all duration-300"
+            [class.line-through]="sub.completed" [class.text-gray-500]="sub.completed">
+            {{ sub.title }}
+          </span>
+        </mat-checkbox>
+        <div class="flex items-center gap-1">
+          <button mat-button (click)="startEditingSubtask(sub.id, sub.title)">
+            Edit
+          </button>
+          <button mat-icon-button (click)="deleteSubtask(sub.id)">
+            <mat-icon class="text-lg w-4.5 h-4.5">delete</mat-icon>
+          </button>
+        </div>
+        }
+      </li>
+      }
+    </ul>
+  </div>
+  }
+
+  <div class="mt-5 pt-4 border-t-2 border-gray-200">
+    <app-form [form]="form" [buttonText]="'Add Subtask'" [placeholder]="'Add subtask'"
+      (todoSubmitted)="addSubtask($event)" />
+  </div>
+</div>
