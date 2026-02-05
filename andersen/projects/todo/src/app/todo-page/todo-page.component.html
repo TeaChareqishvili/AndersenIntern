@@ -1,0 +1,8 @@
+<div class="h-full">
+  <app-todo-input />
+  <div class="flex p-5  items-center justify-around flex-wrap">
+    @for (todo of todos(); track todo.id) {
+    <app-todo-card [todo]="todo" />
+    }
+  </div>
+</div>
