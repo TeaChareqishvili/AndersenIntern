@@ -1,9 +1,20 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+  DestroyRef,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PasswordMaskPipe } from '../pipes/password-mask/password-mask.pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-auth-form',
@@ -14,12 +25,15 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    PasswordMaskPipe,
   ],
+
   templateUrl: './auth.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   hidePassword = true;
+  maskSymbol = '😂';
 
   form = input.required<FormGroup>();
 
@@ -32,6 +46,20 @@ export class AuthComponent {
 
   readonly submitUser = output<{ email: string; password: string }>();
   readonly submitReset = output<{ email: string; password: string }>();
+
+  passwordValue = signal<string | null>(null);
+  private readonly destroyRef = inject(DestroyRef);
+
+  ngOnInit(): void {
+    const passwordValue = this.form().get('password');
+    if (passwordValue) {
+      passwordValue.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+        this.passwordValue.set(value);
+      });
+
+      this.passwordValue.set(passwordValue.value);
+    }
+  }
 
   onSubmit(): void {
     if (this.form().valid && !this.loading()) {
@@ -49,5 +77,9 @@ export class AuthComponent {
     } else {
       this.form().markAllAsTouched();
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 }
