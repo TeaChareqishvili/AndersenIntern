@@ -1,1 +1,6 @@
-<app-form [form]="form" [buttonText]="'Add New Todo'" placeholder="Enter todo" (todoSubmitted)="onAddTodo($event)" />
+<div class="bg-transparent backdrop-blur-lg p-3">
+  <div class="w-[30%] m-auto">
+    <app-form [form]="form" [buttonText]="'Add New Todo'" placeholder="Enter todo"
+      (todoSubmitted)="onAddTodo($event)" />
+  </div>
+</div>
