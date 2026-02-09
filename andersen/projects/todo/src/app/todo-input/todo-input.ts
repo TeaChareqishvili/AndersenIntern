@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Form } from '../form/form';
-import { createTodoForm } from '../models/models';
-import { TodoService } from '../services/storage-service.service';
+import { createTodoGroup } from '../models/models';
+
+import { TodoService } from '../services/todo-service.service';
 
 @Component({
   selector: 'app-todo-input',
@@ -12,10 +13,13 @@ import { TodoService } from '../services/storage-service.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoInput {
-  form = createTodoForm();
+  form = createTodoGroup();
   private readonly todo = inject(TodoService);
 
-  onAddTodo(title: string): void {
-    this.todo.addTodo(title);
+  onAddTodo(): void {
+    if (this.form.valid) {
+      this.todo.addTodo(this.form.value.title!);
+      this.form.reset();
+    }
   }
 }

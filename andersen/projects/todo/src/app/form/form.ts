@@ -17,15 +17,14 @@ export class Form {
   buttonText = input<string>();
   placeholder = input<string>('Enter value');
 
-  todoSubmitted = output<string>();
+  todoSubmitted = output<any>(); // fix any
 
   onSubmit(): void {
-    if (this.form().valid) {
-      const todoValue = this.form().get('todo')?.value;
-      if (todoValue) {
-        this.todoSubmitted.emit(todoValue);
-        this.form().reset();
-      }
+    const form = this.form();
+
+    if (form.valid) {
+      this.todoSubmitted.emit(form.value);
+      form.reset();
     }
   }
 }

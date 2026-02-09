@@ -1,6 +1,5 @@
 <div
-  class=" w-full  max-w-150 mx-auto p-6 bg-transparent backdrop-blur-lg rounded-2xl shadow-md  transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-  [class.bg-gray-50]="todo().completed" [class.border-gray-200]="todo().completed">
+  class=" w-full  max-w-150 mx-auto p-6 bg-transparent backdrop-blur-lg rounded-2xl shadow-md  transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
   <div class="flex items-center justify-between mb-5  border-b-2 border-[#f7ede2]">
     <div class="flex items-center gap-3 flex-1">
       <h2 class="text-xl font-semibold text-[#f7ede2] tracking-wide transition-all duration-300">
@@ -13,23 +12,23 @@
   </div>
 
 
-  @if (todo().subtasks.length > 0) {
+  @if (subtasks.length > 0) {
   <div>
     <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">Subtasks</p>
-    <ul class="flex flex-col gap-2 list-none p-0 m-0">
-      @for (sub of todo().subtasks; track sub.id) {
-      <li
-        class="flex items-center justify-between p-3  bg-transparent backdrop-blur-lg transition-all duration-300  hover:translate-x-1 hover:border-gray-300"
-        [class.bg-gray-50]="sub.completed">
+    <ul class="flex flex-col gap-2 list-none ">
+      @for (sub of subtasks.controls; track $index) {
+      <li [formGroup]="sub"
+        class="flex items-center justify-between p-3  bg-transparent backdrop-blur-lg transition-all duration-300  hover:translate-x-1 "
+        [class.bg-gray-50]="sub.value.completed">
 
-        @if (editingSubtaskId() === sub.id) {
+        @if (editingIndex() === $index) {
         <div class="flex items-center  gap-2 w-full flex-1">
           <mat-form-field appearance="outline">
-            <input matInput [(ngModel)]="editSubtaskTitle" (keydown.enter)="saveSubtask(sub.id)"
-              (keydown.escape)="cancelEditing()" class="text-[0.95rem] text-gray-700" />
+            <input matInput formControlName="title" (keydown.enter)="saveSubtask($index)"
+              (keydown.escape)="cancelEditing()" />
           </mat-form-field>
           <div class="flex  items-center gap-1">
-            <button mat-button (click)="saveSubtask(sub.id)">
+            <button mat-button (click)="saveSubtask($index)">
               Save
             </button>
             <button mat-button (click)="cancelEditing()">
@@ -38,17 +37,17 @@
           </div>
         </div>
         } @else {
-        <mat-checkbox [checked]="sub.completed" class="flex-1">
-          <span class="text-gray-700 font-medium text-[0.95rem] transition-all duration-300"
-            [class.line-through]="sub.completed" [class.text-gray-500]="sub.completed">
-            {{ sub.title }}
+        <mat-checkbox formControlName="completed" (change)="toggleSubtask($index)" class="flex-1">
+          <span class="text-[#d6082bcc] font-medium text-[0.95rem] transition-all duration-300"
+            [class.line-through]="sub.value.completed" [class.text-gray-500]="sub.value.completed">
+            {{ sub.value.title }}
           </span>
         </mat-checkbox>
         <div class="flex items-center gap-1">
-          <button mat-button (click)="startEditingSubtask(sub.id, sub.title)">
+          <button mat-button (click)="startEditing($index)">
             Edit
           </button>
-          <button mat-icon-button (click)="deleteSubtask(sub.id)">
+          <button mat-icon-button (click)="deleteSubtask($index)">
             <mat-icon class="icon">delete</mat-icon>
           </button>
         </div>

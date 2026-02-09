@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoCard } from '../todo-card/todo-card';
-import { TodoService } from '../services/storage-service.service';
+
+import { TodoService } from '../services/todo-service.service';
 
 @Component({
   selector: 'app-todo-page',
@@ -10,7 +11,7 @@ import { TodoService } from '../services/storage-service.service';
   styleUrl: './todo-page.component.scss',
 })
 export class TodoPageComponent {
-  readonly todoService = inject(TodoService);
+  private readonly todo = inject(TodoService);
 
-  readonly todos = this.todoService.todos;
+  readonly todos = this.todo.todos;
 }

@@ -1,4 +1,4 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 export interface SubTask {
   id: string;
@@ -9,14 +9,23 @@ export interface SubTask {
 export interface Todo {
   id: string;
   title: string;
-  completed: boolean;
   subtasks: SubTask[];
 }
 
-export const createTodoForm = () =>
+export const createTodoGroup = () =>
   new FormGroup({
-    todo: new FormControl('', {
+    title: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    subtasks: new FormArray<FormGroup>([]),
+  });
+
+export const createSubTaskGroup = () =>
+  new FormGroup({
+    title: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    completed: new FormControl(false, { nonNullable: true }),
   });
