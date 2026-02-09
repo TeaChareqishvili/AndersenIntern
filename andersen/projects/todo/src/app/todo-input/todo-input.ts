@@ -13,12 +13,12 @@ import { TodoService } from '../services/todo-service.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoInput {
-  form = createTodoGroup();
-  private readonly todo = inject(TodoService);
+  private readonly todoService = inject(TodoService);
+  readonly form = createTodoGroup();
 
   onAddTodo(): void {
     if (this.form.valid) {
-      this.todo.addTodo(this.form.value.title!);
+      this.todoService.addTodo(this.form.value.title!);
       this.form.reset();
     }
   }

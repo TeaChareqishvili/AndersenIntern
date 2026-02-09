@@ -1,14 +1,15 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
-export interface SubTask {
+export interface BaseFileds {
   id: string;
   title: string;
+}
+
+export interface SubTask extends BaseFileds {
   completed: boolean;
 }
 
-export interface Todo {
-  id: string;
-  title: string;
+export interface Todo extends BaseFileds {
   subtasks: SubTask[];
 }
 

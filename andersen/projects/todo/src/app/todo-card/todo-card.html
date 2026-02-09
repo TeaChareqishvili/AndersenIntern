@@ -10,8 +10,6 @@
       <mat-icon class="icon">delete</mat-icon>
     </button>
   </div>
-
-
   @if (subtasks.length > 0) {
   <div>
     <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">Subtasks</p>
@@ -57,7 +55,6 @@
     </ul>
   </div>
   }
-
   <div class="mt-5 pt-4">
     <app-form [form]="form" [buttonText]="'Add Subtask'" [placeholder]="'Add subtask'"
       (todoSubmitted)="addSubtask($event)" />

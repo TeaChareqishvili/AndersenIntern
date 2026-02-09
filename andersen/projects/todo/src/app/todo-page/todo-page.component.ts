@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoCard } from '../todo-card/todo-card';
 
@@ -8,10 +8,11 @@ import { TodoService } from '../services/todo-service.service';
   selector: 'app-todo-page',
   imports: [TodoInput, TodoCard],
   templateUrl: './todo-page.component.html',
-  styleUrl: './todo-page.component.scss',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoPageComponent {
-  private readonly todo = inject(TodoService);
+  private readonly todoService = inject(TodoService);
 
-  readonly todos = this.todo.todos;
+  readonly todos = this.todoService.todos;
 }

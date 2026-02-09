@@ -1,15 +1,19 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
     "types": [],
-    // "composite": true,
-    // "declaration": true,
-    // "declarationMap": true,
-    "rootDir": "../../"
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "../../",
+    "paths": {
+      "@shared": ["../shared/src/public-api.ts"],
+      "@ui": ["../ui/src/public-api.ts"],
+      "@env": ["../environment/index.ts"]
+    }
   },
+  "references": [{ "path": "../shared/tsconfig.lib.json" }],
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }

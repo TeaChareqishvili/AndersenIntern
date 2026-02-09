@@ -25,20 +25,19 @@ import { TodoService } from '../services/todo-service.service';
     Form,
   ],
   templateUrl: './todo-card.html',
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoCard {
-  todo = input.required<Todo>();
   private readonly todoService = inject(TodoService);
-
-  form = createTodoGroup();
+  readonly todo = input.required<Todo>();
+  readonly form = createTodoGroup();
 
   editingIndex = signal<number | null>(null);
 
   get subtasks(): FormArray<FormGroup> {
     return this.form.controls.subtasks;
   }
+
   readonly syncSubTasks = effect(() => {
     this.subtasks.clear();
 
@@ -58,13 +57,11 @@ export class TodoCard {
   }
 
   deleteSubtask(index: number): void {
-    const subId = this.todo().subtasks[index].id;
-    this.todoService.deleteSubtask(this.todo().id, subId);
+    this.todoService.deleteSubtask(this.todo().id, this.#getSubtaskId(index));
   }
 
   toggleSubtask(index: number): void {
-    const subId = this.todo().subtasks[index].id;
-    this.todoService.toggleSubtask(this.todo().id, subId);
+    this.todoService.toggleSubtask(this.todo().id, this.#getSubtaskId(index));
   }
 
   startEditing(index: number): void {
@@ -76,10 +73,12 @@ export class TodoCard {
   }
 
   saveSubtask(index: number): void {
-    const subId = this.todo().subtasks[index].id;
     const title = this.subtasks.at(index).value.title;
-
-    this.todoService.updateSubtask(this.todo().id, subId, title);
+    this.todoService.updateSubtask(this.todo().id, this.#getSubtaskId(index), title);
     this.cancelEditing();
+  }
+
+  #getSubtaskId(index: number) {
+    return this.todo().subtasks[index].id;
   }
 }
