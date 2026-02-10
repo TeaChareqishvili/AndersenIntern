@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #e9f5d4;
+}
+
+.mat-mdc-form-field-bottom-align {
+  display: none !important;
+}
