@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SessionState } from '../../models/auth.models';
 
 export interface StorageState<T extends object> {
   getItem(key: string): T | null;
@@ -10,7 +9,7 @@ export interface StorageState<T extends object> {
 @Injectable({
   providedIn: 'root',
 })
-export class StorageService implements StorageState<SessionState> {
+export class StorageService {
   getItem<T>(key: string): T | null {
     const raw = localStorage.getItem(key);
 

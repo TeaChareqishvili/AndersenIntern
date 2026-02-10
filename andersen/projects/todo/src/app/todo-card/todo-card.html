@@ -1,0 +1,62 @@
+<div
+  class=" w-full  max-w-150 mx-auto p-6 bg-transparent backdrop-blur-lg rounded-2xl shadow-md  transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+  <div class="flex items-center justify-between mb-5  border-b-2 border-[#f7ede2]">
+    <div class="flex items-center gap-3 flex-1">
+      <h2 class="text-xl font-semibold text-[#f7ede2] tracking-wide transition-all duration-300">
+        {{ todo().title }}
+      </h2>
+    </div>
+    <button mat-icon-button (click)="deleteTodo()">
+      <mat-icon class="icon">delete</mat-icon>
+    </button>
+  </div>
+  @if (subtasks.length > 0) {
+  <div>
+    <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">Subtasks</p>
+    <ul class="flex flex-col gap-2 list-none ">
+      @for (sub of subtasks.controls; track $index) {
+      <li [formGroup]="sub"
+        class="flex items-center justify-between p-3  bg-transparent backdrop-blur-lg transition-all duration-300  hover:translate-x-1 "
+        [class.bg-gray-50]="sub.value.completed">
+
+        @if (editingIndex() === $index) {
+        <div class="flex items-center  gap-2 w-full flex-1">
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="title" (keydown.enter)="saveSubtask($index)"
+              (keydown.escape)="cancelEditing()" />
+          </mat-form-field>
+          <div class="flex  items-center gap-1">
+            <button mat-button (click)="saveSubtask($index)">
+              Save
+            </button>
+            <button mat-button (click)="cancelEditing()">
+              Cancel
+            </button>
+          </div>
+        </div>
+        } @else {
+        <mat-checkbox formControlName="completed" (change)="toggleSubtask($index)" class="flex-1">
+          <span class="text-[#d6082bcc] font-medium text-[0.95rem] transition-all duration-300"
+            [class.line-through]="sub.value.completed" [class.text-gray-500]="sub.value.completed">
+            {{ sub.value.title }}
+          </span>
+        </mat-checkbox>
+        <div class="flex items-center gap-1">
+          <button mat-button (click)="startEditing($index)">
+            Edit
+          </button>
+          <button mat-icon-button (click)="deleteSubtask($index)">
+            <mat-icon class="icon">delete</mat-icon>
+          </button>
+        </div>
+        }
+      </li>
+      }
+    </ul>
+  </div>
+  }
+  <div class="mt-5 pt-4">
+    <app-form [form]="form" [buttonText]="'Add Subtask'" [placeholder]="'Add subtask'"
+      (todoSubmitted)="addSubtask($event)" />
+  </div>
+</div>
