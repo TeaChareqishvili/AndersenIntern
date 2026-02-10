@@ -3,24 +3,34 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { PasswordMaskPipe } from '../pipes/password-mask/password-mask.pipe';
 
 @Component({
   selector: 'app-auth-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    PasswordMaskPipe,
+  ],
+
   templateUrl: './auth.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
-  form = input.required<FormGroup>();
+  hidePassword = true;
 
-  showRessetButton = input<boolean>(false);
-  ressetText = input<string | null>(null);
-
-  title = input.required<string>();
-  submitText = input.required<string>();
-  loading = input<boolean>(false);
-
+  readonly maskSymbol = '😂';
+  readonly form = input.required<FormGroup>();
+  readonly showRessetButton = input<boolean>(false);
+  readonly ressetText = input<string | null>(null);
+  readonly title = input.required<string>();
+  readonly submitText = input.required<string>();
+  readonly loading = input<boolean>(false);
   readonly submitUser = output<{ email: string; password: string }>();
   readonly submitReset = output<{ email: string; password: string }>();
 
@@ -40,5 +50,9 @@ export class AuthComponent {
     } else {
       this.form().markAllAsTouched();
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 }

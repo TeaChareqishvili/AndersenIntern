@@ -17,15 +17,28 @@
       <mat-error>Please enter a valid email</mat-error>
       }
     </mat-form-field>
-
-    <mat-form-field appearance="outline" class="w-full mb-6">
-      <input matInput type="password" formControlName="password" placeholder="Enter your password" />
-
-      @if (form().get('password')?.hasError('required') && form().get('password')?.touched) {
-      <mat-error>Password is required</mat-error>
+    <div class="relative">
+      <mat-form-field appearance="outline" class="w-full mb-6">
+        <input #passwordInput matInput class="opacity-0" type="password" formControlName="password"
+          placeholder="Enter your password" />
+        <button mat-icon-button matSuffix type="button" [attr.aria-label]="'Toggle password visibility'"
+          [attr.aria-pressed]="!hidePassword" (click)="togglePasswordVisibility()">
+          <mat-icon>
+            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </button>
+        @if (form().get('password')?.hasError('required') && form().get('password')?.touched) {
+        <mat-error>Password is required</mat-error>
+        }
+      </mat-form-field>
+      <p class="absolute top-5 left-5 text-white cursor-text" (click)="passwordInput.focus()">
+        {{form().get('password')?.value|
+        passwordMask:hidePassword:maskSymbol}}</p>
+      @if(!form().get('password')?.value){
+      <span class="absolute top-4 left-5 text-[#ffffff99] cursor-text" (click)="passwordInput.focus()">Enter the
+        password</span>
       }
-    </mat-form-field>
-
+    </div>
     <button mat-raised-button type="submit" class="w-full mb-3.5" [disabled]="form().invalid || loading()">
       {{ submitText() }}
     </button>
