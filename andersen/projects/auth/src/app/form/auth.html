@@ -27,18 +27,14 @@
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
           </mat-icon>
         </button>
-
         @if (form().get('password')?.hasError('required') && form().get('password')?.touched) {
         <mat-error>Password is required</mat-error>
         }
       </mat-form-field>
-      @if(hidePassword) {
-      <p class="absolute top-5 left-5 text-white cursor-text" (click)="passwordInput.focus()">{{passwordValue() |
-        passwordMask:maskSymbol}}</p>
-      } @else {
-      <p class="absolute top-5 left-5 text-white cursor-text" (click)="passwordInput.focus()">{{passwordValue()}}</p>
-      }
-      @if(!passwordValue()){
+      <p class="absolute top-5 left-5 text-white cursor-text" (click)="passwordInput.focus()">
+        {{form().get('password')?.value|
+        passwordMask:hidePassword:maskSymbol}}</p>
+      @if(!form().get('password')?.value){
       <span class="absolute top-4 left-5 text-[#ffffff99] cursor-text" (click)="passwordInput.focus()">Enter the
         password</span>
       }

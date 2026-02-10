@@ -19,14 +19,13 @@ import { ResponseMessageService } from '../../services/response-message/response
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  readonly form = createAuthForm();
-  readonly loading = signal(false);
-
   private readonly authService = inject(AuthService);
   private readonly responseMessage = inject(ResponseMessageService);
 
   private readonly authUser = inject(AuthUserService);
   private readonly destroyRef = inject(DestroyRef);
+  readonly form = createAuthForm();
+  readonly loading = signal(false);
 
   onLogin(data: AuthResponse): void {
     this.loading.set(true);

@@ -5,12 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class PasswordMaskPipe implements PipeTransform {
-  symb = '*';
+  readonly symb = '*';
 
-  transform(value: string | null, maskSymb = this.symb): string {
-    if (!value) {
-      return '';
-    }
-    return maskSymb.repeat(value.length);
+  transform(value: string | null, hidePassword: boolean, maskSymb: string = this.symb): string {
+    if (!value) return '';
+    return hidePassword ? maskSymb.repeat(value.length) : value;
   }
 }
