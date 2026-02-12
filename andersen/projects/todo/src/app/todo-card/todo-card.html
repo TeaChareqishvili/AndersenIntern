@@ -3,7 +3,7 @@
   <div class="flex items-center justify-between mb-5  border-b-2 border-[#f7ede2]">
     <div class="flex items-center gap-3 flex-1">
       <h2 class="text-xl font-semibold text-[#f7ede2] tracking-wide transition-all duration-300">
-        {{ todo().title }}
+        {{ todo().name }}
       </h2>
     </div>
     <button mat-icon-button (click)="deleteTodo()">
@@ -19,14 +19,15 @@
         class="flex items-center justify-between p-3  bg-transparent backdrop-blur-lg transition-all duration-300  hover:translate-x-1 "
         [class.bg-gray-50]="sub.value.completed">
 
-        @if (editingIndex() === $index) {
+        @if (editingIndex() === sub.value.id) {
         <div class="flex items-center  gap-2 w-full flex-1">
+          <mat-checkbox formControlName="completed" (change)="toggleSubtask(sub)" class="flex-1" />
           <mat-form-field appearance="outline">
-            <input matInput formControlName="title" (keydown.enter)="saveSubtask($index)"
+            <input matInput formControlName="name" (keydown.enter)="saveSubtask(sub)"
               (keydown.escape)="cancelEditing()" />
           </mat-form-field>
           <div class="flex  items-center gap-1">
-            <button mat-button (click)="saveSubtask($index)">
+            <button mat-button (click)="saveSubtask(sub)">
               Save
             </button>
             <button mat-button (click)="cancelEditing()">
@@ -35,17 +36,15 @@
           </div>
         </div>
         } @else {
-        <mat-checkbox formControlName="completed" (change)="toggleSubtask($index)" class="flex-1">
-          <span class="text-[#d6082bcc] font-medium text-[0.95rem] transition-all duration-300"
-            [class.line-through]="sub.value.completed" [class.text-gray-500]="sub.value.completed">
-            {{ sub.value.title }}
-          </span>
-        </mat-checkbox>
+        <span class="text-[#d6082bcc] font-medium text-[0.95rem] transition-all duration-300"
+          [class.line-through]="sub.value.completed" [class.text-gray-500]="sub.value.completed">
+          {{ sub.value.name }}
+        </span>
         <div class="flex items-center gap-1">
-          <button mat-button (click)="startEditing($index)">
+          <button mat-button (click)="startEditing(sub.value.id)">
             Edit
           </button>
-          <button mat-icon-button (click)="deleteSubtask($index)">
+          <button mat-icon-button (click)="deleteSubtask(sub.value.id)">
             <mat-icon class="icon">delete</mat-icon>
           </button>
         </div>

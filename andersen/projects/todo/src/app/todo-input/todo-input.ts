@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Form } from '../form/form';
 import { createTodoGroup } from '../models/models';
 
-import { TodoService } from '../services/todo-service.service';
+import { RequestServiceTodo } from '../services/request-service/request-service.service';
 
 @Component({
   selector: 'app-todo-input',
@@ -13,12 +13,16 @@ import { TodoService } from '../services/todo-service.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoInput {
-  private readonly todoService = inject(TodoService);
+  private readonly todoService = inject(RequestServiceTodo);
   readonly form = createTodoGroup();
 
   onAddTodo(): void {
     if (this.form.valid) {
-      this.todoService.addTodo(this.form.value.title!);
+      this.todoService.addTodo(this.form.value.name!).subscribe({
+        next: (newTodo) => {
+          this.todoService['_todos'].update((todos) => [...todos, newTodo]);
+        },
+      });
       this.form.reset();
     }
   }

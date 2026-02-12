@@ -1,6 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { SubTask, Todo } from '../models/models';
+
 import { StorageService } from '@shared';
+import { SubTask, Todo } from '../../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
@@ -24,7 +25,7 @@ export class TodoService {
         todo.id === todoId
           ? {
               ...todo,
-              subtasks: [...todo.subtasks, this.#createSubtask(title)],
+              subtasks: [...todo.tasks, this.#createSubtask(title)],
             }
           : todo,
       ),
@@ -37,7 +38,7 @@ export class TodoService {
         todo.id === todoId
           ? {
               ...todo,
-              subtasks: todo.subtasks.map((s) => (s.id === subId ? { ...s, title } : s)),
+              subtasks: todo.tasks.map((s) => (s.id === subId ? { ...s, title } : s)),
             }
           : todo,
       ),
@@ -50,7 +51,7 @@ export class TodoService {
         todo.id === todoId
           ? {
               ...todo,
-              subtasks: todo.subtasks.filter((s) => s.id !== subId),
+              subtasks: todo.tasks.filter((s) => s.id !== subId),
             }
           : todo,
       ),
@@ -63,7 +64,7 @@ export class TodoService {
         todo.id === todoId
           ? {
               ...todo,
-              subtasks: todo.subtasks.map((s) =>
+              subtasks: todo.tasks.map((s) =>
                 s.id === subId ? { ...s, completed: !s.completed } : s,
               ),
             }
@@ -78,19 +79,19 @@ export class TodoService {
     this.storage.setItem(this.TODOS_KEY, next);
   }
 
-  #createSubtask(title: string): SubTask {
+  #createSubtask(name: string): SubTask {
     return {
       id: crypto.randomUUID(),
-      title,
+      name,
       completed: false,
     };
   }
 
-  #createTodo(title: string): Todo {
+  #createTodo(name: string): Todo {
     return {
       id: crypto.randomUUID(),
-      title,
-      subtasks: [],
+      name,
+      tasks: [],
     };
   }
 }

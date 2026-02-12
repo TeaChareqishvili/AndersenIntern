@@ -14,6 +14,6 @@
     }
   },
   "references": [{ "path": "../shared/tsconfig.lib.json" }],
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "../environment"],
   "exclude": ["src/**/*.spec.ts"]
 }
