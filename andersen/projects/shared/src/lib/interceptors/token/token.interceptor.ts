@@ -2,8 +2,7 @@ import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 
 import { inject } from '@angular/core';
 import { tap } from 'rxjs';
-import { StorageService } from '@shared';
-import { SessionState } from '../../models/auth.models';
+import { SessionState, StorageService } from '@shared';
 
 const APP_SESSION_STATE_KEY = 'APP_SESSION_STATE';
 

@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { createSubTaskGroup, createTodoGroup, Todo } from '../models/models';
 import { Form } from '../form/form';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -8,6 +16,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RequestServiceTodo } from '../services/request-service/request-service.service';
+import { TodoUpdateService } from '../services/todo-service/todo-update.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+import { LoaderComponent } from '@ui';
 
 @Component({
   selector: 'app-todo-card',
@@ -21,14 +33,22 @@ import { RequestServiceTodo } from '../services/request-service/request-service.
     FormsModule,
     ReactiveFormsModule,
     Form,
+    LoaderComponent,
   ],
   templateUrl: './todo-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoCard {
-  private readonly todosService = inject(RequestServiceTodo);
+  private readonly todoRequest = inject(RequestServiceTodo);
+  private readonly todoUpdateService = inject(TodoUpdateService);
+  private readonly destroyRef = inject(DestroyRef);
   readonly todo = input.required<Todo>();
   readonly form = createTodoGroup();
+  readonly loader = signal(false);
+
+  readonly syncSubTasks = effect(() => {
+    this.#buildFromSignal();
+  });
 
   editingIndex = signal<string | null>(null);
 
@@ -36,44 +56,75 @@ export class TodoCard {
     return this.form.controls.tasks;
   }
 
-  readonly syncSubTasks = effect(() => {
-    this.subtasks.clear();
-
-    this.todo().tasks.forEach((sub) => {
-      const form = createSubTaskGroup();
-      form.patchValue(sub);
-      this.subtasks.push(form);
-    });
-  });
-
   deleteTodo(): void {
-    this.todosService.deleteTodo(this.todo().id).subscribe({
-      next: () => {
-        this.todosService.removeTodoFromStore(this.todo().id);
-      },
-    });
+    this.loader.set(true);
+    this.todoRequest
+      .deleteTodo(this.todo().id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loader.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.todoUpdateService.removeTodo(this.todo().id);
+        },
+      });
   }
 
   addSubtask({ name }: { name: string }): void {
-    this.todosService.createSubTask(this.todo().id, name).subscribe({
-      next: (updatedTodo) => {
-        this.todosService.addSubtaskToStore(updatedTodo);
-      },
-    });
-  } //bug
+    this.loader.set(true);
+    this.todoRequest
+      .createSubTask(this.todo().id, name)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loader.set(false)),
+      )
+      .subscribe({
+        next: (updatedTodo) => {
+          this.todoUpdateService.addSubtask(updatedTodo);
+          this.editingIndex.set(null);
+        },
+      });
+  }
+
+  saveSubtask(sub: FormGroup): void {
+    this.loader.set(true);
+    const { id, name, completed } = sub.value;
+    this.todoRequest
+      .updateSubTask(this.todo().id, id, { name, completed })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loader.set(false)),
+      )
+      .subscribe({
+        next: (updatedTodo) => {
+          this.todoUpdateService.updateTask(updatedTodo);
+          this.cancelEditing();
+        },
+      });
+  }
 
   deleteSubtask(taskId: string): void {
-    this.todosService.deleteSubTask(this.todo().id, taskId).subscribe({
-      next: () => {
-        this.todosService.deleteSubTaskFromStore(this.todo().id, taskId);
-      },
-    });
+    this.loader.set(true);
+    this.todoRequest
+      .deleteSubTask(this.todo().id, taskId)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loader.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.todoUpdateService.deleteSubTask(this.todo().id, taskId);
+          if (this.editingIndex() === taskId) {
+            this.editingIndex.set(null);
+          }
+        },
+      });
   }
 
   toggleSubtask(sub: FormGroup): void {
     const { id, name, completed } = sub.value;
-    this.todosService.updateSubTask(this.todo().id, id, { name, completed });
-    this.cancelEditing();
+    this.todoRequest.updateSubTask(this.todo().id, id, { name, completed });
   }
 
   startEditing(taskId: string): void {
@@ -81,17 +132,16 @@ export class TodoCard {
   }
 
   cancelEditing(): void {
+    this.#buildFromSignal();
     this.editingIndex.set(null);
   }
 
-  saveSubtask(sub: FormGroup): void {
-    const { id, name, completed } = sub.value;
-    this.todosService.updateSubTask(this.todo().id, id, { name, completed }).subscribe({
-      next: (updatedTodo) => {
-        this.todosService.updateTodoInStore(updatedTodo);
-        this.cancelEditing();
-      },
+  #buildFromSignal(): void {
+    this.subtasks.clear();
+    this.todo().tasks.forEach((sub) => {
+      const form = createSubTaskGroup();
+      form.patchValue(sub);
+      this.subtasks.push(form);
     });
-    this.cancelEditing();
   }
 }

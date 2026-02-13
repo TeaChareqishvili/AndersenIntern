@@ -1,12 +1,14 @@
 import {
   ApplicationConfig,
+  ErrorHandler,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authTokenInterceptor, errorInterceptor, GlobalErrorHandler } from '@shared';
 import { baseUrlProvider } from '@env';
 
 export const appConfig: ApplicationConfig = {
@@ -14,7 +16,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authTokenInterceptor, errorInterceptor])),
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     baseUrlProvider,
   ],
 };

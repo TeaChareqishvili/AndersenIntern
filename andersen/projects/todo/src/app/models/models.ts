@@ -20,7 +20,7 @@ export interface UpdateSubTask {
 
 export const createTodoGroup = () =>
   new FormGroup({
-    id: new FormControl<string>(''),
+    id: new FormControl<string | null>(null),
     name: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required],
@@ -30,7 +30,7 @@ export const createTodoGroup = () =>
 
 export const createSubTaskGroup = () =>
   new FormGroup({
-    id: new FormControl<string>(''),
+    id: new FormControl<string | null>(null),
     name: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required],

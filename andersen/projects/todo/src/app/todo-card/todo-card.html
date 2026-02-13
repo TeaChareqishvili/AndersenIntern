@@ -14,12 +14,12 @@
   <div>
     <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">Subtasks</p>
     <ul class="flex flex-col gap-2 list-none ">
-      @for (sub of subtasks.controls; track $index) {
+      @for (sub of subtasks.controls; track sub.value.id) {
       <li [formGroup]="sub"
         class="flex items-center justify-between p-3  bg-transparent backdrop-blur-lg transition-all duration-300  hover:translate-x-1 "
         [class.bg-gray-50]="sub.value.completed">
 
-        @if (editingIndex() === sub.value.id) {
+        @if (editingIndex() && editingIndex() === sub.value.id) {
         <div class="flex items-center  gap-2 w-full flex-1">
           <mat-checkbox formControlName="completed" (change)="toggleSubtask(sub)" class="flex-1" />
           <mat-form-field appearance="outline">
@@ -59,3 +59,7 @@
       (todoSubmitted)="addSubtask($event)" />
   </div>
 </div>
+
+@if(loader()){
+<lib-loader />
+}

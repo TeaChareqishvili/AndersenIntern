@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { TodoService } from './todo-service.service';
+import { TodoUpdateService } from './todo-update.service';
 
-describe('TodoService', () => {
-  let service: TodoService;
+describe('TodoUpdateService', () => {
+  let service: TodoUpdateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TodoService);
+    service = TestBed.inject(TodoUpdateService);
   });
 
   it('should be created', () => {

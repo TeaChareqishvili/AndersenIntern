@@ -7,7 +7,7 @@ import { finalize, switchMap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { ResponseMessageService } from '../../services/response-message/response-message.service';
+import { ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-register',

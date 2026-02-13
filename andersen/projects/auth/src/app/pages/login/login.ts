@@ -9,7 +9,7 @@ import { AUTH_ROUTES } from '../../app.routes';
 import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { ResponseMessageService } from '../../services/response-message/response-message.service';
+import { ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-login',
