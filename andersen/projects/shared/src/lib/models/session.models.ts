@@ -13,3 +13,8 @@ export enum AUTH_ROUTES {
   REGISTER = 'sign-up',
   USER = 'user',
 }
+
+export type ResponseMessage = {
+  message: string;
+  navigateTo?: string;
+};

@@ -4,12 +4,13 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/lib",
+    "rootDir": "../../projects",
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
     "types": [],
     "composite": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "../environment"],
   "exclude": ["**/*.spec.ts"]
 }

@@ -11,7 +11,7 @@ export interface StorageState<T extends object> {
 })
 export class StorageService {
   getItem<T>(key: string): T | null {
-    const raw = localStorage.getItem(key);
+    const raw = sessionStorage.getItem(key);
 
     if (!raw) {
       return null;
@@ -28,11 +28,11 @@ export class StorageService {
   setItem<T>(key: string, value: T): void {
     try {
       if (value === null) {
-        localStorage.removeItem(key);
+        sessionStorage.removeItem(key);
         return;
       }
 
-      localStorage?.setItem(key, JSON.stringify(value));
+      sessionStorage?.setItem(key, JSON.stringify(value));
     } catch {
       console.error('Hello world');
     }
