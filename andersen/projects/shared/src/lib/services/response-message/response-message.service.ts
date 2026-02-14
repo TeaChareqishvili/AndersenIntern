@@ -1,8 +1,8 @@
-import { inject, Injectable, signal } from '@angular/core';
-import {MatSnackBar, MatSnackBarDismiss} from '@angular/material/snack-bar';
+import { inject, Injectable } from '@angular/core';
+import { MatSnackBar, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import {Observable, tap} from 'rxjs';
-import { ResponseMessage } from '../../models/auth.models';
+import { ResponseMessage } from '@shared';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ResponseMessageService {
       : ref.afterDismissed();
   }
 
-  error(message: string): void{
+  error(message: string): void {
     this.snackBar.open(message, undefined, {
       duration: 4000,
     });

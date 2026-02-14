@@ -3,10 +3,11 @@ import { App } from './app';
 import { AuthService } from './services/auth-service/auth.service';
 import { NEVER, of } from 'rxjs';
 import { AUTH_ROUTES } from './app.routes';
-import { ResponseMessageService } from './services/response-message/response-message.service';
+
 import { Router, provideRouter } from '@angular/router';
 import { AuthUserService } from './services/auth-user-service/auth-user-service.service';
 import { signal } from '@angular/core';
+import { ResponseMessageService } from '@shared';
 
 const fakeAuthService = {
   signOut: jasmine.createSpy('signOut'),

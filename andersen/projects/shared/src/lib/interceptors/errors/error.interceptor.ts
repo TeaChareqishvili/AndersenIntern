@@ -1,10 +1,10 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
-import { ResponseMessageService } from '../../services/response-message/response-message.service';
-import { BackendError } from '../../models/auth.models';
+
 import { Router } from '@angular/router';
-import { AUTH_ROUTES } from '../../app.routes';
+
+import { AUTH_ROUTES, BackendError, ResponseMessageService } from '@shared';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const responseMessage = inject(ResponseMessageService);

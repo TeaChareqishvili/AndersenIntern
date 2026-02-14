@@ -3,4 +3,7 @@
  */
 
 export * from './lib/shared';
-export * from './lib/services/storage-service.service';
+export * from './lib/services/index';
+export * from './lib/interceptors/index';
+export * from './lib/models/session.models';
+export * from './lib/url/url';
