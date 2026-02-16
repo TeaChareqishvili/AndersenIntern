@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
-import { AuthResponse, createAuthForm } from '../../models/auth.models';
+import { AUTH_ROUTES, AuthResponse, createAuthForm } from '../../models/auth.models';
 import { LoaderComponent } from '@ui';
-import { AUTH_ROUTES } from '../../app.routes';
+
 import { finalize, switchMap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

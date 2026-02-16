@@ -2,13 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { ErrorComponent } from './pages/error/error';
-
-export enum AUTH_ROUTES {
-  HOME = '',
-  LOGIN = 'sign-in',
-  REGISTER = 'sign-up',
-  USER = 'user',
-}
+import { AUTH_ROUTES } from './models/auth.models';
 
 export const routes: Routes = [
   { path: AUTH_ROUTES.HOME, redirectTo: AUTH_ROUTES.LOGIN, pathMatch: 'full' },
