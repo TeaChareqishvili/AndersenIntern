@@ -3,7 +3,6 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { Todo } from '../models/models';
 
 @Component({
   selector: 'app-form',
@@ -16,13 +15,17 @@ export class Form {
   readonly form = input.required<FormGroup>();
   readonly buttonText = input<string>();
   readonly placeholder = input<string>('Enter value');
-  readonly todoSubmitted = output<Todo>();
+  readonly todoSubmitted = output<{ name: string }>();
 
   onSubmit(): void {
     const form = this.form();
 
     if (form.valid) {
-      this.todoSubmitted.emit(form.value);
+      const value = form.getRawValue() as { name?: string };
+      if (typeof value.name !== 'string') {
+        return;
+      }
+      this.todoSubmitted.emit({ name: value.name });
       form.reset();
     }
   }
