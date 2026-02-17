@@ -6,7 +6,7 @@
         {{ todo().name }}
       </h2>
     </div>
-    <button mat-icon-button (click)="deleteTodo()">
+    <button mat-icon-button (click)="onDeleteTodo(todo().id)" [disabled]="taskLoading()">
       <mat-icon class="icon">delete</mat-icon>
     </button>
   </div>
@@ -21,16 +21,17 @@
 
         @if (editingIndex() && editingIndex() === sub.value.id) {
         <div class="flex items-center  gap-2 w-full flex-1">
-          <mat-checkbox formControlName="completed" (change)="toggleSubtask(sub)" class="flex-1" />
+          <mat-checkbox formControlName="completed" (change)="onToggleSubtask(sub)" class="flex-1"
+            [disabled]="taskLoading()" />
           <mat-form-field appearance="outline">
-            <input matInput formControlName="name" (keydown.enter)="saveSubtask(sub)"
-              (keydown.escape)="cancelEditing()" />
+            <input matInput formControlName="name" (keydown.enter)="onSaveSubtask(sub)"
+              (keydown.escape)="cancelEditing()" [readonly]="taskLoading()" />
           </mat-form-field>
           <div class="flex  items-center gap-1">
-            <button mat-button (click)="saveSubtask(sub)">
+            <button mat-button (click)="onSaveSubtask(sub)" [disabled]="taskLoading()">
               Save
             </button>
-            <button mat-button (click)="cancelEditing()">
+            <button mat-button (click)="cancelEditing()" [disabled]="taskLoading()">
               Cancel
             </button>
           </div>
@@ -41,10 +42,10 @@
           {{ sub.value.name }}
         </span>
         <div class="flex items-center gap-1">
-          <button mat-button (click)="startEditing(sub.value.id)">
+          <button mat-button (click)="startEditing(sub.value.id)" [disabled]="taskLoading()">
             Edit
           </button>
-          <button mat-icon-button (click)="deleteSubtask(sub.value.id)">
+          <button mat-icon-button (click)="onDeleteSubtask(sub.value.id)" [disabled]="taskLoading()">
             <mat-icon class="icon">delete</mat-icon>
           </button>
         </div>
@@ -56,10 +57,10 @@
   }
   <div class="mt-5 pt-4">
     <app-form [form]="form" [buttonText]="'Add Subtask'" [placeholder]="'Add subtask'"
-      (todoSubmitted)="addSubtask($event)" />
+      (todoSubmitted)="onAddSubTask($event)" />
   </div>
 </div>
 
-@if(loader()){
+@if(taskLoading()){
 <lib-loader />
 }

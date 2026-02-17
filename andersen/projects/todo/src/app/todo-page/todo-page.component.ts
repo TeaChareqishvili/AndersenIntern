@@ -4,16 +4,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  effect,
   inject,
   OnInit,
   signal,
 } from '@angular/core';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoCard } from '../todo-card/todo-card';
-import { RequestServiceTodo } from '../services/request-service/request-service.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TodoUpdateService } from '../services/todo-service/todo-update.service';
 import { finalize } from 'rxjs';
+import { Todo } from '../models/models';
 
 @Component({
   selector: 'app-todo-page',
@@ -23,24 +24,107 @@ import { finalize } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoPageComponent implements OnInit {
-  private readonly todoRequest = inject(RequestServiceTodo);
   private readonly todoUpdateService = inject(TodoUpdateService);
   private readonly destroyRef = inject(DestroyRef);
-
-  readonly todosList = this.todoUpdateService.todos;
   readonly loader = signal(false);
+  readonly todosList = signal<Todo[]>([]);
+  readonly taskLoadingTodoId = signal<string | null>(null);
+  readonly confirmedTaskUpdate = signal<{ todoId: string; taskId: string; token: number } | null>(null);
+  readonly syncTodos = effect(() => {
+    this.todosList.set(this.todoUpdateService.todos());
+  });
 
   ngOnInit(): void {
     this.loader.set(true);
-    this.todoRequest
-      .getTodos()
+    this.todoUpdateService
+      .getTodoList()
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.loader.set(false)),
       )
       .subscribe({
         next: (todos) => {
-          this.todoUpdateService.setTodos(todos);
+          this.todosList.set(todos);
+        },
+      });
+  }
+
+  onAddNewTodo(todos: Todo[]): void {
+    this.todosList.set(todos);
+  }
+
+  deleteTodo(id: string): void {
+    this.loader.set(true);
+    this.todoUpdateService
+      .removeTodo(id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loader.set(false)),
+      )
+      .subscribe({
+        next: (todos) => {
+          this.todosList.set(todos);
+        },
+      });
+  }
+
+  addSubtask(event: { todoId: string; name: string }): void {
+    const { todoId, name } = event;
+    this.loader.set(true);
+    this.taskLoadingTodoId.set(todoId);
+    this.todoUpdateService
+      .addSubtask(todoId, name)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.loader.set(false);
+          this.taskLoadingTodoId.set(null);
+        }),
+      )
+      .subscribe({
+        next: (todos) => {
+          this.todosList.set(todos);
+        },
+      });
+  }
+
+  updateSubtask(event: { todoId: string; taskId: string; payload: { name?: string; completed?: boolean } }): void {
+    const { todoId, taskId, payload } = event;
+    this.loader.set(true);
+    this.taskLoadingTodoId.set(todoId);
+    this.todoUpdateService
+      .updateTask(todoId, taskId, payload)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.loader.set(false);
+          this.taskLoadingTodoId.set(null);
+        }),
+      )
+      .subscribe({
+        next: (todos) => {
+          this.todosList.set(todos);
+          this.confirmedTaskUpdate.set({ todoId, taskId, token: Date.now() });
+        },
+      });
+  }
+
+  deleteSubtask(event: { todoId: string; taskId: string }): void {
+    const { todoId, taskId } = event;
+    this.loader.set(true);
+    this.taskLoadingTodoId.set(todoId);
+    this.todoUpdateService
+      .deleteSubTask(todoId, taskId)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.loader.set(false);
+          this.taskLoadingTodoId.set(null);
+        }),
+      )
+      .subscribe({
+        next: (todos) => {
+          this.todosList.set(todos);
         },
       });
   }

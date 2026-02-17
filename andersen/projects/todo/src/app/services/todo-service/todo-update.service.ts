@@ -1,38 +1,58 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 
-import { Todo } from '../../models/models';
+import { Todo, UpdateSubTask } from '../../models/models';
+import { RequestServiceTodo } from '../request-service/request-service.service';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TodoUpdateService {
+  private readonly todoServiceApi = inject(RequestServiceTodo);
   private readonly _todos = signal<Todo[]>([]);
 
   readonly todos = this._todos.asReadonly();
 
-  setTodos(todos: Todo[]) {
-    this._todos.set(todos);
+  getTodoList(): Observable<Todo[]> {
+    return this.todoServiceApi.getTodos().pipe(tap((todos) => this._todos.set(todos)));
   }
 
-  addTodo(newTodo: Todo) {
-    this._todos.update((todos) => [...todos, newTodo]);
+  addTodo(name: string): Observable<Todo[]> {
+    return this.todoServiceApi.addTodo(name).pipe(
+      tap((createdTodo) => this._todos.update((todos) => [...todos, createdTodo])),
+      map(() => this.#getUpdatedTodos()),
+    );
   }
 
-  removeTodo(id: string): void {
-    this._todos.update((todos) => todos.filter((todo) => todo.id !== id));
+  removeTodo(id: string): Observable<Todo[]> {
+    return this.todoServiceApi.deleteTodo(id).pipe(
+      tap(() => this._todos.update((todos) => todos.filter((todo) => todo.id !== id))),
+      map(() => this.#getUpdatedTodos()),
+    );
   }
 
-  addSubtask(updatedTodo: Todo): void {
-    this.#updateTodo(updatedTodo.id, () => updatedTodo);
+  addSubtask(id: string, name: string): Observable<Todo[]> {
+    return this.todoServiceApi.createSubTask(id, name).pipe(
+      tap((updatedTodo) => this.#updateTodo(updatedTodo.id, () => updatedTodo)),
+      map(() => this.#getUpdatedTodos()),
+    );
   }
 
-  updateTask(updatedTodo: Todo): void {
-    this.#updateTodo(updatedTodo.id, () => updatedTodo);
+  updateTask(todoId: string, taskId: string, payload: UpdateSubTask): Observable<Todo[]> {
+    return this.todoServiceApi.updateSubTask(todoId, taskId, payload).pipe(
+      tap((updatedTodo) => this.#updateTodo(updatedTodo.id, () => updatedTodo)),
+      map(() => this.#getUpdatedTodos()),
+    );
   }
 
-  deleteSubTask(todoId: string, taskId: string): void {
-    this.#updateTodo(todoId, (todo) => ({
-      ...todo,
-      tasks: todo.tasks.filter((task) => task.id !== taskId),
-    }));
+  deleteSubTask(todoId: string, taskId: string): Observable<Todo[]> {
+    return this.todoServiceApi.deleteSubTask(todoId, taskId).pipe(
+      tap(() =>
+        this.#updateTodo(todoId, (todo) => ({
+          ...todo,
+          tasks: todo.tasks.filter((task) => task.id !== taskId),
+        })),
+      ),
+      map(() => this.#getUpdatedTodos()),
+    );
   }
 
   toggleSubtask(todoId: string, subId: string): void {
@@ -50,5 +70,9 @@ export class TodoUpdateService {
 
   #updateTodo(todoId: string, updater: (todo: Todo) => Todo): void {
     this._todos.update((todos) => todos.map((todo) => (todo.id === todoId ? updater(todo) : todo)));
+  }
+
+  #getUpdatedTodos(): Todo[] {
+    return this._todos();
   }
 }
