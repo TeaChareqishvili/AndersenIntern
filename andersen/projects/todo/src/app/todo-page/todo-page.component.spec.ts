@@ -1,23 +1,152 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoPageComponent } from './todo-page.component';
+import { NEVER, of } from 'rxjs';
+import { TodoUpdateService } from '../services/todo-service/todo-update.service';
+import { fakeTodo } from '../todo-input/todo-input.spec';
+import { SubTask } from '../models/models';
+
+export const fakeSubTask: SubTask = {
+  id: 'task-1',
+  name: 'Task name',
+  completed: false,
+};
+
+const fakeTodoService = jasmine.createSpyObj('TodoService', [
+  'todos',
+  'getTodoList',
+  'removeTodo',
+  'addSubtask',
+  'updateTask',
+  'deleteSubTask',
+]);
 
 describe('TodoPageComponent', () => {
   let component: TodoPageComponent;
   let fixture: ComponentFixture<TodoPageComponent>;
 
+  function getAsyncCalls(): Array<() => void> {
+    return [
+      () => component.ngOnInit(),
+      () => component.deleteTodo(fakeTodo.id),
+      () =>
+        component.addSubtask({
+          todoId: fakeTodo.id,
+          name: fakeSubTask.name,
+        }),
+      () =>
+        component.updateSubtask({
+          todoId: fakeTodo.id,
+          taskId: fakeSubTask.id,
+          payload: {
+            name: fakeSubTask.name,
+            completed: fakeSubTask.completed,
+          },
+        }),
+      () =>
+        component.deleteSubtask({
+          todoId: fakeTodo.id,
+          taskId: fakeSubTask.id,
+        }),
+    ];
+  }
+
   beforeEach(async () => {
+    fakeTodoService.todos.and.returnValue([]);
+    fakeTodoService.getTodoList.and.returnValue(of([]));
+    fakeTodoService.removeTodo.and.returnValue(of([]));
+    fakeTodoService.addSubtask.and.returnValue(of([]));
+    fakeTodoService.updateTask.and.returnValue(of([]));
+    fakeTodoService.deleteSubTask.and.returnValue(of([]));
+
     await TestBed.configureTestingModule({
-      imports: [TodoPageComponent]
-    })
-    .compileComponents();
+      imports: [TodoPageComponent],
+      providers: [{ provide: TodoUpdateService, useValue: fakeTodoService }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TodoPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
+  it('should update todos list when new todos are added', () => {
+    component.onAddNewTodo([fakeTodo]);
+    expect(component.todosList()).toEqual([fakeTodo]);
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set loader true when any request is submited', () => {
+    Object.keys(fakeTodoService)
+      .filter((method) => method !== 'todos')
+      .forEach((method) => {
+        fakeTodoService[method as keyof typeof fakeTodoService].and.returnValue(NEVER);
+      });
+
+    getAsyncCalls().forEach((call) => {
+      component.loader.set(false);
+      call();
+      expect(component.loader()).toBeTrue();
+    });
+  });
+
+  it('should set loader false when any request is submited', () => {
+    Object.keys(fakeTodoService)
+      .filter((method) => method !== 'todos')
+      .forEach((method) => {
+        fakeTodoService[method as keyof typeof fakeTodoService].and.returnValue(of(null));
+      });
+
+    getAsyncCalls().forEach((call) => {
+      component.loader.set(false);
+      call();
+      expect(component.loader()).toBeFalse();
+    });
+  });
+
+  it('should delete todo', () => {
+    fakeTodoService.removeTodo.and.returnValue(of(null));
+    component.deleteTodo(fakeTodo.id);
+    expect(fakeTodoService.removeTodo).toHaveBeenCalledWith(fakeTodo.id);
+  });
+
+  it('should delete subtask', () => {
+    fakeTodoService.deleteSubTask.and.returnValue(of(null));
+    const payload = {
+      todoId: fakeTodo.id,
+      taskId: fakeSubTask.id,
+    };
+    component.deleteSubtask(payload);
+    expect(fakeTodoService.deleteSubTask).toHaveBeenCalledWith(fakeTodo.id, fakeSubTask.id);
+  });
+
+  it('should add new subtask', () => {
+    fakeTodoService.addSubtask.and.returnValue(of(null));
+    component.addSubtask({ todoId: fakeTodo.id, name: fakeSubTask.name });
+    expect(fakeTodoService.addSubtask).toHaveBeenCalledWith(fakeTodo.id, fakeSubTask.name);
+  });
+
+  it('should update subtask', () => {
+    fakeTodoService.updateTask.and.returnValue(of(null));
+    component.updateSubtask({
+      todoId: fakeTodo.id,
+      taskId: fakeSubTask.id,
+      payload: {
+        name: fakeSubTask.name,
+        completed: fakeSubTask.completed,
+      },
+    });
+    expect(fakeTodoService.updateTask).toHaveBeenCalledWith(fakeTodo.id, fakeSubTask.id, {
+      name: fakeSubTask.name,
+      completed: fakeSubTask.completed,
+    });
+  });
+
+  it('should get todo list', () => {
+    fakeTodoService.getTodoList.and.returnValue(of(null));
+    component.ngOnInit();
+    expect(fakeTodoService.getTodoList).toHaveBeenCalled();
   });
 });

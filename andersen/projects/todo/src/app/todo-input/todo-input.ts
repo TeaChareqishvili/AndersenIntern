@@ -29,10 +29,6 @@ export class TodoInput {
   readonly newTodo = output<Todo[]>();
 
   onAddTodo({ name }: { name: string }): void {
-    if (this.form.invalid || !name.trim()) {
-      return;
-    }
-
     this.loader.set(true);
     this.todoUpdateService
       .addTodo(name.trim())
@@ -43,7 +39,6 @@ export class TodoInput {
       .subscribe({
         next: (todos) => {
           this.newTodo.emit(todos);
-          this.form.reset();
         },
       });
   }

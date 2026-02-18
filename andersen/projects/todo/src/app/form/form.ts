@@ -19,14 +19,9 @@ export class Form {
 
   onSubmit(): void {
     const form = this.form();
-
-    if (form.valid) {
-      const value = form.getRawValue() as { name?: string };
-      if (typeof value.name !== 'string') {
-        return;
-      }
-      this.todoSubmitted.emit({ name: value.name });
-      form.reset();
-    }
+    if (!form.valid) return;
+    const { name } = form.getRawValue();
+    this.todoSubmitted.emit({ name });
+    form.reset();
   }
 }
