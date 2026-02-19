@@ -87,7 +87,6 @@ describe('TodoPageComponent', () => {
       });
 
     getAsyncCalls().forEach((call) => {
-      component.loader.set(true);
       call();
       expect(component.loader()).toBeTrue();
     });
@@ -101,7 +100,6 @@ describe('TodoPageComponent', () => {
       });
 
     getAsyncCalls().forEach((call) => {
-      component.loader.set(false);
       call();
       expect(component.loader()).toBeFalse();
     });
@@ -117,7 +115,6 @@ describe('TodoPageComponent', () => {
       });
 
     getAsyncCalls().forEach((call) => {
-      component.loader.set(false);
       call();
       expect(component.loader()).toBeFalse();
     });
