@@ -1,14 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TodoInput } from './todo-input';
-import { Todo } from '../models/models';
+
 import { TodoUpdateService } from '../services/todo-service/todo-update.service';
 import { NEVER, of } from 'rxjs';
-
-export const fakeTodo: Todo = {
-  name: 'Todo',
-  id: '012fef',
-  tasks: [],
-};
+import { fakeTodo } from '../models/test-mock-data';
 
 const fakeTodoService = {
   addTodo: jasmine.createSpy('addTodo'),
@@ -49,7 +44,7 @@ describe('TodoInputComponent', () => {
     fakeTodoService.addTodo.and.returnValue(of([fakeTodo]));
     spyOn(component.newTodo, 'emit');
     component.onAddTodo({ name: fakeTodo.name });
-    expect(fakeTodoService.addTodo).toHaveBeenCalledWith(fakeTodo.name);
-    expect(component.newTodo.emit).toHaveBeenCalledWith([fakeTodo]);
+    expect(fakeTodoService.addTodo).toHaveBeenCalledOnceWith(fakeTodo.name);
+    expect(component.newTodo.emit).toHaveBeenCalledOnceWith([fakeTodo]);
   });
 });

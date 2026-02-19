@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Form } from './form';
-import { fakeTodo } from '../todo-input/todo-input.spec';
+
 import { createTodoGroup } from '../models/models';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { fakeTodo } from '../models/test-mock-data';
 
 describe('FormComponent', () => {
   let component: Form;
@@ -38,7 +39,7 @@ describe('FormComponent', () => {
     });
     component.onSubmit();
 
-    expect(component.todoSubmitted.emit).toHaveBeenCalledWith({ name: fakeTodo.name });
+    expect(component.todoSubmitted.emit).toHaveBeenCalledOnceWith({ name: fakeTodo.name });
   });
 
   it('should expext to reset form after submit', () => {

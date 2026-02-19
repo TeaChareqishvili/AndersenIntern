@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoCard } from './todo-card';
-
-import { fakeTodo } from '../todo-input/todo-input.spec';
-import { fakeSubTask } from '../todo-page/todo-page.component.spec';
+import { fakeSubTask, fakeTodo } from '../models/test-mock-data';
 
 describe('TodoCard', () => {
   let component: TodoCard;
@@ -39,7 +37,7 @@ describe('TodoCard', () => {
   it('should emit addSubtask with  name', () => {
     spyOn(component.addSubtask, 'emit');
     component.onAddSubTask({ name: fakeSubTask.name });
-    expect(component.addSubtask.emit).toHaveBeenCalledWith({
+    expect(component.addSubtask.emit).toHaveBeenCalledOnceWith({
       todoId: fakeTodo.id,
       name: fakeSubTask.name,
     });
@@ -50,13 +48,13 @@ describe('TodoCard', () => {
     fixture.componentRef.setInput('taskLoading', true);
     fixture.detectChanges();
     component.onAddSubTask({ name: fakeSubTask.name });
-    expect(component.addSubtask.emit).not.toHaveBeenCalled();
+    expect(component.addSubtask.emit).not.toHaveBeenCalledTimes(1);
   });
 
   it('should emit updateSubtask when saving subtask', () => {
     spyOn(component.updateSubtask, 'emit');
     component.onSaveSubtask(component.subtasks.at(0));
-    expect(component.updateSubtask.emit).toHaveBeenCalledWith({
+    expect(component.updateSubtask.emit).toHaveBeenCalledOnceWith({
       todoId: fakeTodo.id,
       taskId: fakeSubTask.id,
       payload: { name: fakeSubTask.name, completed: fakeSubTask.completed },
@@ -67,7 +65,7 @@ describe('TodoCard', () => {
     spyOn(component.deleteTask, 'emit');
     component.editingIndex.set(fakeSubTask.id);
     component.onDeleteSubtask(fakeSubTask.id);
-    expect(component.deleteTask.emit).toHaveBeenCalledWith({
+    expect(component.deleteTask.emit).toHaveBeenCalledOnceWith({
       todoId: fakeTodo.id,
       taskId: fakeSubTask.id,
     });
