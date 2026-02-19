@@ -48,6 +48,9 @@ export class TodoPageComponent implements OnInit {
         next: (todos) => {
           this.todosList.set(todos);
         },
+        error: () => {
+          this.loader.set(false);
+        },
       });
   }
 
@@ -66,6 +69,9 @@ export class TodoPageComponent implements OnInit {
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }
@@ -86,6 +92,9 @@ export class TodoPageComponent implements OnInit {
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }
@@ -112,6 +121,9 @@ export class TodoPageComponent implements OnInit {
           this.todosList.set(todos);
           this.confirmedTaskUpdate.set({ todoId, taskId, token: Date.now() });
         },
+        error: () => {
+          this.loader.set(false);
+        },
       });
   }
 
@@ -131,6 +143,9 @@ export class TodoPageComponent implements OnInit {
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }

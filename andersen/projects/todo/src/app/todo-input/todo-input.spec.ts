@@ -5,13 +5,17 @@ import { TodoUpdateService } from '../services/todo-service/todo-update.service'
 import { NEVER, of } from 'rxjs';
 import { fakeTodo } from '../models/test-mock-data';
 
-const fakeTodoService = {
-  addTodo: jasmine.createSpy('addTodo'),
-};
+// const fakeTodoService = {
+//   addTodo: jasmine.createSpy('addTodo'),
+// };
 
 describe('TodoInputComponent', () => {
   let component: TodoInput;
   let fixture: ComponentFixture<TodoInput>;
+
+  const fakeTodoService = {
+    addTodo: jasmine.createSpy('addTodo'),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,6 +25,7 @@ describe('TodoInputComponent', () => {
 
     fixture = TestBed.createComponent(TodoInput);
     component = fixture.componentInstance;
+    fakeTodoService.addTodo.calls.reset();
     fixture.detectChanges();
   });
 

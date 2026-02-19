@@ -1,3 +1,4 @@
+import { UpdateSubTask } from './../models/models';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoPageComponent } from './todo-page.component';
@@ -5,15 +6,6 @@ import { NEVER, of, throwError } from 'rxjs';
 import { TodoUpdateService } from '../services/todo-service/todo-update.service';
 
 import { fakeSubTask, fakeTodo } from '../models/test-mock-data';
-
-const fakeTodoService = jasmine.createSpyObj('TodoService', [
-  'todos',
-  'getTodoList',
-  'removeTodo',
-  'addSubtask',
-  'updateTask',
-  'deleteSubTask',
-]);
 
 describe('TodoPageComponent', () => {
   let component: TodoPageComponent;
@@ -45,7 +37,21 @@ describe('TodoPageComponent', () => {
     ];
   }
 
+  const fakeTodoService = jasmine.createSpyObj('TodoService', [
+    'todos',
+    'getTodoList',
+    'removeTodo',
+    'addSubtask',
+    'updateTask',
+    'deleteSubTask',
+  ]);
+
   beforeEach(async () => {
+    fakeTodoService.removeTodo.calls.reset();
+    fakeTodoService.addSubtask.calls.reset();
+    fakeTodoService.updateTask.calls.reset();
+    fakeTodoService.deleteSubTask.calls.reset();
+
     fakeTodoService.todos.and.returnValue([]);
     fakeTodoService.getTodoList.and.returnValue(of([]));
     fakeTodoService.removeTodo.and.returnValue(of([]));
@@ -60,6 +66,7 @@ describe('TodoPageComponent', () => {
 
     fixture = TestBed.createComponent(TodoPageComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
@@ -120,6 +127,7 @@ describe('TodoPageComponent', () => {
     fakeTodoService.removeTodo.and.returnValue(of(null));
     component.deleteTodo(fakeTodo.id);
     expect(fakeTodoService.removeTodo).toHaveBeenCalledOnceWith(fakeTodo.id);
+    fakeTodoService.removeTodo.calls.reset();
   });
 
   it('should delete subtask', () => {
