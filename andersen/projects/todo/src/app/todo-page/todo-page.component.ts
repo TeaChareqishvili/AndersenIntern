@@ -29,7 +29,9 @@ export class TodoPageComponent implements OnInit {
   readonly loader = signal(false);
   readonly todosList = signal<Todo[]>([]);
   readonly taskLoadingTodoId = signal<string | null>(null);
-  readonly confirmedTaskUpdate = signal<{ todoId: string; taskId: string; token: number } | null>(null);
+  readonly confirmedTaskUpdate = signal<{ todoId: string; taskId: string; token: number } | null>(
+    null,
+  );
   readonly syncTodos = effect(() => {
     this.todosList.set(this.todoUpdateService.todos());
   });
@@ -45,6 +47,9 @@ export class TodoPageComponent implements OnInit {
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }
@@ -64,6 +69,9 @@ export class TodoPageComponent implements OnInit {
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }
@@ -85,10 +93,17 @@ export class TodoPageComponent implements OnInit {
         next: (todos) => {
           this.todosList.set(todos);
         },
+        error: () => {
+          this.loader.set(false);
+        },
       });
   }
 
-  updateSubtask(event: { todoId: string; taskId: string; payload: { name?: string; completed?: boolean } }): void {
+  updateSubtask(event: {
+    todoId: string;
+    taskId: string;
+    payload: { name?: string; completed?: boolean };
+  }): void {
     const { todoId, taskId, payload } = event;
     this.loader.set(true);
     this.taskLoadingTodoId.set(todoId);
@@ -105,6 +120,9 @@ export class TodoPageComponent implements OnInit {
         next: (todos) => {
           this.todosList.set(todos);
           this.confirmedTaskUpdate.set({ todoId, taskId, token: Date.now() });
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }
@@ -125,6 +143,9 @@ export class TodoPageComponent implements OnInit {
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
+        },
+        error: () => {
+          this.loader.set(false);
         },
       });
   }
