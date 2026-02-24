@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, DestroyRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AUTH_ROUTES } from '../models/session.models';
-import { StorageService } from '../services/storage-service/storage-service.service';
+
 import { AuthUserService } from '../services/auth-user-service/auth-user-service.service';
 import { NavigationPathService } from '../services/navigation-path/navigation-path.service';
-
-const APP_SESSION_STATE_KEY = 'APP_SESSION_STATE';
+import { finalize, switchMap, tap } from 'rxjs';
+import { LogOutServiceService } from '../services/user-log-out/log-out-service.service';
+import { ResponseMessageService } from '../services/response-message/response-message.service';
 
 @Component({
   selector: 'lib-auth-navigation',
@@ -16,9 +17,11 @@ const APP_SESSION_STATE_KEY = 'APP_SESSION_STATE';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthNavigation {
-  private readonly storage = inject(StorageService);
+  private readonly signOutService = inject(LogOutServiceService);
   private readonly authUserService = inject(AuthUserService);
   private readonly authPath = inject(NavigationPathService);
+  private readonly responseMessage = inject(ResponseMessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly loading = signal(false);
   readonly user = this.authUserService.user;
@@ -38,11 +41,27 @@ export class AuthNavigation {
   navigateToUser(): void {
     this.authPath.navigateToAuth(AUTH_ROUTES.USER);
   }
+
   onLogout(): void {
     this.loading.set(true);
-    this.storage.setItem<null>(APP_SESSION_STATE_KEY, null);
-    this.authUserService.setUser(null);
-    this.authPath.navigateToAuth(AUTH_ROUTES.LOGIN);
-    this.loading.set(false);
+
+    this.signOutService
+      .signOut()
+      .pipe(
+        tap(() => {
+          this.authUserService.setUser(null);
+          this.authPath.navigateToAuth(AUTH_ROUTES.LOGIN);
+        }),
+
+        switchMap(() =>
+          this.responseMessage.success({
+            message: 'Logged out successfully 👋',
+          }),
+        ),
+
+        finalize(() => this.loading.set(false)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({});
   }
 }

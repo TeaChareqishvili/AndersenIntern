@@ -1,65 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterOutlet } from '@angular/router';
-import { HeaderComponent, FooterComponent } from '@ui';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
-import { AuthUserService, NavigationPathService } from '@shared';
-import { finalize } from 'rxjs/internal/operators/finalize';
-
-import { AuthService } from './services/auth-service/auth.service';
-
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { switchMap, tap } from 'rxjs';
-import { AUTH_ROUTES } from './models/auth.models';
-import { ResponseMessageService } from '@shared';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, MatButtonModule],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
   protected readonly title = signal('auth');
-  private readonly authUserService = inject(AuthUserService);
-  private readonly router = inject(Router);
-  private readonly signOutService = inject(AuthService);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly navigationPath = inject(NavigationPathService);
-  private readonly responseMessage = inject(ResponseMessageService);
-
-  readonly loading = signal(false);
-
-  user = this.authUserService?.user;
-
-  navigateToSignUp(): void {
-    this.router.navigate([AUTH_ROUTES.REGISTER]);
-  }
-
-  navigateToSignIn(): void {
-    this.router.navigate([AUTH_ROUTES.LOGIN]);
-  }
-
-  onLogout(): void {
-    this.loading.set(true);
-
-    this.signOutService
-      .signOut()
-      .pipe(
-        tap(() => {
-          this.authUserService.setUser(null);
-        }),
-
-        switchMap(() =>
-          this.responseMessage.success({
-            message: 'Logged out successfully 👋',
-          }),
-        ),
-        tap(() => this.navigationPath.navigateToAuth(AUTH_ROUTES.LOGIN)),
-
-        finalize(() => this.loading.set(false)),
-        takeUntilDestroyed(this.destroyRef),
-      )
-      .subscribe({});
-  }
 }

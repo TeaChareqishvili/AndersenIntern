@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { ResponseMessage } from '@shared';
+import { ResponseMessage } from '../../models/session.models';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
