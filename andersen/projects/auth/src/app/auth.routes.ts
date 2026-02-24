@@ -4,7 +4,7 @@ import { RegisterComponent } from './pages/register/register';
 import { ErrorComponent } from './pages/error/error';
 import { AUTH_ROUTES } from './models/auth.models';
 
-export const routes: Routes = [
+export const AUTH_ROUTES_CONFIG: Routes = [
   { path: AUTH_ROUTES.HOME, redirectTo: AUTH_ROUTES.LOGIN, pathMatch: 'full' },
   {
     path: AUTH_ROUTES.LOGIN,

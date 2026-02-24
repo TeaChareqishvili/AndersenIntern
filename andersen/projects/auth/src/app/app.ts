@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent, FooterComponent } from '@ui';
 
-import { AuthUserService } from './services/auth-user-service/auth-user-service.service';
+import { AuthUserService, NavigationPathService } from '@shared';
 import { finalize } from 'rxjs/internal/operators/finalize';
 
 import { AuthService } from './services/auth-service/auth.service';
@@ -25,7 +25,7 @@ export class App {
   private readonly router = inject(Router);
   private readonly signOutService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
-
+  private readonly navigationPath = inject(NavigationPathService);
   private readonly responseMessage = inject(ResponseMessageService);
 
   readonly loading = signal(false);
@@ -53,9 +53,9 @@ export class App {
         switchMap(() =>
           this.responseMessage.success({
             message: 'Logged out successfully 👋',
-            navigateTo: AUTH_ROUTES.LOGIN,
           }),
         ),
+        tap(() => this.navigationPath.navigateToAuth(AUTH_ROUTES.LOGIN)),
 
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),

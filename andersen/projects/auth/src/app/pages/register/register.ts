@@ -3,11 +3,11 @@ import { AuthComponent } from '../../form/auth';
 import { AUTH_ROUTES, AuthResponse, createAuthForm } from '../../models/auth.models';
 import { LoaderComponent } from '@ui';
 
-import { finalize, switchMap } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { ResponseMessageService } from '@shared';
+import { NavigationPathService, ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +23,7 @@ export class RegisterComponent {
   private readonly responseMessage = inject(ResponseMessageService);
   private readonly registrationService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly navigationPath = inject(NavigationPathService);
 
   onRegister(data: AuthResponse): void {
     this.loading.set(true);
@@ -33,9 +34,9 @@ export class RegisterComponent {
         switchMap(() =>
           this.responseMessage.success({
             message: 'Registration successful 🎉',
-            navigateTo: AUTH_ROUTES.LOGIN,
           }),
         ),
+        tap(() => this.navigationPath.navigateToAuth(AUTH_ROUTES.LOGIN)),
 
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),

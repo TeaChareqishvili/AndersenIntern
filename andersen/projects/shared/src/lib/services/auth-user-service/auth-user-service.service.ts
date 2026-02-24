@@ -1,6 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import { AuthResponse } from '../../models/auth.models';
 
+export type AuthResponse = {
+  email: string;
+  password: string;
+};
 @Injectable({
   providedIn: 'root',
 })

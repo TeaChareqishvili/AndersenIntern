@@ -7,3 +7,4 @@ export * from './lib/services/index';
 export * from './lib/interceptors/index';
 export * from './lib/models/session.models';
 export * from './lib/url/url';
+export * from './lib/auth-navigation/auth-navigation';

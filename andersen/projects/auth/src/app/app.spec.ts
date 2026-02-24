@@ -4,9 +4,8 @@ import { AuthService } from './services/auth-service/auth.service';
 import { NEVER, of } from 'rxjs';
 
 import { Router, provideRouter } from '@angular/router';
-import { AuthUserService } from './services/auth-user-service/auth-user-service.service';
 import { signal } from '@angular/core';
-import { ResponseMessageService } from '@shared';
+import { AuthUserService, ResponseMessageService } from '@shared';
 import { AUTH_ROUTES } from './models/auth.models';
 
 const fakeAuthService = {

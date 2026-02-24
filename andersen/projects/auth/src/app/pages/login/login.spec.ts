@@ -5,7 +5,7 @@ import { AUTH_ROUTES } from '../../models/auth.models';
 import { NEVER, of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
 
-import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
+import { AuthUserService } from '@shared';
 import { createFakeUserService } from '../../app.spec';
 import { fakeData } from '../register/register.spec';
 import { ResponseMessageService } from '@shared';
