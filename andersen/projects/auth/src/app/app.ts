@@ -2,14 +2,16 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent, FooterComponent } from '@ui';
-import { AUTH_ROUTES } from './app.routes';
+
 import { AuthUserService } from './services/auth-user-service/auth-user-service.service';
 import { finalize } from 'rxjs/internal/operators/finalize';
 
 import { AuthService } from './services/auth-service/auth.service';
-import { ResponseMessageService } from './services/response-message/response-message.service';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap, tap } from 'rxjs';
+import { AUTH_ROUTES } from './models/auth.models';
+import { ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-root',

@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": [],
+    "rootDir": "../../"
+  },
+  "include": [
+    "src/**/*.ts",
+    "../environment",
+    "../ui/src/public-api.ts",
+    "../environment/index.ts",
+    "../shared/src/public-api.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}
