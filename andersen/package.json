@@ -23,11 +23,15 @@
     "@angular/platform-browser": "^20.3.16",
     "@angular/platform-browser-dynamic": "^20.3.16",
     "@angular/router": "^20.3.16",
+    "@softarc/native-federation-node": "^2.0.10",
+    "es-module-shims": "^1.5.12",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
+    "@angular-architects/module-federation": "^20.0.0",
+    "@angular-architects/native-federation": "^20.3.1",
     "@angular-devkit/build-angular": "^20.3.14",
     "@angular/build": "^20.3.14",
     "@angular/cli": "^20.3.14",

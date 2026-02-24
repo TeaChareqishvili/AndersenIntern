@@ -3,12 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login';
 import { AUTH_ROUTES } from '../../models/auth.models';
 import { NEVER, of } from 'rxjs';
-import { AuthService } from '../../services/auth-service/auth.service';
 
-import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
 import { createFakeUserService } from '../../app.spec';
 import { fakeData } from '../register/register.spec';
-import { ResponseMessageService } from '@shared';
+import { AuthUserService, ResponseMessageService } from '@shared';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 const fakeAuthService = {
   signInUser: jasmine.createSpy('signInUser'),

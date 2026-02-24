@@ -15,17 +15,67 @@
       "prefix": "app",
       "architect": {
         "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {},
+          "configurations": {
+            "production": {
+              "target": "shell:esbuild:production"
+            },
+            "development": {
+              "target": "shell:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "shell:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true,
+            "port": 0
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "shell:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/shell/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
+            "styles": ["projects/shell/src/styles.scss"],
+            "scripts": []
+          }
+        },
+        "esbuild": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/shell",
             "index": "projects/shell/src/index.html",
             "browser": "projects/shell/src/main.ts",
-            "polyfills": ["zone.js"],
-
+            "polyfills": ["zone.js", "es-module-shims"],
             "tsConfig": "projects/shell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
-            "styles": ["projects/shell/src/styles.scss"],
+            "assets": [
+              "projects/shell/src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "projects/shell/src/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              "projects/shell/src/styles.scss",
+              "projects/ui/src/styles/tailwind.css",
+              "projects/auth/src/styles/index.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -52,37 +102,20 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
+        "serve-original": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "port": 8000
           },
           "configurations": {
             "production": {
-              "buildTarget": "shell:build:production"
+              "buildTarget": "shell:esbuild:production"
             },
             "development": {
-              "buildTarget": "shell:build:development"
+              "buildTarget": "shell:esbuild:development"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "shell:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/shell/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
-            "styles": ["projects/shell/src/styles.scss"],
-            "scripts": []
-          }
         }
       }
     },
@@ -98,10 +131,51 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-architects/native-federation:build",
+          "options": {},
+          "configurations": {
+            "production": {
+              "target": "auth:esbuild:production"
+            },
+            "development": {
+              "target": "auth:esbuild:development",
+              "dev": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "auth:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true,
+            "port": 0
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/auth/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/auth/public"
+              }
+            ],
+            "styles": ["projects/auth/src/styles.scss"]
+          }
+        },
+        "esbuild": {
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "browser": "projects/auth/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": ["zone.js", "es-module-shims"],
             "tsConfig": "projects/auth/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -113,6 +187,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/auth/src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/ui/src/assets",
                 "output": "/assets"
               }
             ],
@@ -146,38 +225,20 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
+        "serve-original": {
           "builder": "@angular/build:dev-server",
           "options": {
             "port": 8001
           },
           "configurations": {
             "production": {
-              "buildTarget": "auth:build:production"
+              "buildTarget": "auth:esbuild:production"
             },
             "development": {
-              "buildTarget": "auth:build:development"
+              "buildTarget": "auth:esbuild:development"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/auth/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/auth/public"
-              }
-            ],
-            "styles": ["projects/auth/src/styles.scss"]
-          }
         }
       }
     },

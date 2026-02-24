@@ -6,8 +6,9 @@ import { LoaderComponent } from '@ui';
 import { finalize, switchMap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AuthService } from '../../services/auth-service/auth.service';
+
 import { ResponseMessageService } from '@shared';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
   selector: 'app-register',

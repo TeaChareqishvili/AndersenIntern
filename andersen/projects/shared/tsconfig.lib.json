@@ -11,6 +11,10 @@
     "types": [],
     "composite": true
   },
-  "include": ["src/**/*.ts", "../environment"],
+  "include": [
+    "src/**/*.ts",
+    "../environment",
+    "../auth/src/app/services/auth-service/auth.service.ts"
+  ],
   "exclude": ["**/*.spec.ts"]
 }

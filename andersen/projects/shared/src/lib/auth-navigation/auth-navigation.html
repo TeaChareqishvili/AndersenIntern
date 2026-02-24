@@ -1,0 +1,8 @@
+<div class="flex gap-4 items-center">
+  @if (user()) {
+  <button mat-raised-button [disabled]="loading()" (click)="onLogout()">Sign Out</button>
+  } @else {
+  <button mat-raised-button (click)="navigateToSignIn()">Sign In</button>
+  <button mat-raised-button (click)="navigateToSignUp()">Sign Up</button>
+  }
+</div>

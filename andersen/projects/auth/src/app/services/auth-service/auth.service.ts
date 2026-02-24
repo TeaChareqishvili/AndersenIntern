@@ -1,15 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '@env';
-import { AuthResponse } from '../../models/auth.models';
+import { API_URL } from '@shared';
 import { Observable } from 'rxjs';
+import { AuthResponse } from '../../models/auth.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = inject(BASE_URL);
+  private readonly injectedApiUrl = inject(BASE_URL, { optional: true });
+  private readonly apiUrl =
+    this.injectedApiUrl && this.injectedApiUrl !== 'undefined' ? this.injectedApiUrl : API_URL;
 
   signInUser(userData: AuthResponse): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in`, userData);
@@ -23,7 +26,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/sign-up`, userData);
   }
 
-  ressetPassword(userdata: AuthResponse): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in/reset`, userdata);
+  ressetPassword(userData: AuthResponse): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in/reset`, userData);
   }
 }

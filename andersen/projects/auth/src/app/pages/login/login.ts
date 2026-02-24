@@ -5,10 +5,10 @@ import { AUTH_ROUTES, AuthResponse, createAuthForm } from '../../models/auth.mod
 import { finalize, switchMap } from 'rxjs';
 import { LoaderComponent } from '@ui';
 
-import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { AuthUserService, ResponseMessageService } from '@shared';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-login',

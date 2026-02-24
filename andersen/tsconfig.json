@@ -15,7 +15,6 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "paths": {
-      "shared": ["./dist/shared"],
       "@ui": ["./projects/ui/src/public-api.ts"],
       "@env": ["./projects/environment/index.ts"],
       "@shared": ["./projects/shared/src/public-api.ts"]

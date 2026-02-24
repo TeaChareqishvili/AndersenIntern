@@ -18,3 +18,8 @@ export type ResponseMessage = {
   message: string;
   navigateTo?: string;
 };
+
+export type AuthUser = {
+  email: string;
+  password: string;
+};

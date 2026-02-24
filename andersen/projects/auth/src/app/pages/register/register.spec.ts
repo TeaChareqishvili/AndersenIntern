@@ -3,8 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register';
 import { AUTH_ROUTES, AuthResponse } from '../../models/auth.models';
 import { NEVER, of } from 'rxjs';
-import { AuthService } from '../../services/auth-service/auth.service';
+
 import { ResponseMessageService } from '@shared';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 export const fakeData: AuthResponse = {
   email: 'tea@gmail.com',

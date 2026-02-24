@@ -1,8 +1,10 @@
-import { bootstrapApplication, Title } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import { initFederation } from '@angular-architects/native-federation';
 
-  bootstrapApplication(AppComponent, appConfig).then(appRef => {
-  const title = appRef.injector.get(Title);
-  title.setTitle('Shell App');
-});
+initFederation({
+  'auth': 'http://localhost:8001/remoteEntry.json',
+  'history': 'http://localhost:8002/remoteEntry.json',
+  'todo': 'http://localhost:8003/remoteEntry.json'
+})
+  .catch(err => console.error(err))
+  .then(_ => import('./bootstrap'))
+  .catch(err => console.error(err));
