@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
-import { HeaderSlotService } from '@shared';
-import { AuthNavigation } from './components/auth-navigation/auth-navigation';
+import { HeaderNavigationComponent, HeaderSlotService } from '@shared';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +14,6 @@ export class App implements OnInit {
   protected readonly title = signal('auth');
 
   ngOnInit(): void {
-    this.headerSlot.setHeader(AuthNavigation);
+    this.headerSlot.setHeader(HeaderNavigationComponent);
   }
 }

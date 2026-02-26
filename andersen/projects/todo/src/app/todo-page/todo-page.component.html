@@ -1,5 +1,4 @@
 <div class="h-full">
-  <app-todo-input (newTodo)="onAddNewTodo($event)" />
   <div class="flex p-5  items-center justify-around flex-wrap">
     @for (todo of todosList(); track todo.id) {
     <app-todo-card [todo]="todo" [taskLoading]="taskLoadingTodoId() === todo.id"

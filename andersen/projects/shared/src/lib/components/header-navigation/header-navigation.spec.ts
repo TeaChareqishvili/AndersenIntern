@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HeaderNavigation } from './header-navigation.component';
 
-import { AuthNavigation } from './auth-navigation';
-
-describe('AuthNavigation', () => {
-  let component: AuthNavigation;
-  let fixture: ComponentFixture<AuthNavigation>;
+describe('App', () => {
+  let component: HeaderNavigation;
+  let fixture: ComponentFixture<HeaderNavigation>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthNavigation],
+      imports: [HeaderNavigation],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AuthNavigation);
+    fixture = TestBed.createComponent(HeaderNavigation);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 

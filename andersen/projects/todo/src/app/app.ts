@@ -1,22 +1,17 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
-import { HeaderSlotService } from '@shared';
-import { TodoInput } from './todo-input/todo-input';
+import { HeaderNavigationComponent, HeaderSlotService } from '@shared';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
 })
-export class App implements OnInit, OnDestroy {
+export class App implements OnInit {
   private readonly headerSlot = inject(HeaderSlotService);
 
   ngOnInit(): void {
-    this.headerSlot.setHeader(TodoInput);
-  }
-
-  ngOnDestroy(): void {
-    this.headerSlot.clearHeader(TodoInput);
+    this.headerSlot.setHeader(HeaderNavigationComponent);
   }
 }
