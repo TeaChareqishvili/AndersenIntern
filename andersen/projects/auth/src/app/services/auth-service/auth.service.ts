@@ -15,10 +15,6 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in`, userData);
   }
 
-  signOut(): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/sign-in/out`);
-  }
-
   registerUser(userData: AuthResponse): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/sign-up`, userData);
   }
