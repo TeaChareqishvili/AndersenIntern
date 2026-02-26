@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
+import { AuthUserService } from '@shared';
 
 @Component({
   selector: 'app-user',
@@ -9,7 +9,9 @@ import { AuthUserService } from '../../services/auth-user-service/auth-user-serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent {
-  private readonly authService = inject(AuthUserService);
+  private readonly authUserService = inject(AuthUserService);
 
-  user = this.authService.user;
+  readonly isAuthenticated = this.authUserService.isAuthenticated;
+
+  readonly user = this.authUserService.user;
 }

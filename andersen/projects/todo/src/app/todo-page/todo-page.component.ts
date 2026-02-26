@@ -6,6 +6,7 @@ import {
   DestroyRef,
   effect,
   inject,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
@@ -15,17 +16,19 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TodoUpdateService } from '../services/todo-service/todo-update.service';
 import { finalize } from 'rxjs';
 import { Todo } from '../models/models';
+import { HeaderNavigation, HeaderSlotService } from '@shared';
 
 @Component({
   selector: 'app-todo-page',
-  imports: [TodoInput, TodoCard, LoaderComponent],
+  imports: [TodoCard, LoaderComponent],
   templateUrl: './todo-page.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoPageComponent implements OnInit {
+export class TodoPageComponent implements OnInit, OnDestroy {
   private readonly todoUpdateService = inject(TodoUpdateService);
   private readonly destroyRef = inject(DestroyRef);
+  private headerSlot = inject(HeaderSlotService);
   readonly loader = signal(false);
   readonly todosList = signal<Todo[]>([]);
   readonly taskLoadingTodoId = signal<string | null>(null);
@@ -37,6 +40,11 @@ export class TodoPageComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.headerSlot.setHeader(HeaderNavigation);
+    this.headerSlot.setTodo(TodoInput);
+    this.todoUpdateService.clearTodos();
+    this.todosList.set([]);
+
     this.loader.set(true);
     this.todoUpdateService
       .getTodoList()
@@ -52,6 +60,10 @@ export class TodoPageComponent implements OnInit {
           this.loader.set(false);
         },
       });
+  }
+
+  ngOnDestroy(): void {
+    this.headerSlot.setTodo(null);
   }
 
   onAddNewTodo(todos: Todo[]): void {

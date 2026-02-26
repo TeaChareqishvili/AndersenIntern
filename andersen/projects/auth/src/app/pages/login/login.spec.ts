@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login';
-import { AUTH_ROUTES } from '../../models/auth.models';
+
 import { NEVER, of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
 
-import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
+import { AuthUserService, HEADER_ACTION_NAV_TYPES } from '@shared';
 import { createFakeUserService } from '../../app.spec';
 import { fakeData } from '../register/register.spec';
 import { ResponseMessageService } from '@shared';
@@ -76,7 +76,7 @@ describe('LoginComponent', () => {
 
     expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: `Welcome ${fakeData.email} 🎉`,
-      navigateTo: AUTH_ROUTES.USER,
+      navigateTo: HEADER_ACTION_NAV_TYPES.USER,
     });
   });
 

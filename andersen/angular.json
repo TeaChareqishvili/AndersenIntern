@@ -25,7 +25,11 @@
             "tsConfig": "projects/shell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
-            "styles": ["projects/shell/src/styles.scss"],
+            "styles": [
+              "projects/shell/src/styles.scss",
+              "projects/ui/src/styles/tailwind.css",
+              "projects/auth/src/styles/index.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -80,7 +84,11 @@
             "tsConfig": "projects/shell/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
-            "styles": ["projects/shell/src/styles.scss"],
+            "styles": [
+              "projects/shell/src/styles.scss",
+              "projects/ui/src/styles/tailwind.css",
+              "projects/auth/src/styles/index.scss"
+            ],
             "scripts": []
           }
         }

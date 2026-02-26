@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
-import { AUTH_ROUTES, AuthResponse, createAuthForm } from '../../models/auth.models';
+import { AuthResponse, createAuthForm } from '../../models/auth.models';
 import { LoaderComponent } from '@ui';
 
-import { finalize, switchMap } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { ResponseMessageService } from '@shared';
+import { HEADER_ACTION_NAV_TYPES, ResponseMessageService } from '@shared';
+import { NavigationPathService } from '../../services/navigation-path/navigation-path.service';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,7 @@ export class RegisterComponent {
   private readonly responseMessage = inject(ResponseMessageService);
   private readonly registrationService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly navigationPath = inject(NavigationPathService);
 
   onRegister(data: AuthResponse): void {
     this.loading.set(true);
@@ -33,9 +35,9 @@ export class RegisterComponent {
         switchMap(() =>
           this.responseMessage.success({
             message: 'Registration successful 🎉',
-            navigateTo: AUTH_ROUTES.LOGIN,
           }),
         ),
+        tap(() => this.navigationPath.navigateToAuth(HEADER_ACTION_NAV_TYPES.LOGIN)),
 
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),

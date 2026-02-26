@@ -1,11 +1,11 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-export enum AUTH_ROUTES {
-  HOME = '',
-  LOGIN = 'sign-in',
-  REGISTER = 'sign-up',
-  USER = 'user',
-}
+// export enum AUTH_ROUTES {
+//   HOME = '',
+//   LOGIN = 'sign-in',
+//   REGISTER = 'sign-up',
+//   USER = 'user',
+// }
 
 export type AuthFormModel = {
   email: FormControl<string>;

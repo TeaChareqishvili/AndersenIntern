@@ -1,5 +1,7 @@
 <header
-  class="bg-transparent backdrop-blur-lg text-white flex justify-between items-center p-4 border-b border-violet-400/20">
+  class="bg-transparent backdrop-blur-lg text-white flex flex-wrap items-center gap-4 p-4 border-b border-violet-400/20">
   <lib-logo />
-  <ng-content select="[header-navigation]"></ng-content>
+  <div class="flex-1 min-w-0 flex justify-end">
+    <ng-content select="[header-navigation]"></ng-content>
+  </div>
 </header>

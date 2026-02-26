@@ -5,7 +5,7 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { routes } from './app.routes';
+import { routes } from './auth.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authTokenInterceptor, errorInterceptor, GlobalErrorHandler } from '@shared';
 import { baseUrlProvider, TokenProvider } from '@env';
