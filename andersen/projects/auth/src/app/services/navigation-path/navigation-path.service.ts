@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AUTH_ROUTES } from '../../models/session.models';
+
+import { HEADER_ACTION_NAV_TYPES } from '@shared';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,7 @@ import { AUTH_ROUTES } from '../../models/session.models';
 export class NavigationPathService {
   private readonly router = inject(Router);
 
-  navigateToAuth(path: AUTH_ROUTES | string): void {
+  navigateToAuth(path: HEADER_ACTION_NAV_TYPES | string): void {
     const hostedInShell = this.router.config.some((route) => route.path === 'auth');
     const target = hostedInShell ? `/auth/${path}` : `/${path}`;
     void this.router.navigateByUrl(target);

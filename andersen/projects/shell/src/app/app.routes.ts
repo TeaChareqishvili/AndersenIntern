@@ -1,19 +1,25 @@
+import { HEADER_ACTION_NAV_TYPES } from '@shared';
 import { Routes } from '@angular/router';
+
+export enum SHELL_ROUTES {
+  AUTH = 'auth',
+  TODO = 'todo',
+  HOME = '',
+  ABSOLUTE = `auth/${HEADER_ACTION_NAV_TYPES.LOGIN}`,
+}
 
 export const routes: Routes = [
   {
-    path: 'auth',
-    loadChildren: () =>
-      import('../../../auth/src/app/auth.routes').then((m) => m.AUTH_ROUTES_CONFIG),
+    path: SHELL_ROUTES.AUTH,
+    loadChildren: () => import('@auth/app/auth.routes').then((m) => m.routes),
   },
   {
-    path: 'todo',
-    loadChildren: () =>
-      import('../../../todo/src/app/todo.routes').then((m) => m.TODO_ROUTES_CONFIGS),
+    path: SHELL_ROUTES.TODO,
+    loadChildren: () => import('@todo/app/todo.routes').then((m) => m.routes),
   },
   {
-    path: '',
-    redirectTo: 'auth/sign-in',
+    path: SHELL_ROUTES.HOME,
+    redirectTo: SHELL_ROUTES.ABSOLUTE,
     pathMatch: 'full',
   },
 ];

@@ -1,15 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthNavigation } from '@shared';
+import { HeaderSlotService } from '@shared';
+import { NgComponentOutlet } from '@angular/common';
 import { FooterComponent, HeaderComponent } from '@ui';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, AuthNavigation],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, NgComponentOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
+  readonly headerSlot = inject(HeaderSlotService);
   title = 'shell';
 }

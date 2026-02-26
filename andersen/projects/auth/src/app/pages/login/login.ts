@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
-import { AUTH_ROUTES, AuthResponse, createAuthForm } from '../../models/auth.models';
+import { AuthResponse, createAuthForm } from '../../models/auth.models';
 
 import { finalize, switchMap, tap } from 'rxjs';
 import { LoaderComponent } from '@ui';
 
-import { AuthUserService, NavigationPathService } from '@shared';
+import { AuthUserService } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ResponseMessageService } from '@shared';
+import { NavigationPathService } from '../../services/navigation-path/navigation-path.service';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,7 @@ export class LoginComponent {
             message: `Welcome ${user?.email} 🎉`,
           }),
         ),
-        tap(() => this.navigationPath.navigateToAuth(AUTH_ROUTES.USER)),
+        tap(() => this.navigationPath.navigateToTodo()),
 
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),

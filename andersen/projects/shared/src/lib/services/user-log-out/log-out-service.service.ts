@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class LogOutServiceService {
+export class LogOutService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = inject(BASE_URL);
 
