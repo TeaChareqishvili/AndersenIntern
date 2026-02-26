@@ -42,6 +42,8 @@ export class TodoPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.headerSlot.setHeader(HeaderNavigation);
     this.headerSlot.setTodo(TodoInput);
+    this.todoUpdateService.clearTodos();
+    this.todosList.set([]);
 
     this.loader.set(true);
     this.todoUpdateService

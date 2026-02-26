@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { HEADER_ACTION_NAV_TYPES } from '../../models/header-actions.models';
+
 import { AuthUserService } from '../../services/auth-user-service/auth-user-service.service';
 import { HeaderSlotService } from '../../services/header-slot/header-service.service';
 
@@ -14,8 +15,7 @@ import { HeaderSlotService } from '../../services/header-slot/header-service.ser
 export class HeaderNavigation {
   private readonly headerSlot = inject(HeaderSlotService);
   private readonly authUserService = inject(AuthUserService);
-
-  readonly user = this.authUserService.user;
+  readonly isAuthenticated = this.authUserService.isAuthenticated;
 
   navigateToSignUp(): void {
     this.headerSlot.emitAction({ type: HEADER_ACTION_NAV_TYPES.REGISTER });

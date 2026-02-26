@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
-import { HeaderNavigationComponent, HeaderSlotService } from '@shared';
+import { HeaderNavigation, HeaderSlotService } from '@shared';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,6 @@ export class App implements OnInit {
   private readonly headerSlot = inject(HeaderSlotService);
 
   ngOnInit(): void {
-    this.headerSlot.setHeader(HeaderNavigationComponent);
+    this.headerSlot.setHeader(HeaderNavigation);
   }
 }

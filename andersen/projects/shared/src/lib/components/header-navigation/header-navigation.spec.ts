@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderNavigation } from './header-navigation.component';
+import { HeaderNavigation } from './header-navigation';
 
 describe('App', () => {
   let component: HeaderNavigation;

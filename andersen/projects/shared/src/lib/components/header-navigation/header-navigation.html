@@ -1,5 +1,5 @@
 <div class="flex flex-wrap justify-end gap-2 sm:gap-4 items-center">
-  @if (user()) {
+  @if (isAuthenticated()) {
   <button mat-raised-button (click)="onLogout()">Sign Out</button>
   <button mat-raised-button (click)="navigateToTodo()">Todo</button>
   <button mat-raised-button (click)="navigateToUser()">User</button>

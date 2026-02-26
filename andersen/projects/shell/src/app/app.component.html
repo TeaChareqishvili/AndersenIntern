@@ -2,8 +2,8 @@
   [style.background-image]="'url(/assets/background.webp)'">
   <lib-header>
     <div header-navigation class="w-full flex items-center flex-row-reverse justify-around gap-3">
-      @if (headerSlot.header(); as comp) {
-      <ng-container *ngComponentOutlet="comp"></ng-container>
+      @if (headerSlot.header(); as navComp) {
+      <ng-container *ngComponentOutlet="navComp"></ng-container>
       }
       @if (headerSlot.todo(); as todoComp) {
       <ng-container *ngComponentOutlet="todoComp"></ng-container>

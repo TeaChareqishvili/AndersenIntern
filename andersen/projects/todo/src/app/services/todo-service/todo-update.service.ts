@@ -11,6 +11,10 @@ export class TodoUpdateService {
 
   readonly todos = this._todos.asReadonly();
 
+  clearTodos(): void {
+    this._todos.set([]);
+  }
+
   getTodoList(): Observable<Todo[]> {
     return this.todoServiceApi.getTodos().pipe(tap((todos) => this._todos.set(todos)));
   }

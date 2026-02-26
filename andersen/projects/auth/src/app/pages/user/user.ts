@@ -9,7 +9,9 @@ import { AuthUserService } from '@shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent {
-  private readonly authService = inject(AuthUserService);
+  private readonly authUserService = inject(AuthUserService);
 
-  user = this.authService.user;
+  readonly isAuthenticated = this.authUserService.isAuthenticated;
+
+  readonly user = this.authUserService.user;
 }
