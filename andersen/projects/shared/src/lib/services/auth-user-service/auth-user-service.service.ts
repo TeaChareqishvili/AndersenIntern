@@ -1,17 +1,32 @@
-import { Injectable, signal } from '@angular/core';
+import {inject, Injectable, OnDestroy, OnInit, signal} from '@angular/core';
+import { AuthResponse } from '@auth/app/models/auth.models';
+import { StorageService } from '../storage-service/storage-service.service';
+import {BehaviorSubject} from "rxjs";
 
-export type AuthResponse = {
-  email: string;
-  password: string;
-};
 @Injectable({
   providedIn: 'root',
 })
-export class AuthUserService {
-  private readonly _user = signal<AuthResponse | null>(null);
+export class AuthUserService implements OnDestroy{
+  private readonly _user$ = new BehaviorSubject<AuthResponse | null>(null);
+  readonly #storageService = inject(StorageService);
+  readonly #USER_KEY = 'USER';
 
-  setUser(user: AuthResponse | null) {
-    this._user.set(user);
+  ngOnDestroy(): void {
+    this._user$.complete()
   }
-  user = this._user.asReadonly();
+
+  set user(user: AuthResponse | null) {
+    this.#storageService.setItem(this.#USER_KEY, JSON.stringify(user));
+    this._user$.next(user);
+  }
+
+  get user$() {
+    if (!this._user$.value) {
+      const userSavedUser = this.#storageService.getItem<AuthResponse>(this.#USER_KEY);
+      if (userSavedUser) {
+        this._user$.next(userSavedUser);
+      }
+    }
+    return this._user$;
+  }
 }

@@ -1,8 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+} from '@angular/core';
 
-import { RouterOutlet } from '@angular/router';
-import { HeaderSlotService } from '@shared';
-import { AuthNavigation } from './components/auth-navigation/auth-navigation';
+import { Router, RouterOutlet } from '@angular/router';
+import { EventBusService, OUT_GOING_EVENTS } from '@shared';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +17,25 @@ import { AuthNavigation } from './components/auth-navigation/auth-navigation';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {
-  private readonly headerSlot = inject(HeaderSlotService);
-  protected readonly title = signal('auth');
+  readonly #eventBusService = inject(EventBusService);
+  readonly #router = inject(Router);
+  readonly #destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    this.headerSlot.setHeader(AuthNavigation);
+    this.#eventBusService.outGoingEvents$
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe((e) => {
+        debugger
+        switch (e) {
+          case OUT_GOING_EVENTS.TO_SIGN_IN:
+            this.#router.navigate(['auth/sign-in']);
+            break;
+          case OUT_GOING_EVENTS.TO_SIGN_UP:
+            this.#router.navigate(['auth/sign-up']);
+            break;
+          default:
+            break;
+        }
+      });
   }
 }

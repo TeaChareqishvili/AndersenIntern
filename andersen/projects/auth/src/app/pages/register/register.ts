@@ -7,8 +7,7 @@ import { finalize, switchMap, tap } from 'rxjs';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { HEADER_ACTION_NAV_TYPES, ResponseMessageService } from '@shared';
-import { NavigationPathService } from '../../services/navigation-path/navigation-path.service';
+import { ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +23,6 @@ export class RegisterComponent {
   private readonly responseMessage = inject(ResponseMessageService);
   private readonly registrationService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly navigationPath = inject(NavigationPathService);
 
   onRegister(data: AuthResponse): void {
     this.loading.set(true);
@@ -37,8 +35,6 @@ export class RegisterComponent {
             message: 'Registration successful 🎉',
           }),
         ),
-        tap(() => this.navigationPath.navigateToAuth(HEADER_ACTION_NAV_TYPES.LOGIN)),
-
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )

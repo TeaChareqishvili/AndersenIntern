@@ -5,11 +5,13 @@ import { AuthResponse, createAuthForm } from '../../models/auth.models';
 import { finalize, switchMap, tap } from 'rxjs';
 import { LoaderComponent } from '@ui';
 
-import { AuthUserService } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { ResponseMessageService } from '@shared';
-import { NavigationPathService } from '../../services/navigation-path/navigation-path.service';
+import {
+  EventBusService,
+  IN_GOING_EVENTS,
+} from '@shared';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +23,8 @@ import { NavigationPathService } from '../../services/navigation-path/navigation
 export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly responseMessage = inject(ResponseMessageService);
-  private readonly navigationPath = inject(NavigationPathService);
+  readonly #eventBusService = inject(EventBusService);
 
-  private readonly authUser = inject(AuthUserService);
   private readonly destroyRef = inject(DestroyRef);
   readonly form = createAuthForm();
   readonly loading = signal(false);
@@ -39,12 +40,13 @@ export class LoginComponent {
             message: `Welcome ${user?.email} 🎉`,
           }),
         ),
-        tap(() => this.navigationPath.navigateToTodo()),
-
         finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(() => this.authUser?.setUser(data));
+      .subscribe(() => {
+        debugger
+        this.#eventBusService.appEvent<AuthResponse>(IN_GOING_EVENTS.LOGIN_SUCCESS, data);
+      });
   }
 
   onResetPassword(data: AuthResponse): void {

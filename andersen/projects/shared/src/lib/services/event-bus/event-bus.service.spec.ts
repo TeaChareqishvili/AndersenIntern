@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { HeaderSlotService } from './header-service.service';
 
-describe('HeaderSlotService', () => {
-  let service: HeaderSlotService;
+import { EventBusService } from './event-bus.service';
+
+describe('EventBusService', () => {
+  let service: EventBusService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HeaderSlotService);
+    service = TestBed.inject(EventBusService);
   });
 
   it('should be created', () => {
