@@ -1,4 +1,4 @@
-export enum HEADER_ACTION_NAV_TYPES {
+export enum GLOBAL_NAV_TYPES {
   LOGIN = 'sign-in',
   REGISTER = 'sign-up',
   USER = 'user',
@@ -8,5 +8,5 @@ export enum HEADER_ACTION_NAV_TYPES {
 }
 
 export type HeaderAction = {
-  type: HEADER_ACTION_NAV_TYPES;
+  type: GLOBAL_NAV_TYPES;
 };

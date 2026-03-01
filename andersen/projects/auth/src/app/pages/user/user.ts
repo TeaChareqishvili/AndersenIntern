@@ -1,15 +1,16 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthUserService } from '@shared';
 
 @Component({
   selector: 'app-user',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './user.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent {
-  private readonly authService = inject(AuthUserService);
+  readonly #authUserService = inject(AuthUserService);
 
-  user = this.authService.user;
+  readonly user$ = this.#authUserService.user$;
 }

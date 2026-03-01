@@ -1,15 +1,15 @@
 <main class="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed"
   [style.background-image]="'url(/assets/background.webp)'">
   <lib-header>
-    <div>
-    @if (user$ | async; as user) {
-      <button mat-raised-button (click)="dispatchEvent('onLogout')">Sign Out</button>
-      <button mat-raised-button (click)="dispatchEvent('navigateToTodo')">Todo</button>
-      <button mat-raised-button (click)="dispatchEvent('navigateToUser')">User</button>
-    } @else {
+    <div class="flex items-center gap-3">
+      @if (user$ | async; as user) {
+      <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.LOGOUT)">Sign Out</button>
+      <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_TODO)">Todo</button>
+      <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_USER)">User</button>
+      } @else {
       <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_SIGN_IN)">Sign In</button>
       <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_SIGN_UP)">Sign Up</button>
-    }
+      }
     </div>
   </lib-header>
   <div class="flex-1">

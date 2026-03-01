@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '@env';
-import { AuthResponse } from '../../models/auth.models';
+import { AuthResponse } from '@shared';
+
 import { Observable } from 'rxjs';
 
 @Injectable({

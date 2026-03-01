@@ -1,7 +1,7 @@
-import { inject, Injectable, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
-import { LogOutService } from '../user-log-out/log-out-service.service';
+import { inject, Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { AuthUserService } from '../auth-user-service/auth-user-service.service';
+import { LogOutService } from '../user-log-out/log-out-service.service';
 
 export enum IN_GOING_EVENTS {
   LOGIN_SUCCESS = 'login-success',
@@ -11,6 +11,9 @@ export enum IN_GOING_EVENTS {
 export enum OUT_GOING_EVENTS {
   TO_SIGN_IN = 'navigate-to-sign-in',
   TO_SIGN_UP = 'navigate-to-sign-up',
+  TO_USER = 'navigate-to-user',
+  TO_TODO = 'navigate-to-todo',
+  LOGOUT = 'on-logout',
 }
 
 @Injectable({
@@ -21,16 +24,16 @@ export class EventBusService implements OnDestroy {
   readonly outGoingEvents$ = new BehaviorSubject<string>('');
   readonly #eventData$ = new BehaviorSubject<any>(null);
 
-  readonly #logOutService = inject(LogOutService);
   readonly #authUserService = inject(AuthUserService);
+  readonly #logOutService = inject(LogOutService);
 
-  shellEvent(event: string): void {
-    debugger;
+  shellEvent(event: OUT_GOING_EVENTS | string): void {
+    // debugger;
     this.outGoingEvents$.next(event);
   }
 
   appEvent<T>(event: string, data: T): void {
-    debugger
+    // debugger;
     this.#eventData$.next(data);
     this.inGoingEvents$.next(event);
   }
@@ -42,7 +45,7 @@ export class EventBusService implements OnDestroy {
 
   listen(): void {
     this.inGoingEvents$.subscribe((e) => {
-      debugger
+      // debugger
       switch (e) {
         case IN_GOING_EVENTS.LOGIN_SUCCESS:
           this.#authUserService.user = this.#eventData$.value;
@@ -53,19 +56,14 @@ export class EventBusService implements OnDestroy {
     });
 
     this.outGoingEvents$.subscribe((e) => {
-      debugger
       switch (e) {
-        case 'onLogout':
-          this.#logOutService
-            .signOut()
-            .pipe(
-              tap(() => {
-                // Let's think about how best to do this. logout logic
-              }),
-            )
-            .subscribe(() => {
+        case OUT_GOING_EVENTS.LOGOUT:
+          this.#logOutService.signOut().subscribe({
+            complete: () => {
+              this.#authUserService.user = null;
               this.inGoingEvents$.next(IN_GOING_EVENTS.LOGOUT_SUCCESS);
-            });
+            },
+          });
           break;
         default:
           break;

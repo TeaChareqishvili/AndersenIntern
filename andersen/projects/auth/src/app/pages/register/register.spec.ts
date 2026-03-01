@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterComponent } from './register';
-import { AuthResponse } from '../../models/auth.models';
+
 import { NEVER, of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { HEADER_ACTION_NAV_TYPES, ResponseMessageService } from '@shared';
+import { AuthResponse, GLOBAL_NAV_TYPES, ResponseMessageService } from '@shared';
 
 export const fakeData: AuthResponse = {
   email: 'tea@gmail.com',
@@ -67,7 +67,7 @@ describe('RegisterComponent', () => {
 
     expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: 'Registration successful 🎉',
-      navigateTo: HEADER_ACTION_NAV_TYPES.LOGIN,
+      navigateTo: GLOBAL_NAV_TYPES.LOGIN,
     });
   });
 });

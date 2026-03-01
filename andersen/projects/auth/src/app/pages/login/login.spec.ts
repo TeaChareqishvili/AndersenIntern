@@ -5,7 +5,7 @@ import { LoginComponent } from './login';
 import { NEVER, of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
 
-import { AuthUserService, HEADER_ACTION_NAV_TYPES } from '@shared';
+import { AuthUserService, GLOBAL_NAV_TYPES } from '@shared';
 import { createFakeUserService } from '../../app.spec';
 import { fakeData } from '../register/register.spec';
 import { ResponseMessageService } from '@shared';
@@ -76,7 +76,7 @@ describe('LoginComponent', () => {
 
     expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: `Welcome ${fakeData.email} 🎉`,
-      navigateTo: HEADER_ACTION_NAV_TYPES.USER,
+      navigateTo: GLOBAL_NAV_TYPES.USER,
     });
   });
 

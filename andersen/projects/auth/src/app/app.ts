@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 
 import { Router, RouterOutlet } from '@angular/router';
 import { EventBusService, OUT_GOING_EVENTS } from '@shared';
@@ -25,7 +19,6 @@ export class App implements OnInit {
     this.#eventBusService.outGoingEvents$
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((e) => {
-        debugger
         switch (e) {
           case OUT_GOING_EVENTS.TO_SIGN_IN:
             this.#router.navigate(['auth/sign-in']);
