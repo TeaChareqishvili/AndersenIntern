@@ -1,8 +1,11 @@
 <main class="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed"
   [style.background-image]="'url(/assets/background.webp)'">
   <lib-header>
-    <div class="flex items-center gap-3">
+    <div class="w-full flex items-center justify-center gap-3 flex-wrap">
       @if (user$ | async; as user) {
+      @if (isTodoPage()) {
+      <app-todo-input />
+      }
       <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.LOGOUT)">Sign Out</button>
       <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_TODO)">Todo</button>
       <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_USER)">User</button>
@@ -17,3 +20,7 @@
   </div>
   <lib-footer>This is Shell 2026</lib-footer>
 </main>
+
+@if(logoutLoading()){
+<lib-loader />
+}

@@ -28,12 +28,10 @@ export class EventBusService implements OnDestroy {
   readonly #logOutService = inject(LogOutService);
 
   shellEvent(event: OUT_GOING_EVENTS | string): void {
-    // debugger;
     this.outGoingEvents$.next(event);
   }
 
   appEvent<T>(event: string, data: T): void {
-    // debugger;
     this.#eventData$.next(data);
     this.inGoingEvents$.next(event);
   }
@@ -45,7 +43,6 @@ export class EventBusService implements OnDestroy {
 
   listen(): void {
     this.inGoingEvents$.subscribe((e) => {
-      // debugger
       switch (e) {
         case IN_GOING_EVENTS.LOGIN_SUCCESS:
           this.#authUserService.user = this.#eventData$.value;

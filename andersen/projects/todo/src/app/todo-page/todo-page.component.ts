@@ -9,7 +9,6 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { TodoInput } from '../todo-input/todo-input';
 import { TodoCard } from '../todo-card/todo-card';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TodoUpdateService } from '../services/todo-service/todo-update.service';
@@ -18,7 +17,7 @@ import { Todo } from '../models/models';
 
 @Component({
   selector: 'app-todo-page',
-  imports: [TodoInput, TodoCard, LoaderComponent],
+  imports: [TodoCard, LoaderComponent],
   templateUrl: './todo-page.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,10 +51,6 @@ export class TodoPageComponent implements OnInit {
           this.loader.set(false);
         },
       });
-  }
-
-  onAddNewTodo(todos: Todo[]): void {
-    this.todosList.set(todos);
   }
 
   deleteTodo(id: string): void {
