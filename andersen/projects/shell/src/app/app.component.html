@@ -1,4 +1,4 @@
-<main class="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed"
+<main class="h-screen flex flex-col overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed"
   [style.background-image]="'url(/assets/background.webp)'">
   <lib-header>
     <div class="w-full flex items-center justify-center gap-3 flex-wrap">
@@ -10,7 +10,7 @@
       <app-header-shell-event-buttons />
     </div>
   </lib-header>
-  <div class="flex-1">
+  <div class="flex-1 min-h-0 overflow-auto">
     <router-outlet />
   </div>
   <lib-footer>This is Shell 2026</lib-footer>

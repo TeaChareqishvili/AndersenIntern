@@ -15,7 +15,7 @@ export class HeaderShellEventButtons {
 
   readonly OUT_GOING_EVENTS = OUT_GOING_EVENTS;
 
-  dispatchEvent(event: OUT_GOING_EVENTS | string): void {
+  dispatchEvent(event: OUT_GOING_EVENTS | null): void {
     this.#eventBusService.shellEvent(event);
   }
 }

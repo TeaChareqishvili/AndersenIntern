@@ -24,7 +24,14 @@
 
             "tsConfig": "projects/shell/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
+            "assets": [
+              "projects/shell/src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "/assets"
+              }
+            ],
             "styles": [
               "projects/shell/src/styles.scss",
               "projects/ui/src/styles/tailwind.css",
@@ -83,7 +90,11 @@
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/shell/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["projects/shell/src/favicon.ico", "projects/shell/src/assets"],
+            "assets": [
+              "projects/shell/src/favicon.ico",
+              "projects/shell/src/assets",
+              "projects/shared/src/lib/assets"
+            ],
             "styles": [
               "projects/shell/src/styles.scss",
               "projects/ui/src/styles/tailwind.css",
@@ -121,6 +132,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/auth/src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
                 "output": "/assets"
               }
             ],
@@ -296,6 +312,11 @@
               {
                 "glob": "**/*",
                 "input": "projects/todo/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "/assets"
               }
             ],
             "styles": [

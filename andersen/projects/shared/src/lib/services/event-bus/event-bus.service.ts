@@ -25,18 +25,18 @@ export enum HEADER_EVENTS {
   providedIn: 'root',
 })
 export class EventBusService implements OnDestroy {
-  readonly inGoingEvents$ = new BehaviorSubject<string>('');
-  readonly outGoingEvents$ = new BehaviorSubject<string>('');
+  readonly inGoingEvents$ = new BehaviorSubject<IN_GOING_EVENTS | HEADER_EVENTS | null>(null);
+  readonly outGoingEvents$ = new BehaviorSubject<OUT_GOING_EVENTS | null>(null);
   readonly #eventData$ = new BehaviorSubject<any>(null);
 
   readonly #authUserService = inject(AuthUserService);
   readonly #logOutService = inject(LogOutService);
 
-  shellEvent(event: OUT_GOING_EVENTS | string): void {
+  shellEvent(event: OUT_GOING_EVENTS | null): void {
     this.outGoingEvents$.next(event);
   }
 
-  appEvent<T>(event: string, data: T): void {
+  appEvent<T>(event: IN_GOING_EVENTS | HEADER_EVENTS, data: T): void {
     this.#eventData$.next(data);
     this.inGoingEvents$.next(event);
   }
