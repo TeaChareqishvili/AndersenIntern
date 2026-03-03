@@ -4,18 +4,24 @@ import {
   DestroyRef,
   inject,
   OnInit,
+  Type,
   signal,
 } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { FooterComponent, HeaderComponent } from '@ui';
-import { MatButton } from '@angular/material/button';
-import { EventBusService, IN_GOING_EVENTS, OUT_GOING_EVENTS } from '@shared';
-import { AuthUserService } from '@shared';
+
+import {
+  EventBusService,
+  HEADER_EVENTS,
+  IN_GOING_EVENTS,
+  LoadingService,
+  OUT_GOING_EVENTS,
+} from '@shared';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AsyncPipe } from '@angular/common';
+import { NgComponentOutlet } from '@angular/common';
 import { LoaderComponent } from '@ui';
-import { TodoInput } from '@todo/app/todo-input/todo-input';
-import { filter } from 'rxjs';
+import { HeaderShellEventButtons } from './component/header-shell-event-buttons/header-shell-event-buttons';
 
 @Component({
   selector: 'app-root',
@@ -24,10 +30,9 @@ import { filter } from 'rxjs';
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
-    MatButton,
-    AsyncPipe,
+    NgComponentOutlet,
     LoaderComponent,
-    TodoInput,
+    HeaderShellEventButtons,
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,51 +40,55 @@ import { filter } from 'rxjs';
 export class AppComponent implements OnInit {
   readonly #eventBusService = inject(EventBusService);
   readonly #router = inject(Router);
-  readonly #authUserService = inject(AuthUserService);
+
+  readonly loading = inject(LoadingService).isLoading;
   readonly #destroyRef = inject(DestroyRef);
 
-  readonly user$ = this.#authUserService.user$;
   readonly OUT_GOING_EVENTS = OUT_GOING_EVENTS;
-  readonly logoutLoading = signal(false);
   readonly isTodoPage = signal(false);
+  readonly todoInputComponent = signal<Type<unknown> | null>(null);
 
   title = 'shell';
 
-  dispatchEvent(event: OUT_GOING_EVENTS | string): void {
-    if (event === OUT_GOING_EVENTS.LOGOUT) {
-      if (this.logoutLoading()) {
-        return;
-      }
-      this.logoutLoading.set(true);
+  // dispatchEvent(event: OUT_GOING_EVENTS | string): void {
+  //   this.#eventBusService.shellEvent(event);
+  // }
+
+  async loadTodoInputComponent(): Promise<void> {
+    if (this.todoInputComponent()) {
+      return;
     }
-    console.log(event);
-    this.#eventBusService.shellEvent(event);
+
+    const todoInput = await import('@todo/app/todo-input/todo-input');
+    this.todoInputComponent.set(todoInput.TodoInput);
   }
 
   ngOnInit(): void {
     this.#eventBusService.listen();
-    this.isTodoPage.set(this.#router.url.startsWith('/todo'));
-
-    this.#router.events
-      .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.#destroyRef),
-      )
-      .subscribe((event) => {
-        this.isTodoPage.set(event.urlAfterRedirects.startsWith('/todo'));
-      });
 
     this.#eventBusService.inGoingEvents$
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((e) => {
         switch (e) {
           case IN_GOING_EVENTS.LOGIN_SUCCESS:
+            this.isTodoPage.set(true);
+            void this.loadTodoInputComponent();
             this.#router.navigate(['/todo']);
             break;
+
           case IN_GOING_EVENTS.LOGOUT_SUCCESS:
-            this.logoutLoading.set(false);
             this.#router.navigate(['/auth']);
             break;
+
+          case HEADER_EVENTS.SHOW_TODO_INPUT:
+            this.isTodoPage.set(true);
+            void this.loadTodoInputComponent();
+            break;
+
+          case HEADER_EVENTS.CLEAR_HEADER:
+            this.isTodoPage.set(false);
+            break;
+
           default:
             break;
         }
@@ -90,10 +99,18 @@ export class AppComponent implements OnInit {
       .subscribe((e) => {
         switch (e) {
           case OUT_GOING_EVENTS.TO_TODO:
+            this.isTodoPage.set(true);
+            void this.loadTodoInputComponent();
             this.#router.navigate(['/todo']);
             break;
           case OUT_GOING_EVENTS.TO_USER:
+            this.isTodoPage.set(false);
             this.#router.navigate(['/auth/user']);
+            break;
+          case OUT_GOING_EVENTS.TO_SIGN_IN:
+          case OUT_GOING_EVENTS.TO_SIGN_UP:
+          case OUT_GOING_EVENTS.LOGOUT:
+            this.isTodoPage.set(false);
             break;
           default:
             break;

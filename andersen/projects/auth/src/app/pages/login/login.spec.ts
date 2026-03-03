@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 
 import { LoginComponent } from './login';
 
-import { NEVER, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
 
-import { AuthUserService, GLOBAL_NAV_TYPES } from '@shared';
+import { AuthUserService, LoadingService } from '@shared';
 import { createFakeUserService } from '../../app.spec';
 import { fakeData } from '../register/register.spec';
 import { ResponseMessageService } from '@shared';
+import { AUTH_ROUTES } from '@auth/app/auth.routes';
 
 const fakeAuthService = {
   signInUser: jasmine.createSpy('signInUser'),
@@ -18,6 +20,10 @@ const fakeAuthService = {
 const fakeResponseMessageService = {
   success: jasmine.createSpy('success').and.returnValue(of(null)),
 };
+const loadingSignal = signal(false);
+const fakeLoadingService = {
+  isLoading: loadingSignal.asReadonly(),
+};
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -26,12 +32,14 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     fakeUserService = createFakeUserService();
+    loadingSignal.set(false);
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
         { provide: AuthService, useValue: fakeAuthService },
         { provide: ResponseMessageService, useValue: fakeResponseMessageService },
         { provide: AuthUserService, useValue: fakeUserService },
+        { provide: LoadingService, useValue: fakeLoadingService },
       ],
     }).compileComponents();
 
@@ -46,27 +54,13 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('when login is submitted we expect loader to be true', () => {
-    fakeAuthService.signInUser.and.returnValue(NEVER);
-    component.onLogin(fakeData);
+  it('reflects shared loader state when loading is true', () => {
+    loadingSignal.set(true);
     expect(component.loading()).toBeTrue();
   });
 
-  it('when password reset is submitted we expect loader to be true', () => {
-    fakeAuthService.ressetPassword.and.returnValue(NEVER);
-    component.onResetPassword(fakeData);
-    expect(component.loading()).toBeTrue();
-  });
-
-  it('when sign in is successful loader expected to be false', () => {
-    fakeAuthService.signInUser.and.returnValue(of(fakeData));
-    component.onLogin(fakeData);
-    expect(component.loading()).toBeFalse();
-  });
-
-  it('when reset password is successful loader expected to be false', () => {
-    fakeAuthService.ressetPassword.and.returnValue(of(null));
-    component.onResetPassword(fakeData);
+  it('reflects shared loader state when loading is false', () => {
+    loadingSignal.set(false);
     expect(component.loading()).toBeFalse();
   });
 
@@ -76,7 +70,7 @@ describe('LoginComponent', () => {
 
     expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: `Welcome ${fakeData.email} 🎉`,
-      navigateTo: GLOBAL_NAV_TYPES.USER,
+      navigateTo: AUTH_ROUTES.USER,
     });
   });
 

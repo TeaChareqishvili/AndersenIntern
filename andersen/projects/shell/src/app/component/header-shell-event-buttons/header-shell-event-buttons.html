@@ -1,0 +1,11 @@
+<div class="w-full flex items-center justify-center gap-3 flex-wrap">
+  @if (user$ | async; as user) {
+  <button mat-raised-button [disabled]="loading()" (click)="dispatchEvent(OUT_GOING_EVENTS.LOGOUT)">Sign
+    Out</button>
+  <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_TODO)">Todo</button>
+  <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_USER)">User</button>
+  } @else {
+  <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_SIGN_IN)">Sign In</button>
+  <button mat-raised-button (click)="dispatchEvent(OUT_GOING_EVENTS.TO_SIGN_UP)">Sign Up</button>
+  }
+</div>

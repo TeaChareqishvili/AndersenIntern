@@ -16,6 +16,11 @@ export enum OUT_GOING_EVENTS {
   LOGOUT = 'on-logout',
 }
 
+export enum HEADER_EVENTS {
+  SHOW_TODO_INPUT = 'show-todo-input',
+  CLEAR_HEADER = 'clear-header',
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -55,16 +60,20 @@ export class EventBusService implements OnDestroy {
     this.outGoingEvents$.subscribe((e) => {
       switch (e) {
         case OUT_GOING_EVENTS.LOGOUT:
-          this.#logOutService.signOut().subscribe({
-            complete: () => {
-              this.#authUserService.user = null;
-              this.inGoingEvents$.next(IN_GOING_EVENTS.LOGOUT_SUCCESS);
-            },
-          });
+          this.#handleLogout();
           break;
         default:
           break;
       }
+    });
+  }
+
+  #handleLogout(): void {
+    this.#logOutService.signOut().subscribe({
+      complete: () => {
+        this.#authUserService.user = null;
+        this.inGoingEvents$.next(IN_GOING_EVENTS.LOGOUT_SUCCESS);
+      },
     });
   }
 }

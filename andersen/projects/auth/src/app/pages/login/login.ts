@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, DestroyRef } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
 import { createAuthForm } from '../../models/auth.models';
 
-import { finalize, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { LoaderComponent } from '@ui';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { AuthResponse, ResponseMessageService } from '@shared';
+import { AuthResponse, LoadingService, ResponseMessageService } from '@shared';
 import { EventBusService, IN_GOING_EVENTS } from '@shared';
 
 @Component({
@@ -21,14 +21,12 @@ export class LoginComponent {
   readonly #authService = inject(AuthService);
   readonly #responseMessage = inject(ResponseMessageService);
   readonly #eventBusService = inject(EventBusService);
+  readonly loading = inject(LoadingService).isLoading;
 
   readonly #destroyRef = inject(DestroyRef);
   readonly form = createAuthForm();
-  readonly loading = signal(false);
 
   onLogin(data: AuthResponse): void {
-    this.loading.set(true);
-
     this.#authService
       .signInUser(data)
       .pipe(
@@ -37,7 +35,6 @@ export class LoginComponent {
             message: `Welcome ${user?.email} 🎉`,
           }),
         ),
-        finalize(() => this.loading.set(false)),
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(() => {
@@ -46,14 +43,9 @@ export class LoginComponent {
   }
 
   onResetPassword(data: AuthResponse): void {
-    this.loading.set(true);
-
     this.#authService
       .ressetPassword(data)
-      .pipe(
-        finalize(() => this.loading.set(false)),
-        takeUntilDestroyed(this.#destroyRef),
-      )
+      .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
         next: () => {
           this.#responseMessage.success({

@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { signal } from '@angular/core';
 import { RegisterComponent } from './register';
-
-import { NEVER, of } from 'rxjs';
+import { of } from 'rxjs';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { AuthResponse, GLOBAL_NAV_TYPES, ResponseMessageService } from '@shared';
+import { AuthResponse, LoadingService, ResponseMessageService } from '@shared';
+import { AUTH_ROUTES } from '@auth/app/auth.routes';
 
 export const fakeData: AuthResponse = {
   email: 'tea@gmail.com',
@@ -18,17 +18,23 @@ const fakeAuthService = {
 const fakeResponseMessageService = {
   success: jasmine.createSpy('success').and.returnValue(of(null)),
 };
+const loadingSignal = signal(false);
+const fakeLoadingService = {
+  isLoading: loadingSignal.asReadonly(),
+};
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
   beforeEach(async () => {
+    loadingSignal.set(false);
     await TestBed.configureTestingModule({
       imports: [RegisterComponent],
       providers: [
         { provide: AuthService, useValue: fakeAuthService },
         { provide: ResponseMessageService, useValue: fakeResponseMessageService },
+        { provide: LoadingService, useValue: fakeLoadingService },
       ],
     }).compileComponents();
 
@@ -41,15 +47,13 @@ describe('RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('when registration submitted we expect loader to be true', () => {
-    fakeAuthService.registerUser.and.returnValue(NEVER);
-    component.onRegister(fakeData);
+  it('reflects shared loader state when loading is true', () => {
+    loadingSignal.set(true);
     expect(component.loading()).toBeTrue();
   });
 
-  it('when registration is successful loader expected to be false', () => {
-    fakeAuthService.registerUser.and.returnValue(of(null));
-    component.onRegister(fakeData);
+  it('reflects shared loader state when loading is false', () => {
+    loadingSignal.set(false);
     expect(component.loading()).toBeFalse();
   });
 
@@ -67,7 +71,7 @@ describe('RegisterComponent', () => {
 
     expect(fakeResponseMessageService.success).toHaveBeenCalledOnceWith({
       message: 'Registration successful 🎉',
-      navigateTo: GLOBAL_NAV_TYPES.LOGIN,
+      navigateTo: AUTH_ROUTES.LOGIN,
     });
   });
 });

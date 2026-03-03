@@ -1,11 +1,10 @@
-import { GLOBAL_NAV_TYPES } from '@shared';
 import { Routes } from '@angular/router';
 
 export enum SHELL_ROUTES {
   AUTH = 'auth',
   TODO = 'todo',
   HOME = '',
-  ABSOLUTE = `auth/${GLOBAL_NAV_TYPES.LOGIN}`,
+  ABSOLUTE = 'auth/sign-in',
 }
 
 export const routes: Routes = [
