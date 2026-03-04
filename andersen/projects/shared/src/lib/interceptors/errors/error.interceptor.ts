@@ -4,7 +4,7 @@ import { catchError, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
 
-import { AUTH_ROUTES, BackendError, ResponseMessageService } from '@shared';
+import { BackendError, INTERCEPTOR_NAV, ResponseMessageService } from '@shared';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const responseMessage = inject(ResponseMessageService);
@@ -23,7 +23,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (error.status === 401) {
           responseMessage.error('Session expired. Please log in again.');
-          router.navigate([AUTH_ROUTES.LOGIN]);
+          router.navigate([INTERCEPTOR_NAV.LOGIN]);
           return throwError(() => 'Unauthorized');
         }
 

@@ -1,13 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, DestroyRef, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, DestroyRef } from '@angular/core';
 import { AuthComponent } from '../../form/auth';
-import { AUTH_ROUTES, AuthResponse, createAuthForm } from '../../models/auth.models';
+import { createAuthForm } from '../../models/auth.models';
 import { LoaderComponent } from '@ui';
-
-import { finalize, switchMap } from 'rxjs';
-
+import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
-import { ResponseMessageService } from '@shared';
+import { AuthResponse, LoadingService, ResponseMessageService } from '@shared';
 
 @Component({
   selector: 'app-register',
@@ -18,27 +16,22 @@ import { ResponseMessageService } from '@shared';
 })
 export class RegisterComponent {
   readonly form = createAuthForm();
-  readonly loading = signal(false);
+  readonly loading = inject(LoadingService).isLoading;
 
-  private readonly responseMessage = inject(ResponseMessageService);
-  private readonly registrationService = inject(AuthService);
-  private readonly destroyRef = inject(DestroyRef);
+  readonly #responseMessage = inject(ResponseMessageService);
+  readonly #registrationService = inject(AuthService);
+  readonly #destroyRef = inject(DestroyRef);
 
   onRegister(data: AuthResponse): void {
-    this.loading.set(true);
-
-    this.registrationService
+    this.#registrationService
       .registerUser(data)
       .pipe(
         switchMap(() =>
-          this.responseMessage.success({
+          this.#responseMessage.success({
             message: 'Registration successful 🎉',
-            navigateTo: AUTH_ROUTES.LOGIN,
           }),
         ),
-
-        finalize(() => this.loading.set(false)),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe({});
   }

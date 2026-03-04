@@ -10,7 +10,9 @@
     "paths": {
       "@shared": ["../shared/src/public-api.ts"],
       "@ui": ["../ui/src/public-api.ts"],
-      "@env": ["../environment/index.ts"]
+      "@env": ["../environment/index.ts"],
+      "@auth/*": ["../auth/src/*"],
+      "@todo/*": ["./src/*"]
     }
   },
   "references": [

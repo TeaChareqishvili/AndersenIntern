@@ -6,26 +6,28 @@ import {
   DestroyRef,
   effect,
   inject,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
-import { TodoInput } from '../todo-input/todo-input';
 import { TodoCard } from '../todo-card/todo-card';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TodoUpdateService } from '../services/todo-service/todo-update.service';
 import { finalize } from 'rxjs';
 import { Todo } from '../models/models';
+import { EventBusService, HEADER_EVENTS } from '@shared';
 
 @Component({
   selector: 'app-todo-page',
-  imports: [TodoInput, TodoCard, LoaderComponent],
+  imports: [TodoCard, LoaderComponent],
   templateUrl: './todo-page.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoPageComponent implements OnInit {
+export class TodoPageComponent implements OnInit, OnDestroy {
   private readonly todoUpdateService = inject(TodoUpdateService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly eventBusService = inject(EventBusService);
   readonly loader = signal(false);
   readonly todosList = signal<Todo[]>([]);
   readonly taskLoadingTodoId = signal<string | null>(null);
@@ -37,6 +39,7 @@ export class TodoPageComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.eventBusService.appEvent(HEADER_EVENTS.SHOW_TODO_INPUT, null);
     this.loader.set(true);
     this.todoUpdateService
       .getTodoList()
@@ -54,8 +57,8 @@ export class TodoPageComponent implements OnInit {
       });
   }
 
-  onAddNewTodo(todos: Todo[]): void {
-    this.todosList.set(todos);
+  ngOnDestroy(): void {
+    this.eventBusService.appEvent(HEADER_EVENTS.CLEAR_HEADER, null);
   }
 
   deleteTodo(id: string): void {

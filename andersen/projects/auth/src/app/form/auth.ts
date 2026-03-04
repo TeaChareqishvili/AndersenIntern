@@ -24,7 +24,7 @@ import { PasswordMaskPipe } from '../pipes/password-mask/password-mask.pipe';
 export class AuthComponent {
   hidePassword = true;
 
-  readonly maskSymbol = '😂';
+  readonly maskSymbol = '*';
   readonly form = input.required<FormGroup>();
   readonly showRessetButton = input<boolean>(false);
   readonly ressetText = input<string | null>(null);

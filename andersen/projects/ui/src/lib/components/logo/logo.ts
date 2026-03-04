@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogoComponent {
-  readonly logoPath = '/logo.webp';
+  readonly logoPath = '/assets/logo.webp';
 }

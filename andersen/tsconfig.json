@@ -18,7 +18,9 @@
       "shared": ["./dist/shared"],
       "@ui": ["./projects/ui/src/public-api.ts"],
       "@env": ["./projects/environment/index.ts"],
-      "@shared": ["./projects/shared/src/public-api.ts"]
+      "@shared": ["./projects/shared/src/public-api.ts"],
+      "@auth/*": ["./projects/auth/src/*"],
+      "@todo/*": ["./projects/todo/src/*"]
     },
     "importHelpers": true,
     "target": "ES2022",

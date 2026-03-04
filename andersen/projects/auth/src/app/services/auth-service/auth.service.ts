@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '@env';
-import { AuthResponse } from '../../models/auth.models';
+import { AuthResponse } from '@shared';
+
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,10 +14,6 @@ export class AuthService {
 
   signInUser(userData: AuthResponse): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/sign-in`, userData);
-  }
-
-  signOut(): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/sign-in/out`);
   }
 
   registerUser(userData: AuthResponse): Observable<AuthResponse> {

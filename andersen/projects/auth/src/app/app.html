@@ -1,25 +1,6 @@
-<main class="min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed"
-  [style.background-image]="'url(/background.webp)'">
-  <lib-header>
-    <div header-navigation class="flex gap-4 items-center">
-      @if(user()) {
-      <button mat-raised-button (click)="onLogout()">
-        Sign Out
-      </button>
-      }
-      @if(!user()){
-      <button mat-raised-button (click)="navigateToSignIn()">
-        Sign In
-      </button>
-      <button mat-raised-button (click)="navigateToSignUp()">
-        Sign Up
-      </button>
-      }
-
-    </div>
-  </lib-header>
-  <div class="flex-1">
+<main class="h-full flex flex-col bg-cover bg-center bg-no-repeat bg-fixed"
+  [style.background-image]="'url(/assets/background.webp)'">
+  <div class="flex-1 min-h-0">
     <router-outlet />
   </div>
-  <lib-footer>Teona 2026</lib-footer>
 </main>
