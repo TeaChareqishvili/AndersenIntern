@@ -20,7 +20,8 @@
       "@env": ["./projects/environment/index.ts"],
       "@shared": ["./projects/shared/src/public-api.ts"],
       "@auth/*": ["./projects/auth/src/*"],
-      "@todo/*": ["./projects/todo/src/*"]
+      "@todo/*": ["./projects/todo/src/*"],
+      "@history/*": ["./projects/history/src/*"]
     },
     "importHelpers": true,
     "target": "ES2022",

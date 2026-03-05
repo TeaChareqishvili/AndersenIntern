@@ -109,7 +109,7 @@ export class AppComponent implements OnInit {
 
       case OUT_GOING_EVENTS.TO_USER:
         this.isTodoPage.set(false);
-        this.#router.navigate(['/auth/user']);
+        this.#router.navigate(['user']);
         break;
 
       case OUT_GOING_EVENTS.TO_SIGN_IN:

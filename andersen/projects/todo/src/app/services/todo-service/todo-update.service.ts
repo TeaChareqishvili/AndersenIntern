@@ -2,11 +2,13 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { Todo, UpdateSubTask } from '../../models/models';
 import { RequestServiceTodo } from '../request-service/request-service.service';
+import { TodoHistoryEventService, TODO_HISTORY_EVENTS } from '@shared';
 import { map, Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TodoUpdateService {
   private readonly todoServiceApi = inject(RequestServiceTodo);
+  private readonly todoHistoryEventService = inject(TodoHistoryEventService);
   private readonly _todos = signal<Todo[]>([]);
 
   readonly todos = this._todos.asReadonly();
@@ -17,40 +19,63 @@ export class TodoUpdateService {
 
   addTodo(name: string): Observable<Todo[]> {
     return this.todoServiceApi.addTodo(name).pipe(
-      tap((createdTodo) => this._todos.update((todos) => [...todos, createdTodo])),
+      tap((createdTodo) => {
+        this._todos.update((todos) => [...todos, createdTodo]);
+        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.CREATE_TODO, {
+          todo_id: createdTodo.id,
+        });
+      }),
       map(() => this.#getUpdatedTodos()),
     );
   }
 
   removeTodo(id: string): Observable<Todo[]> {
     return this.todoServiceApi.deleteTodo(id).pipe(
-      tap(() => this._todos.update((todos) => todos.filter((todo) => todo.id !== id))),
+      tap(() => {
+        this._todos.update((todos) => todos.filter((todo) => todo.id !== id));
+        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.DELETE_TODO, {
+          todo_id: id,
+        });
+      }),
       map(() => this.#getUpdatedTodos()),
     );
   }
 
   addSubtask(id: string, name: string): Observable<Todo[]> {
     return this.todoServiceApi.createSubTask(id, name).pipe(
-      tap((updatedTodo) => this.#updateTodo(updatedTodo.id, () => updatedTodo)),
+      tap((updatedTodo) => {
+        this.#updateTodo(updatedTodo.id, () => updatedTodo);
+        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.CREATE_TASK, {
+          todo_id: updatedTodo.id,
+        });
+      }),
       map(() => this.#getUpdatedTodos()),
     );
   }
 
   updateTask(todoId: string, taskId: string, payload: UpdateSubTask): Observable<Todo[]> {
     return this.todoServiceApi.updateSubTask(todoId, taskId, payload).pipe(
-      tap((updatedTodo) => this.#updateTodo(updatedTodo.id, () => updatedTodo)),
+      tap((updatedTodo) => {
+        this.#updateTodo(updatedTodo.id, () => updatedTodo);
+        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.UPDATE_TASK, {
+          todo_id: todoId,
+        });
+      }),
       map(() => this.#getUpdatedTodos()),
     );
   }
 
   deleteSubTask(todoId: string, taskId: string): Observable<Todo[]> {
     return this.todoServiceApi.deleteSubTask(todoId, taskId).pipe(
-      tap(() =>
+      tap(() => {
         this.#updateTodo(todoId, (todo) => ({
           ...todo,
           tasks: todo.tasks.filter((task) => task.id !== taskId),
-        })),
-      ),
+        }));
+        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.DELETE_TASK, {
+          todo_id: todoId,
+        });
+      }),
       map(() => this.#getUpdatedTodos()),
     );
   }

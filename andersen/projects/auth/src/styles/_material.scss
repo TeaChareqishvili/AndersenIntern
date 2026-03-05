@@ -96,11 +96,13 @@
 
 // snackbar styles
 
-.cdk-overlay-pane {
-  position: absolute !important;
-  top: 10px !important;
-  left: 40% !important;
-}
+// fix these style TODO
+
+// .cdk-overlay-pane {
+//   position: absolute !important;
+//   top: 10px !important;
+//   left: 40% !important;
+// }
 
 .mat-mdc-simple-snack-bar .mat-mdc-snack-bar-label {
   background-color: rgba(240, 205, 49, 0.9) !important;
@@ -126,4 +128,29 @@
   .mdc-circular-progress__indeterminate-container {
     color: rgba(253, 216, 53, 0.9) !important;
   }
+}
+
+// pagination
+
+.mat-mdc-paginator .mat-mdc-select {
+  padding: 5px !important;
+}
+
+.history-paginator-scope .mat-mdc-paginator .mat-mdc-icon-button {
+  display: none !important;
+}
+
+.mat-mdc-paginator-page-size-label,
+.mat-mdc-paginator-range-actions {
+  color: aliceblue !important;
+}
+
+.mat-mdc-option.mdc-list-item {
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }

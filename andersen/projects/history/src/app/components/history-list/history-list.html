@@ -1,0 +1,20 @@
+<div
+  class="history-paginator-scope w-full max-w-3xl overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
+  <mat-list class="p-6">
+    @for (item of pagedHistoryItems(); track item.todo_id + '-' + item.event + '-' + item.date) {
+    <mat-list-item class="h-auto! py-2">
+      <span matListItemTitle>{{ item.label }}</span>
+      <span matListItemLine>{{ item.date | date: 'medium' }}</span>
+    </mat-list-item>
+    } @empty {
+    <mat-list-item>
+      <span matListItemTitle>No history events yet</span>
+    </mat-list-item>
+    }
+  </mat-list>
+  @if(historyList().length > 0){
+  <mat-paginator [length]="historyItems().length" [pageSize]="pageSize()" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)" />
+  }
+
+</div>

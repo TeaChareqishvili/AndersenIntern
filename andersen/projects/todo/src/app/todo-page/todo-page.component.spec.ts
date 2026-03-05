@@ -70,11 +70,6 @@ describe('TodoPageComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should update todos list when new todos are added', () => {
-  //   component.onAddNewTodo([fakeTodo]);
-  //   expect(component.todosList()).toEqual([fakeTodo]);
-  // });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });

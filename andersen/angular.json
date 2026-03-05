@@ -227,9 +227,18 @@
               {
                 "glob": "**/*",
                 "input": "projects/history/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "/assets"
               }
             ],
-            "styles": ["projects/history/src/styles.scss"]
+            "styles": [
+              "projects/history/src/styles.scss",
+              "projects/ui/src/styles/tailwind.css",
+              "projects/auth/src/styles/index.scss"
+            ]
           },
           "configurations": {
             "production": {
