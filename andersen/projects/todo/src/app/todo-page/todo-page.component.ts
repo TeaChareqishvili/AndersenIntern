@@ -40,13 +40,9 @@ export class TodoPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.eventBusService.appEvent(HEADER_EVENTS.SHOW_TODO_INPUT, null);
-    this.loader.set(true);
     this.todoUpdateService
       .getTodoList()
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loader.set(false)),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
@@ -62,7 +58,6 @@ export class TodoPageComponent implements OnInit, OnDestroy {
   }
 
   deleteTodo(id: string): void {
-    this.loader.set(true);
     this.todoUpdateService
       .removeTodo(id)
       .pipe(
@@ -73,31 +68,23 @@ export class TodoPageComponent implements OnInit, OnDestroy {
         next: (todos) => {
           this.todosList.set(todos);
         },
-        error: () => {
-          this.loader.set(false);
-        },
       });
   }
 
   addSubtask(event: { todoId: string; name: string }): void {
     const { todoId, name } = event;
-    this.loader.set(true);
     this.taskLoadingTodoId.set(todoId);
     this.todoUpdateService
       .addSubtask(todoId, name)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => {
-          this.loader.set(false);
           this.taskLoadingTodoId.set(null);
         }),
       )
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
-        },
-        error: () => {
-          this.loader.set(false);
         },
       });
   }
@@ -108,14 +95,12 @@ export class TodoPageComponent implements OnInit, OnDestroy {
     payload: { name?: string; completed?: boolean };
   }): void {
     const { todoId, taskId, payload } = event;
-    this.loader.set(true);
     this.taskLoadingTodoId.set(todoId);
     this.todoUpdateService
       .updateTask(todoId, taskId, payload)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => {
-          this.loader.set(false);
           this.taskLoadingTodoId.set(null);
         }),
       )
@@ -124,31 +109,23 @@ export class TodoPageComponent implements OnInit, OnDestroy {
           this.todosList.set(todos);
           this.confirmedTaskUpdate.set({ todoId, taskId, token: Date.now() });
         },
-        error: () => {
-          this.loader.set(false);
-        },
       });
   }
 
   deleteSubtask(event: { todoId: string; taskId: string }): void {
     const { todoId, taskId } = event;
-    this.loader.set(true);
     this.taskLoadingTodoId.set(todoId);
     this.todoUpdateService
       .deleteSubTask(todoId, taskId)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => {
-          this.loader.set(false);
           this.taskLoadingTodoId.set(null);
         }),
       )
       .subscribe({
         next: (todos) => {
           this.todosList.set(todos);
-        },
-        error: () => {
-          this.loader.set(false);
         },
       });
   }

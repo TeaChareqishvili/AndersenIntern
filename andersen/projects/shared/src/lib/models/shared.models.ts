@@ -23,6 +23,12 @@ export enum TODO_HISTORY_EVENTS {
   UPDATE_TASK = 'UPDATE_TASK',
 }
 
+export interface TodoHistoryEventPayload {
+  event: TODO_HISTORY_EVENTS;
+  todo_id: string;
+  task_id?: string;
+}
+
 export type TodoHistoryEventData = {
   todo_id: string;
 };

@@ -21,9 +21,11 @@ export class TodoUpdateService {
     return this.todoServiceApi.addTodo(name).pipe(
       tap((createdTodo) => {
         this._todos.update((todos) => [...todos, createdTodo]);
-        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.CREATE_TODO, {
+        this.todoHistoryEventService.emitHistoryEvent({
+          event: TODO_HISTORY_EVENTS.CREATE_TODO,
           todo_id: createdTodo.id,
         });
+        console.log('EVENT EMITTED', createdTodo.id);
       }),
       map(() => this.#getUpdatedTodos()),
     );
@@ -33,7 +35,8 @@ export class TodoUpdateService {
     return this.todoServiceApi.deleteTodo(id).pipe(
       tap(() => {
         this._todos.update((todos) => todos.filter((todo) => todo.id !== id));
-        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.DELETE_TODO, {
+        this.todoHistoryEventService.emitHistoryEvent({
+          event: TODO_HISTORY_EVENTS.DELETE_TODO,
           todo_id: id,
         });
       }),
@@ -45,7 +48,8 @@ export class TodoUpdateService {
     return this.todoServiceApi.createSubTask(id, name).pipe(
       tap((updatedTodo) => {
         this.#updateTodo(updatedTodo.id, () => updatedTodo);
-        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.CREATE_TASK, {
+        this.todoHistoryEventService.emitHistoryEvent({
+          event: TODO_HISTORY_EVENTS.CREATE_TASK,
           todo_id: updatedTodo.id,
         });
       }),
@@ -55,10 +59,11 @@ export class TodoUpdateService {
 
   updateTask(todoId: string, taskId: string, payload: UpdateSubTask): Observable<Todo[]> {
     return this.todoServiceApi.updateSubTask(todoId, taskId, payload).pipe(
-      tap((updatedTodo) => {
-        this.#updateTodo(updatedTodo.id, () => updatedTodo);
-        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.UPDATE_TASK, {
-          todo_id: todoId,
+      tap((updatedTask) => {
+        this.#updateTodo(updatedTask.id, () => updatedTask);
+        this.todoHistoryEventService.emitHistoryEvent({
+          event: TODO_HISTORY_EVENTS.UPDATE_TASK,
+          todo_id: updatedTask.id,
         });
       }),
       map(() => this.#getUpdatedTodos()),
@@ -72,7 +77,8 @@ export class TodoUpdateService {
           ...todo,
           tasks: todo.tasks.filter((task) => task.id !== taskId),
         }));
-        this.todoHistoryEventService.appHistoryEvent(TODO_HISTORY_EVENTS.DELETE_TASK, {
+        this.todoHistoryEventService.emitHistoryEvent({
+          event: TODO_HISTORY_EVENTS.DELETE_TASK,
           todo_id: todoId,
         });
       }),

@@ -1,30 +1,16 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { TODO_HISTORY_EVENTS, TodoHistoryEventData } from '../../models/shared.models';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { TODO_HISTORY_EVENTS, TodoHistoryEventPayload } from '../../models/shared.models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TodoHistoryEventService implements OnDestroy {
-  readonly historyEvents$ = new BehaviorSubject<TODO_HISTORY_EVENTS | null>(null);
-  readonly #eventData$ = new BehaviorSubject<TodoHistoryEventData | null>(null);
+export class TodoHistoryEventService {
+  private readonly historyEventSubject = new Subject<TodoHistoryEventPayload>();
+  readonly historyEvents$ = this.historyEventSubject.asObservable();
 
-  todoHistoryEvent(event: TODO_HISTORY_EVENTS | null): void {
-    this.historyEvents$.next(event);
-  }
-
-  appHistoryEvent(event: TODO_HISTORY_EVENTS, data: TodoHistoryEventData): void {
-    this.#eventData$.next(data);
-    this.historyEvents$.next(event);
-  }
-
-  get eventData(): TodoHistoryEventData | null {
-    return this.#eventData$.value;
-  }
-
-  ngOnDestroy(): void {
-    this.historyEvents$.complete();
-    this.#eventData$.complete();
+  emitHistoryEvent(payload: TodoHistoryEventPayload): void {
+    this.historyEventSubject.next(payload);
   }
 
   getEventLabel(event: TODO_HISTORY_EVENTS): string {
