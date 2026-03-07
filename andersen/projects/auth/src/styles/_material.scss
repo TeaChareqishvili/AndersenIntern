@@ -154,3 +154,20 @@
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
+
+// list TODO fix the styles
+
+.mdc-list-item__content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 7px !important;
+}
+
+.history-paginator-scope .mat-mdc-list-item-title,
+.history-paginator-scope .mat-mdc-list-item-line {
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  text-align: center !important;
+}

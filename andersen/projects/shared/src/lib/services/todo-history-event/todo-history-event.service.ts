@@ -7,6 +7,15 @@ import { TODO_HISTORY_EVENTS, TodoHistoryEventPayload } from '../../models/share
 })
 export class TodoHistoryEventService {
   private readonly historyEventSubject = new Subject<TodoHistoryEventPayload>();
+
+  readonly #EVENT_LABELS: Record<TODO_HISTORY_EVENTS, string> = {
+    [TODO_HISTORY_EVENTS.CREATE_TODO]: 'Created todo',
+    [TODO_HISTORY_EVENTS.DELETE_TODO]: 'Deleted todo',
+    [TODO_HISTORY_EVENTS.CREATE_TASK]: 'Created task',
+    [TODO_HISTORY_EVENTS.DELETE_TASK]: 'Deleted task',
+    [TODO_HISTORY_EVENTS.UPDATE_TASK]: 'Updated task',
+    [TODO_HISTORY_EVENTS.COMPLETED_TASK]: 'Completed task',
+  };
   readonly historyEvents$ = this.historyEventSubject.asObservable();
 
   emitHistoryEvent(payload: TodoHistoryEventPayload): void {
@@ -14,19 +23,6 @@ export class TodoHistoryEventService {
   }
 
   getEventLabel(event: TODO_HISTORY_EVENTS): string {
-    switch (event) {
-      case TODO_HISTORY_EVENTS.CREATE_TODO:
-        return 'Created todo';
-      case TODO_HISTORY_EVENTS.DELETE_TODO:
-        return 'Deleted todo';
-      case TODO_HISTORY_EVENTS.CREATE_TASK:
-        return 'Created task';
-      case TODO_HISTORY_EVENTS.DELETE_TASK:
-        return 'Deleted task';
-      case TODO_HISTORY_EVENTS.UPDATE_TASK:
-        return 'Updated task';
-      default:
-        return event;
-    }
+    return this.#EVENT_LABELS[event] ?? event;
   }
 }

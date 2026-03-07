@@ -25,7 +25,6 @@ export class TodoUpdateService {
           event: TODO_HISTORY_EVENTS.CREATE_TODO,
           todo_id: createdTodo.id,
         });
-        console.log('EVENT EMITTED', createdTodo.id);
       }),
       map(() => this.#getUpdatedTodos()),
     );
@@ -93,6 +92,10 @@ export class TodoUpdateService {
         sub.id === subId ? { ...sub, completed: !sub.completed } : sub,
       ),
     }));
+    this.todoHistoryEventService.emitHistoryEvent({
+      event: TODO_HISTORY_EVENTS.COMPLETED_TASK,
+      todo_id: todoId, // ??? TODO
+    });
   }
 
   cancelEditing(todos: Todo[]): void {

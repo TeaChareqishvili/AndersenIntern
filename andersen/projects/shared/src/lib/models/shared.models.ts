@@ -21,6 +21,7 @@ export enum TODO_HISTORY_EVENTS {
   CREATE_TASK = 'CREATE_TASK',
   DELETE_TASK = 'DELETE_TASK',
   UPDATE_TASK = 'UPDATE_TASK',
+  COMPLETED_TASK = 'COMPLETED TASK',
 }
 
 export interface TodoHistoryEventPayload {
