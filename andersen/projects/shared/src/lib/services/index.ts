@@ -8,3 +8,4 @@ export {
   OUT_GOING_EVENTS,
   HEADER_EVENTS,
 } from './event-bus/event-bus.service';
+export * from './todo-history-event/todo-history-event.service';

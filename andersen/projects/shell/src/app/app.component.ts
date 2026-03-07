@@ -16,12 +16,15 @@ import {
   IN_GOING_EVENTS,
   LoadingService,
   OUT_GOING_EVENTS,
+  TodoHistoryEventService,
 } from '@shared';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgComponentOutlet } from '@angular/common';
 import { LoaderComponent } from '@ui';
 import { HeaderShellEventButtons } from './component/header-shell-event-buttons/header-shell-event-buttons';
+import { switchMap } from 'rxjs';
+import { UserHistoryService } from '@history/app/services/user-history-request/user-history.service';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +43,8 @@ import { HeaderShellEventButtons } from './component/header-shell-event-buttons/
 export class AppComponent implements OnInit {
   readonly #eventBusService = inject(EventBusService);
   readonly #router = inject(Router);
+  readonly #todoHistoryEventService = inject(TodoHistoryEventService);
+  readonly #userHistoryService = inject(UserHistoryService);
 
   readonly loading = inject(LoadingService).isLoading;
   readonly #destroyRef = inject(DestroyRef);
@@ -53,6 +58,18 @@ export class AppComponent implements OnInit {
     this.#initEventBus();
     this.#subscribeToIncomingEvents();
     this.#subscribeToOutgoingEvents();
+    this.#postTodoHistory();
+  }
+
+  #postTodoHistory(): void {
+    this.#todoHistoryEventService.historyEvents$
+      .pipe(
+        switchMap((payload) => this.#userHistoryService.postHistoryEvent(payload)),
+        takeUntilDestroyed(this.#destroyRef),
+      )
+      .subscribe((createdHistoryEvent) => {
+        this.#eventBusService.appEvent(IN_GOING_EVENTS.HISTORY_EVENT_CREATED, createdHistoryEvent);
+      });
   }
 
   #initEventBus(): void {
@@ -87,6 +104,9 @@ export class AppComponent implements OnInit {
         this.#router.navigate(['/auth']);
         break;
 
+      case IN_GOING_EVENTS.HISTORY_EVENT_CREATED:
+        break;
+
       case HEADER_EVENTS.SHOW_TODO_INPUT:
         this.#activateTodoPage();
         break;
@@ -109,7 +129,7 @@ export class AppComponent implements OnInit {
 
       case OUT_GOING_EVENTS.TO_USER:
         this.isTodoPage.set(false);
-        this.#router.navigate(['/auth/user']);
+        this.#router.navigate(['user']);
         break;
 
       case OUT_GOING_EVENTS.TO_SIGN_IN:

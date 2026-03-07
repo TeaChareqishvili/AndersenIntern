@@ -5,6 +5,7 @@ export enum SHELL_ROUTES {
   TODO = 'todo',
   HOME = '',
   ABSOLUTE = 'auth/sign-in',
+  USER = 'user',
 }
 
 export const routes: Routes = [
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: SHELL_ROUTES.TODO,
     loadChildren: () => import('@todo/app/todo.routes').then((m) => m.routes),
+  },
+  {
+    path: SHELL_ROUTES.USER,
+    loadChildren: () => import('@history/app/history.routes').then((m) => m.routes),
   },
   {
     path: SHELL_ROUTES.HOME,

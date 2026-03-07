@@ -1,0 +1,20 @@
+<div
+  class="history-paginator-scope w-full max-w-3xl overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
+  <mat-list class="p-6">
+    @for (item of historyStatistics(); track item.label) {
+    <mat-list-item>
+      <span matListItemTitle>{{ item.label }}</span>
+      <span matListItemLine>{{ item.count }}</span>
+    </mat-list-item>
+    } @empty {
+    <mat-list-item>
+      <span matListItemTitle>No history events yet</span>
+    </mat-list-item>
+    }
+  </mat-list>
+  @if(historyList().length > 0){
+  <mat-paginator [length]="historyStatistics().length" [pageSize]="pageSize()" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)" />
+  }
+
+</div>
