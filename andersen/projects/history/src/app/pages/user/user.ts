@@ -5,16 +5,16 @@ import {
   DestroyRef,
   inject,
   OnInit,
+  output,
   signal,
 } from '@angular/core';
 import { AuthUserService } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  HistoryEventRequest,
-  UserHistoryService,
-} from '@history/app/services/user-history-request/user-history.service';
+import { UserHistoryService } from '@history/app/services/user-history-request/user-history.service';
+import { HistoryEventRequest } from '@history/app/models/history.models';
 
 import { HistoryList } from '@history/app/components/history-list/history-list';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-user',
@@ -29,18 +29,38 @@ export class UserComponent implements OnInit {
   readonly #destroyRef = inject(DestroyRef);
   readonly historyList = signal<HistoryEventRequest[]>([]);
 
+  readonly pageSizeOptions = [5, 10, 15];
+
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(this.pageSizeOptions[0]);
+  readonly pageChange = output<PageEvent>();
+
+  readonly total = signal(0);
+
   ngOnInit(): void {
+    this.#getHistory();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+
     this.#getHistory();
   }
 
   #getHistory(): void {
     this.#userHistoryService
-      .getUserHistory()
+      .getUserHistory({
+        page: this.pageIndex() + 1,
+        limit: this.pageSize(),
+      })
       .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe({
-        next: (data) => {
-          this.historyList.set(data);
-        },
+      .subscribe((response) => {
+        this.historyList.set(response.items);
+        this.total.set(response.total);
+
+        console.log(response.items);
+        console.log(response.total);
       });
   }
 }

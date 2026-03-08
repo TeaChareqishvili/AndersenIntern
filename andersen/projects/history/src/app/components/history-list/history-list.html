@@ -1,10 +1,10 @@
 <div
   class="history-paginator-scope w-full max-w-3xl overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
   <mat-list class="p-6">
-    @for (item of historyStatistics(); track item.label) {
+    @for (item of historyList(); track item.todo_id) {
     <mat-list-item>
-      <span matListItemTitle>{{ item.label }}</span>
-      <span matListItemLine>{{ item.count }}</span>
+      <span matListItemTitle>{{ item.event }}</span>
+      <span matListItemLine>{{ item.date | date: "medium"}} </span>
     </mat-list-item>
     } @empty {
     <mat-list-item>
@@ -13,7 +13,7 @@
     }
   </mat-list>
   @if(historyList().length > 0){
-  <mat-paginator [length]="historyStatistics().length" [pageSize]="pageSize()" [pageSizeOptions]="pageSizeOptions"
+  <mat-paginator [length]="historyList().length" [pageSize]="pageSize()" [pageSizeOptions]="pageSizeOptions()"
     (page)="onPageChange($event)" />
   }
 

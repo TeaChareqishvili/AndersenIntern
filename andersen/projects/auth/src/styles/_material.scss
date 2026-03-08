@@ -137,7 +137,8 @@
 }
 
 .history-paginator-scope .mat-mdc-paginator .mat-mdc-icon-button {
-  display: none !important;
+  // display: none !important;
+  cursor: pointer;
 }
 
 .mat-mdc-paginator-page-size-label,
@@ -161,13 +162,7 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 7px !important;
-}
-
-.history-paginator-scope .mat-mdc-list-item-title,
-.history-paginator-scope .mat-mdc-list-item-line {
-  display: flex;
+  padding: 3px !important;
+  flex-direction: column !important;
   cursor: pointer;
-  justify-content: center;
-  text-align: center !important;
 }

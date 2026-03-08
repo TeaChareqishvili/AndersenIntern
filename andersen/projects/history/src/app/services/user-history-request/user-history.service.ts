@@ -1,14 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '@env';
-import { TODO_HISTORY_EVENTS } from '@shared';
-import { Observable } from 'rxjs';
+import {
+  HistoryEventRequest,
+  HistoryPageRequest,
+  HistoryPageResponse,
+} from '@history/app/models/history.models';
 
-export type HistoryEventRequest = {
-  event: TODO_HISTORY_EVENTS;
-  todo_id: string;
-  date?: string;
-};
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +16,33 @@ export class UserHistoryService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = inject(BASE_URL);
 
-  getUserHistory(): Observable<HistoryEventRequest[]> {
-    return this.http.get<HistoryEventRequest[]>(`${this.apiUrl}/history?limit=100&page=1`);
+  getUserHistory({ page, limit }: HistoryPageRequest): Observable<HistoryPageResponse> {
+    const params = new HttpParams({
+      fromObject: {
+        page: String(page),
+        limit: String(limit),
+      },
+    });
+
+    return this.http
+      .get<HistoryEventRequest[]>(`${this.apiUrl}/history`, {
+        params,
+        observe: 'response',
+      })
+      .pipe(map((response) => this.#pageLimit(response)));
   }
 
   postHistoryEvent(payload: HistoryEventRequest): Observable<HistoryEventRequest> {
     return this.http.post<HistoryEventRequest>(`${this.apiUrl}/history`, payload);
+  }
+
+  #pageLimit(response: HttpResponse<HistoryEventRequest[]>): HistoryPageResponse {
+    const items = response.body ?? [];
+    const headerTotal = Number(response.headers.get('total-count'));
+
+    return {
+      items,
+      total: Number.isFinite(headerTotal) ? headerTotal : items.length,
+    };
   }
 }

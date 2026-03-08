@@ -1,9 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { UserHistoryService } from '../user-history-request/user-history.service';
 import {
   HistoryEventRequest,
-  UserHistoryService,
-} from '../user-history-request/user-history.service';
+  HistoryPageRequest,
+  HistoryPageResponse,
+} from '@history/app/models/history.models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +15,9 @@ export class HistoryStoreService {
   readonly #userHistoryService = inject(UserHistoryService);
   readonly history = this._userHistory.asReadonly();
 
-  getHisotryList(): Observable<HistoryEventRequest[]> {
+  getHisotryList(params: HistoryPageRequest): Observable<HistoryPageResponse> {
     return this.#userHistoryService
-      .getUserHistory()
-      .pipe(tap((history) => this._userHistory.set(history)));
+      .getUserHistory(params)
+      .pipe(tap((history) => this._userHistory.set(history.items)));
   }
 }

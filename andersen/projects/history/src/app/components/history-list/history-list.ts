@@ -1,37 +1,25 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { HistoryEventRequest } from '@history/app/services/user-history-request/user-history.service';
-
-import { TODO_HISTORY_EVENTS, TodoHistoryEventService } from '@shared';
+import { HistoryEventRequest } from '@history/app/models/history.models';
 
 @Component({
   selector: 'app-history-list',
-  imports: [MatListModule, MatPaginatorModule],
+  imports: [MatListModule, MatPaginatorModule, DatePipe],
   templateUrl: './history-list.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistoryList {
-  readonly #todoHistoryEventService = inject(TodoHistoryEventService);
   readonly historyList = input<HistoryEventRequest[]>([]);
-  readonly pageSizeOptions = [2, 5, 10];
-  readonly pageSize = signal(this.pageSizeOptions[0]);
 
-  readonly historyStatistics = computed(() => {
-    const stats = new Map<TODO_HISTORY_EVENTS, number>();
-
-    for (const item of this.historyList()) {
-      stats.set(item.event, (stats.get(item.event) ?? 0) + 1);
-    }
-
-    return Array.from(stats.entries()).map(([event, count]) => ({
-      label: this.#todoHistoryEventService.getEventLabel(event as HistoryEventRequest['event']),
-      count,
-    }));
-  });
+  readonly pageSize = input<number>(2);
+  readonly pageSizeOptions = input<number[]>([5, 10, 15]);
+  readonly total = input<number>();
+  readonly pageChange = output<PageEvent>();
 
   onPageChange(event: PageEvent): void {
-    this.pageSize.set(event.pageSize);
+    this.pageChange.emit(event);
   }
 }

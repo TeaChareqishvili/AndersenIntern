@@ -14,7 +14,7 @@ export class TodoHistoryEventService {
     [TODO_HISTORY_EVENTS.CREATE_TASK]: 'Created task',
     [TODO_HISTORY_EVENTS.DELETE_TASK]: 'Deleted task',
     [TODO_HISTORY_EVENTS.UPDATE_TASK]: 'Updated task',
-    [TODO_HISTORY_EVENTS.COMPLETED_TASK]: 'Completed task',
+    [TODO_HISTORY_EVENTS.COMPLETED_TASK]: 'Completed task', // ??
   };
   readonly historyEvents$ = this.historyEventSubject.asObservable();
 
