@@ -2,7 +2,7 @@
   class="history-paginator-scope w-full max-w-3xl overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
   <mat-list class="p-6">
     @for (item of historyList(); track trackHistory($index, item)) {
-    <mat-list-item>
+    <mat-list-item (click)="openTodoDetails(item.todo_id)">
       <span matListItemTitle>{{ item.event }}</span>
       <span matListItemLine>{{ item.date | date: "medium"}} </span>
     </mat-list-item>

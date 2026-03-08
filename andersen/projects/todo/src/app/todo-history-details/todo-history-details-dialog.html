@@ -1,0 +1,25 @@
+<div class="bg-[#fdd835cc] flex flex-col">
+  <h2 mat-dialog-title>Title: {{ data.todo?.name ?? ('Todo #' + data.todoId) }}</h2>
+  <mat-dialog-content>
+    @if (data.todo) {
+    @if (data.todo.tasks.length > 0) {
+    <mat-list>
+      @for (task of data.todo.tasks; track task.id) {
+      <mat-list-item>
+        <span matListItemTitle> SubTask: {{ task.name }}</span>
+        <span matListItemLine>Status: {{ task.completed ? 'Completed' : 'Pending' }}</span>
+      </mat-list-item>
+      }
+    </mat-list>
+    } @else {
+    <p>No tasks in this todo.</p>
+    }
+    } @else {
+    <p>This todo was deleted and is no longer available.</p>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>

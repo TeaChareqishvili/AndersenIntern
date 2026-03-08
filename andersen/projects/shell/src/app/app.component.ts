@@ -16,6 +16,7 @@ import {
   IN_GOING_EVENTS,
   LoadingService,
   OUT_GOING_EVENTS,
+  TODO_HISTORY_EVENTS,
   TodoHistoryEventService,
 } from '@shared';
 
@@ -23,8 +24,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgComponentOutlet } from '@angular/common';
 import { LoaderComponent } from '@ui';
 import { HeaderShellEventButtons } from './component/header-shell-event-buttons/header-shell-event-buttons';
-import { switchMap } from 'rxjs';
+import { EMPTY, catchError, filter, switchMap } from 'rxjs';
 import { UserHistoryService } from '@history/app/services/user-history-request/user-history.service';
+import { TodoHistoryDialogBridgeService } from '@todo/app/services/todo-history-dialog-bridge/todo-history-dialog-bridge.service';
 
 @Component({
   selector: 'app-root',
@@ -45,9 +47,9 @@ export class AppComponent implements OnInit {
   readonly #router = inject(Router);
   readonly #todoHistoryEventService = inject(TodoHistoryEventService);
   readonly #userHistoryService = inject(UserHistoryService);
-
-  readonly loading = inject(LoadingService).isLoading;
+  readonly #todoHistoryDialogBridgeService = inject(TodoHistoryDialogBridgeService);
   readonly #destroyRef = inject(DestroyRef);
+  readonly loading = inject(LoadingService).isLoading;
 
   readonly isTodoPage = signal(false);
   readonly todoInputComponent = signal<Type<unknown> | null>(null);
@@ -55,6 +57,7 @@ export class AppComponent implements OnInit {
   title = 'shell';
 
   ngOnInit(): void {
+    this.#todoHistoryDialogBridgeService.init();
     this.#initEventBus();
     this.#subscribeToIncomingEvents();
     this.#subscribeToOutgoingEvents();
@@ -64,6 +67,7 @@ export class AppComponent implements OnInit {
   #postTodoHistory(): void {
     this.#todoHistoryEventService.historyEvents$
       .pipe(
+        filter((payload) => payload.event !== TODO_HISTORY_EVENTS.VIEW_TODO_DETAILS),
         switchMap((payload) => this.#userHistoryService.postHistoryEvent(payload)),
         takeUntilDestroyed(this.#destroyRef),
       )
