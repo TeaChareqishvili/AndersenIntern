@@ -1,3 +1,5 @@
+import { TODO_HISTORY_EVENTS } from '@shared';
+
 export type SessionState = {
   token?: string;
 };
@@ -13,16 +15,6 @@ export type ResponseMessage = {
 
 export enum INTERCEPTOR_NAV {
   LOGIN = 'sign-in',
-}
-
-export enum TODO_HISTORY_EVENTS {
-  CREATE_TODO = 'CREATE_TODO',
-  DELETE_TODO = 'DELETE_TODO',
-  CREATE_TASK = 'CREATE_TASK',
-  DELETE_TASK = 'DELETE_TASK',
-  UPDATE_TASK = 'UPDATE_TASK',
-  COMPLETED_TASK = 'COMPLETED TASK',
-  VIEW_TODO_DETAILS = 'TODO_DETAILS',
 }
 
 export interface TodoHistoryEventPayload {

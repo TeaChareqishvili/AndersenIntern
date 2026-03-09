@@ -15,6 +15,7 @@ import {
   errorInterceptor,
   GlobalErrorHandler,
   loadingInterceptor,
+  todoHistoryInterceptor,
 } from '@shared';
 import { baseUrlProvider, TokenProvider } from '@env';
 
@@ -25,7 +26,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     importProvidersFrom(MatDialogModule),
     provideHttpClient(
-      withInterceptors([authTokenInterceptor, loadingInterceptor, errorInterceptor]),
+      withInterceptors([
+        authTokenInterceptor,
+        loadingInterceptor,
+        errorInterceptor,
+        todoHistoryInterceptor,
+      ]),
     ),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     baseUrlProvider,

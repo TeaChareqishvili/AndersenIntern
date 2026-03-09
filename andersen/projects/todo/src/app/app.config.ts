@@ -8,7 +8,13 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './todo.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authTokenInterceptor, errorInterceptor, GlobalErrorHandler, loadingInterceptor } from '@shared';
+import {
+  authTokenInterceptor,
+  errorInterceptor,
+  GlobalErrorHandler,
+  loadingInterceptor,
+  todoHistoryInterceptor,
+} from '@shared';
 import { baseUrlProvider, TokenProvider } from '@env';
 
 export const appConfig: ApplicationConfig = {
@@ -16,7 +22,14 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authTokenInterceptor, loadingInterceptor, errorInterceptor])),
+    provideHttpClient(
+      withInterceptors([
+        authTokenInterceptor,
+        loadingInterceptor,
+        errorInterceptor,
+        todoHistoryInterceptor,
+      ]),
+    ),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     baseUrlProvider,
     TokenProvider,

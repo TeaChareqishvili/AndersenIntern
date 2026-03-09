@@ -13,6 +13,7 @@ import {
   errorInterceptor,
   GlobalErrorHandler,
   loadingInterceptor,
+  todoHistoryInterceptor,
 } from '@shared';
 import { baseUrlProvider, TokenProvider } from '@env';
 
@@ -22,7 +23,12 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([authTokenInterceptor, loadingInterceptor, errorInterceptor]),
+      withInterceptors([
+        authTokenInterceptor,
+        loadingInterceptor,
+        errorInterceptor,
+        todoHistoryInterceptor,
+      ]),
     ),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     baseUrlProvider,

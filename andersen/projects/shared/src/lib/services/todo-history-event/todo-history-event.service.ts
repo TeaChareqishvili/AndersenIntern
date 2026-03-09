@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
+import { TodoHistoryEventPayload } from '@shared';
 import { Subject } from 'rxjs';
-import { TODO_HISTORY_EVENTS, TodoHistoryEventPayload } from '../../models/shared.models';
+
+export enum TODO_HISTORY_EVENTS {
+  CREATE_TODO = 'CREATE_TODO',
+  DELETE_TODO = 'DELETE_TODO',
+  CREATE_TASK = 'CREATE_TASK',
+  DELETE_TASK = 'DELETE_TASK',
+  UPDATE_TASK = 'UPDATE_TASK',
+  VIEW_TODO_DETAILS = 'TODO_DETAILS',
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +23,6 @@ export class TodoHistoryEventService {
     [TODO_HISTORY_EVENTS.CREATE_TASK]: 'Created task',
     [TODO_HISTORY_EVENTS.DELETE_TASK]: 'Deleted task',
     [TODO_HISTORY_EVENTS.UPDATE_TASK]: 'Updated task',
-    [TODO_HISTORY_EVENTS.COMPLETED_TASK]: 'Completed task', // ??
     [TODO_HISTORY_EVENTS.VIEW_TODO_DETAILS]: 'Todo details',
   };
   readonly historyEvents$ = this.historyEventSubject.asObservable();
