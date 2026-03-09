@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '@env';
 import { Todo, UpdateSubTask } from '../../models/models';
@@ -20,8 +20,9 @@ export class RequestServiceTodo {
     return this.http.post<Todo>(`${this.apiUrl}/todo`, { name });
   }
 
-  deleteTodo(id: string): Observable<Todo> {
-    return this.http.delete<Todo>(`${this.apiUrl}/todo?id=${id}`);
+  deleteTodo(id: string, name: string): Observable<Todo> {
+    const params = new HttpParams().set('id', id).set('name', name);
+    return this.http.delete<Todo>(`${this.apiUrl}/todo`, { params });
   }
 
   createSubTask(id: string, name: string): Observable<Todo> {

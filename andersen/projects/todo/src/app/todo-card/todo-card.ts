@@ -33,7 +33,7 @@ export class TodoCard {
     null,
   );
   readonly form = createTodoGroup();
-  readonly deleteTodo = output<string>();
+  readonly deleteTodo = output<Todo>();
   readonly addSubtask = output<{ todoId: string; name: string }>();
   readonly updateSubtask = output<{ todoId: string; taskId: string; payload: UpdateSubTask }>();
   readonly deleteTask = output<{ todoId: string; taskId: string }>();
@@ -58,8 +58,8 @@ export class TodoCard {
 
   editingIndex = signal<string | null>(null);
 
-  onDeleteTodo(todoId: string) {
-    this.deleteTodo.emit(todoId);
+  onDeleteTodo(todo: Todo) {
+    this.deleteTodo.emit(todo);
   }
 
   onAddSubTask({ name }: { name: string }): void {

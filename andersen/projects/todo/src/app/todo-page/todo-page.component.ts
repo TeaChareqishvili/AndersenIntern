@@ -57,9 +57,9 @@ export class TodoPageComponent implements OnInit, OnDestroy {
     this.eventBusService.appEvent(HEADER_EVENTS.CLEAR_HEADER, null);
   }
 
-  deleteTodo(id: string): void {
+  deleteTodo(todo: Todo): void {
     this.todoUpdateService
-      .removeTodo(id)
+      .removeTodo(todo.id, todo.name)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.loader.set(false)),

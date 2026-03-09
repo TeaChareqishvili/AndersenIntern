@@ -24,8 +24,8 @@ export class TodoUpdateService {
     );
   }
 
-  removeTodo(id: string): Observable<Todo[]> {
-    return this.todoServiceApi.deleteTodo(id).pipe(
+  removeTodo(id: string, name: string): Observable<Todo[]> {
+    return this.todoServiceApi.deleteTodo(id, name).pipe(
       tap(() => {
         this._todos.update((todos) => todos.filter((todo) => todo.id !== id));
       }),

@@ -21,6 +21,7 @@ export interface TodoHistoryEventPayload {
   event: TODO_HISTORY_EVENTS;
   todo_id: string;
   task_id?: string;
+  todo_name?: string;
 }
 
 export type TodoHistoryEventData = {
