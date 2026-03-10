@@ -1,9 +1,10 @@
-import { TODO_HISTORY_EVENTS } from '@shared';
+import { Todo, TODO_HISTORY_EVENTS } from '@shared';
 
 export type HistoryEventRequest = {
   event: TODO_HISTORY_EVENTS;
   todo_id: string;
   date?: string;
+  todo?: Todo;
 };
 
 export type HistoryPageRequest = {

@@ -29,10 +29,12 @@ export class UserHistoryService {
         params,
         observe: 'response',
       })
+
       .pipe(map((response) => this.#pageLimit(response)));
   }
 
   postHistoryEvent(payload: HistoryEventRequest): Observable<HistoryEventRequest> {
+    console.log(payload, 'payload post');
     return this.http.post<HistoryEventRequest>(`${this.apiUrl}/history`, payload);
   }
 

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoPageComponent } from './todo-page.component';
 import { NEVER, of, throwError } from 'rxjs';
-import { TodoUpdateService } from '../services/todo-service/todo-update.service';
+import { TodoUpdateService } from '../services/todo-service-update/todo-update.service';
 
 import { fakeSubTask, fakeTodo } from '../models/test-mock-data';
 

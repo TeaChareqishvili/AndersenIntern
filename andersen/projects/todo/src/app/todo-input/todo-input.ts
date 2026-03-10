@@ -10,7 +10,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { Form } from '../form/form';
 import { createTodoGroup, Todo } from '../models/models';
-import { TodoUpdateService } from '../services/todo-service/todo-update.service';
+import { TodoUpdateService } from '../services/todo-service-update/todo-update.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 

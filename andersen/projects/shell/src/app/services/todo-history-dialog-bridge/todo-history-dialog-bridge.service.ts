@@ -1,14 +1,16 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TODO_HISTORY_EVENTS, TodoHistoryEventService } from '@shared';
-import { filter, take } from 'rxjs';
-import { Todo } from '../../models/models';
 import {
+  Todo,
   TodoHistoryDetailsDialog,
   TodoHistoryDialogData,
-} from '../../todo-history-details/todo-history-details-dialog';
-import { TodoUpdateService } from '../todo-service/todo-update.service';
+} from '@history/app/components/todo-history-details/todo-history-details-dialog';
+import { TODO_HISTORY_EVENTS, TodoHistoryEventService } from '@shared';
+import { TodoUpdateService } from '@todo/app/services/todo-service-update/todo-update.service';
+import { filter, take } from 'rxjs';
+
+///THIS BRIDGE SGOULD BE REMOVED JUST LEFT TEMPORARY
 
 @Injectable({
   providedIn: 'root',

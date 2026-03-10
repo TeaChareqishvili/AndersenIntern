@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 
 import { Todo, UpdateSubTask } from '../../models/models';
-import { RequestServiceTodo } from '../request-service/request-service.service';
+import { RequestServiceTodo } from '../todo-request-service/request-service.service';
 import { map, Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

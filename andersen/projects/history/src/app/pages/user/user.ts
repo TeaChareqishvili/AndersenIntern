@@ -42,6 +42,7 @@ export class UserComponent implements OnInit {
 
     this.#getHistory();
   }
+
   #getHistory(allowRetry = true): void {
     const pageIndex = this.pageIndex();
     const pageSize = this.pageSize();
@@ -55,6 +56,7 @@ export class UserComponent implements OnInit {
 
       .subscribe((response) => {
         this.#handleHistoryResponse(response, pageIndex, pageSize, allowRetry);
+        console.log(response, 'res');
       });
   }
 

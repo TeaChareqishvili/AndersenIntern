@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { TodoCard } from '../todo-card/todo-card';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TodoUpdateService } from '../services/todo-service/todo-update.service';
+import { TodoUpdateService } from '../services/todo-service-update/todo-update.service';
 import { finalize } from 'rxjs';
 import { Todo } from '../models/models';
 import { EventBusService, HEADER_EVENTS } from '@shared';

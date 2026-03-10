@@ -17,11 +17,24 @@ export enum INTERCEPTOR_NAV {
   LOGIN = 'sign-in',
 }
 
+export interface BaseFileds {
+  id: string;
+  name: string;
+}
+
+export interface SubTask extends BaseFileds {
+  completed: boolean;
+}
+
+export interface Todo extends BaseFileds {
+  tasks: SubTask[];
+}
+
 export interface TodoHistoryEventPayload {
   event: TODO_HISTORY_EVENTS;
   todo_id: string;
   task_id?: string;
-  todo_name?: string;
+  todo?: Todo;
 }
 
 export type TodoHistoryEventData = {

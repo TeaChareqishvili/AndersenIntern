@@ -2,7 +2,19 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-import { Todo } from '../models/models';
+
+export interface BaseFileds {
+  id: string;
+  name: string;
+}
+
+export interface SubTask extends BaseFileds {
+  completed: boolean;
+}
+
+export interface Todo extends BaseFileds {
+  tasks: SubTask[];
+}
 
 export interface TodoHistoryDialogData {
   todo: Todo | null;
