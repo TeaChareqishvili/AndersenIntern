@@ -43,14 +43,10 @@ export class UserComponent implements OnInit {
   sortDirection = signal<'asc' | 'desc'>(this.#defaultSortDirection);
 
   onSortChange(sort: Sort): void {
-    const sortField = sort.active || this.#defaultSortField;
-    const sortDirection =
-      sort.direction === 'asc' || sort.direction === 'desc'
-        ? sort.direction
-        : this.#defaultSortDirection;
+    this.sortField.set(sort.active || this.#defaultSortField);
 
-    this.sortField.set(sortField);
-    this.sortDirection.set(sortDirection);
+    this.sortDirection.set((sort.direction || this.#defaultSortDirection) as 'asc' | 'desc');
+
     this.pageIndex.set(0);
     this.#getHistory();
   }

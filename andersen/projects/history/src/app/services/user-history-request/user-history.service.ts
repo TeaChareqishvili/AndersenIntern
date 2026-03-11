@@ -7,7 +7,7 @@ import {
   HistoryPageResponse,
 } from '@history/app/models/history.models';
 
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,10 +26,8 @@ export class UserHistoryService {
       fromObject: {
         page: String(page),
         limit: String(limit),
-        sort,
-        order,
-        _sort: sort,
-        _order: order, //???
+        sort: `_${sort}`,
+        _order: order,
       },
     });
 
@@ -39,7 +37,10 @@ export class UserHistoryService {
         observe: 'response',
       })
 
-      .pipe(map((response) => this.#pageLimit(response)));
+      .pipe(
+        map((response) => this.#pageLimit(response)),
+        tap((response) => console.log('HTTP response get:', response)),
+      );
   }
 
   postHistoryEvent(payload: HistoryEventRequest): Observable<HistoryEventRequest> {
