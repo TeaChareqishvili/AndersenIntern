@@ -13,6 +13,7 @@ import { UserHistoryService } from '@history/app/services/user-history-request/u
 import { HistoryEventRequest, HistoryPageResponse } from '@history/app/models/history.models';
 import { HistoryList } from '@history/app/components/history-list/history-list';
 import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-user',
@@ -25,6 +26,8 @@ export class UserComponent implements OnInit {
   readonly user$ = inject(AuthUserService).user$;
   readonly #userHistoryService = inject(UserHistoryService);
   readonly #destroyRef = inject(DestroyRef);
+  readonly #defaultSortField = 'date';
+  readonly #defaultSortDirection: 'asc' | 'desc' = 'desc';
   private isOneBasedPageIndexing = true;
   readonly historyList = signal<HistoryEventRequest[]>([]);
   readonly pageSizeOptions = [5, 10, 15];
@@ -33,6 +36,22 @@ export class UserComponent implements OnInit {
   readonly total = signal(0);
 
   ngOnInit(): void {
+    this.#getHistory();
+  }
+
+  sortField = signal<string>(this.#defaultSortField);
+  sortDirection = signal<'asc' | 'desc'>(this.#defaultSortDirection);
+
+  onSortChange(sort: Sort): void {
+    const sortField = sort.active || this.#defaultSortField;
+    const sortDirection =
+      sort.direction === 'asc' || sort.direction === 'desc'
+        ? sort.direction
+        : this.#defaultSortDirection;
+
+    this.sortField.set(sortField);
+    this.sortDirection.set(sortDirection);
+    this.pageIndex.set(0);
     this.#getHistory();
   }
 
@@ -51,6 +70,8 @@ export class UserComponent implements OnInit {
       .getUserHistory({
         page: this.#currentRequestPage(),
         limit: pageSize,
+        sort: this.sortField(),
+        order: this.sortDirection(),
       })
       .pipe(takeUntilDestroyed(this.#destroyRef))
 

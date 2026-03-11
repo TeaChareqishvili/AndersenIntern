@@ -26,7 +26,7 @@ import { LoaderComponent } from '@ui';
 import { HeaderShellEventButtons } from './component/header-shell-event-buttons/header-shell-event-buttons';
 import { filter, switchMap } from 'rxjs';
 import { UserHistoryService } from '@history/app/services/user-history-request/user-history.service';
-import { TodoHistoryDialogBridgeService } from './services/todo-history-dialog-bridge/todo-history-dialog-bridge.service';
+import { TodoHistoryDialogBridgeService } from '../../../history/src/app/services/todo-history-dialog-bridge/todo-history-dialog-bridge.service';
 
 @Component({
   selector: 'app-root',

@@ -10,6 +10,8 @@ export type HistoryEventRequest = {
 export type HistoryPageRequest = {
   page: number;
   limit: number;
+  sort: string;
+  order: 'asc' | 'desc';
 };
 
 export type HistoryPageResponse = {

@@ -16,11 +16,20 @@ export class UserHistoryService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = inject(BASE_URL);
 
-  getUserHistory({ page, limit }: HistoryPageRequest): Observable<HistoryPageResponse> {
+  getUserHistory({
+    page,
+    limit,
+    sort,
+    order,
+  }: HistoryPageRequest): Observable<HistoryPageResponse> {
     const params = new HttpParams({
       fromObject: {
         page: String(page),
         limit: String(limit),
+        sort,
+        order,
+        _sort: sort,
+        _order: order, //???
       },
     });
 

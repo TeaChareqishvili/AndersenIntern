@@ -1,20 +1,37 @@
 <div
-  class="history-paginator-scope w-full max-w-3xl overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
-  <mat-list class="p-6">
-    @for (item of historyList(); track trackHistory($index, item)) {
-    <mat-list-item (click)="openTodoDetails(item.todo_id)">
-      <span matListItemTitle>{{ item.event }}</span>
-      <span matListItemLine>{{ item.date | date: "medium"}} </span>
-    </mat-list-item>
-    } @empty {
-    <mat-list-item>
-      <span matListItemTitle>No history events yet</span>
-    </mat-list-item>
-    }
-  </mat-list>
-  @if(historyList().length > 0){
+  class="history-paginator-scope w-full p-7.5 overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
+  @if(historyList().length === 0) {
+  <div class="p-10 text-center text-amber-200">
+    No history events yet
+  </div>
+  } @else {
+  <table mat-table [dataSource]="historyList()" matSort [matSortActive]="'date'" [matSortDirection]="'desc'"
+    matSortDisableClear (matSortChange)="onSortChange.emit($event)" class="w-full">
+    <ng-container matColumnDef="N">
+      <th mat-header-cell *matHeaderCellDef> N</th>
+      <td mat-cell *matCellDef="let item; let i = index">
+        {{ pageIndex()*pageSize() +i+1 }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="event">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Event </th>
+      <td mat-cell *matCellDef="let item">
+        {{ item.event }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let item">
+        {{ item.date | date:'medium' }}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="openTodoDetails(row.todo_id)"
+      class="cursor-pointer hover:bg-white/10">
+    </tr>
+  </table>
   <mat-paginator [length]="total()" [pageIndex]="pageIndex()" [pageSize]="pageSize()"
-    [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)" />
+    [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)">
+  </mat-paginator>
   }
-
 </div>

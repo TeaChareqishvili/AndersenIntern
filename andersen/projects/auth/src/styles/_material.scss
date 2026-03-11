@@ -143,7 +143,7 @@
 
 .mat-mdc-paginator-page-size-label,
 .mat-mdc-paginator-range-actions {
-  color: aliceblue !important;
+  color: #ffe082 !important;
 }
 
 .mat-mdc-option.mdc-list-item {
@@ -156,13 +156,14 @@
   backdrop-filter: blur(12px);
 }
 
-// list TODO fix the styles
+// table styles
 
-.mdc-list-item__content {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 3px !important;
-  flex-direction: column !important;
-  cursor: pointer;
+.mat-mdc-cell {
+  color: #ffe082;
+  font-size: 1rem !important;
+}
+.mat-mdc-header-row {
+  color: #cda93e !important;
+  font-weight: 700 !important;
+  font-size: 1.3rem !important;
 }
