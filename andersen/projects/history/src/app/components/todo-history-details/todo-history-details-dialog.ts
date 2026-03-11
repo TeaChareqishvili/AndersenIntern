@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
@@ -31,4 +31,8 @@ export interface TodoHistoryDialogData {
 })
 export class TodoHistoryDetailsDialog {
   readonly data = inject<TodoHistoryDialogData>(MAT_DIALOG_DATA);
+
+  readonly getTaskStatus = computed(() => {
+    return (completed: boolean) => (completed ? 'Completed' : 'Pending');
+  });
 }
