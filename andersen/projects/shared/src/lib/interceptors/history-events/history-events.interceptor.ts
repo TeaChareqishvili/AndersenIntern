@@ -67,7 +67,7 @@ export const todoHistoryInterceptor: HttpInterceptorFn = (req, next) => {
       historyService.emitHistoryEvent({
         event: matchedRoute.event,
         todo_id: todoId,
-        todo: todoSnapshot,
+        data: todoSnapshot,
       });
     }),
   );

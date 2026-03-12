@@ -8,7 +8,6 @@ export enum TODO_HISTORY_EVENTS {
   CREATE_TASK = 'CREATE_TASK',
   DELETE_TASK = 'DELETE_TASK',
   UPDATE_TASK = 'UPDATE_TASK',
-  VIEW_TODO_DETAILS = 'TODO_DETAILS',
 }
 
 @Injectable({
@@ -17,21 +16,16 @@ export enum TODO_HISTORY_EVENTS {
 export class TodoHistoryEventService {
   private readonly historyEventSubject = new Subject<TodoHistoryEventPayload>();
 
-  readonly #EVENT_LABELS: Record<TODO_HISTORY_EVENTS, string> = {
+  readonly EVENT_LABELS: Record<TODO_HISTORY_EVENTS, string> = {
     [TODO_HISTORY_EVENTS.CREATE_TODO]: 'Created todo',
     [TODO_HISTORY_EVENTS.DELETE_TODO]: 'Deleted todo',
     [TODO_HISTORY_EVENTS.CREATE_TASK]: 'Created task',
     [TODO_HISTORY_EVENTS.DELETE_TASK]: 'Deleted task',
     [TODO_HISTORY_EVENTS.UPDATE_TASK]: 'Updated task',
-    [TODO_HISTORY_EVENTS.VIEW_TODO_DETAILS]: 'Todo details',
   };
   readonly historyEvents$ = this.historyEventSubject.asObservable();
 
   emitHistoryEvent(payload: TodoHistoryEventPayload): void {
     this.historyEventSubject.next(payload);
-  }
-
-  getEventLabel(event: TODO_HISTORY_EVENTS): string {
-    return this.#EVENT_LABELS[event] ?? event;
   }
 }

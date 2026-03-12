@@ -42,10 +42,6 @@ export class EventBusService implements OnDestroy {
     this.inGoingEvents$.next(event);
   }
 
-  get eventData(): unknown {
-    return this.#eventData$.value;
-  }
-
   ngOnDestroy(): void {
     this.inGoingEvents$.complete();
     this.outGoingEvents$.complete();

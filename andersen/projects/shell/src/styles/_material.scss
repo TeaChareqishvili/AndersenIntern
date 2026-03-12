@@ -4,7 +4,7 @@
     border-radius: 8px;
     display: flex !important;
     align-items: center !important;
-    min-height: 48px !important;
+    min-height: 20px !important;
   }
 
   .mat-mdc-form-field-label {
@@ -16,6 +16,7 @@
     display: flex !important;
     align-items: center !important;
     padding: 0 !important;
+    height: 20px !important;
   }
 
   .mat-mdc-input-element {
@@ -57,6 +58,32 @@
   color: #ffcdd2 !important;
 }
 
+// event dropdown visibility overrides
+.event-filter {
+  .mat-mdc-text-field-wrapper {
+    min-height: 48px !important;
+  }
+
+  .mat-mdc-form-field-infix {
+    height: auto !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .mat-mdc-select-placeholder,
+  .mat-mdc-select-min-line,
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-arrow {
+    color: #ffe082 !important;
+    opacity: 1 !important;
+  }
+
+  .mat-mdc-floating-label,
+  .mdc-floating-label {
+    display: block !important;
+    color: #ffe082 !important;
+  }
+}
+
 // button styles
 
 .mat-mdc-raised-button {
@@ -69,6 +96,7 @@
   font-weight: 600 !important;
   border: none !important;
   box-shadow: none !important;
+  min-width: 120px !important;
 
   .mdc-button__label {
     color: #1f2937 !important;
@@ -137,7 +165,6 @@
 }
 
 .history-paginator-scope .mat-mdc-paginator .mat-mdc-icon-button {
-  // display: none !important;
   cursor: pointer;
 }
 
@@ -156,6 +183,10 @@
   backdrop-filter: blur(12px);
 }
 
+.mat-mdc-option .mdc-list-item__primary-text {
+  color: #ffe082 !important;
+}
+
 // table styles
 
 .mat-mdc-cell {
@@ -166,4 +197,23 @@
   color: #cda93e !important;
   font-weight: 700 !important;
   font-size: 1.3rem !important;
+}
+
+// modal
+
+.todo-history-dialog {
+  .mat-mdc-dialog-surface {
+    border-radius: 0.5rem !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  .mdc-list-item__primary-text,
+  .mdc-list-item__secondary-text {
+    color: #cda93e;
+  }
 }

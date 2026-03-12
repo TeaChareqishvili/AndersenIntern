@@ -1,10 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
-import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { HistoryEventRequest } from '@history/app/models/history.models';
-import { TODO_HISTORY_EVENTS, TodoHistoryEventService } from '@shared';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule, Sort } from '@angular/material/sort';
+import { TodoHistoryEventPayload } from '@shared';
+import { PaginatorComponent } from '../paginator/paginator';
+import { EventDropDownComponent } from '../event-drop-down/event-drop-down';
 
 function createHistoryPaginatorIntl(): MatPaginatorIntl {
   const intl = new MatPaginatorIntl();
@@ -17,7 +18,7 @@ function createHistoryPaginatorIntl(): MatPaginatorIntl {
 
 @Component({
   selector: 'app-history-list',
-  imports: [MatPaginatorModule, DatePipe, MatTableModule, MatSortModule],
+  imports: [DatePipe, MatTableModule, MatSortModule, PaginatorComponent, EventDropDownComponent],
   templateUrl: './history-list.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,29 +30,27 @@ function createHistoryPaginatorIntl(): MatPaginatorIntl {
   ],
 })
 export class HistoryList {
-  readonly #todoHistoryEventService = inject(TodoHistoryEventService);
-  readonly historyList = input<HistoryEventRequest[]>([]);
+  readonly historyList = input<TodoHistoryEventPayload[]>([]);
   readonly pageSize = input<number>(2);
   readonly pageSizeOptions = input<number[]>([5, 10, 15]);
   readonly total = input<number>(0);
   readonly pageIndex = input<number>(0);
   readonly pageChange = output<PageEvent>();
-  onSortChange = output<Sort>();
+  readonly openTodo = output<TodoHistoryEventPayload>();
+  readonly onSortChange = output<Sort>();
+  readonly eventFilterChange = output<string | null>();
 
   displayedColumns = ['N', 'event', 'date'];
 
-  openTodoDetails(todoId: string) {
-    this.#todoHistoryEventService.emitHistoryEvent({
-      event: TODO_HISTORY_EVENTS.VIEW_TODO_DETAILS,
-      todo_id: todoId,
-    });
-  }
-
-  trackHistory(_index: number, item: HistoryEventRequest): string {
-    return `${item.todo_id}-${item.date}`;
+  openTodoDetails(history: TodoHistoryEventPayload) {
+    this.openTodo.emit(history);
   }
 
   onPageChange(event: PageEvent): void {
     this.pageChange.emit(event);
+  }
+
+  onEventFilterChange(event: string | null): void {
+    this.eventFilterChange.emit(event);
   }
 }

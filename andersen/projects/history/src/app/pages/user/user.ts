@@ -7,13 +7,15 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { AuthUserService } from '@shared';
+import { AuthUserService, TodoHistoryEventPayload } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserHistoryService } from '@history/app/services/user-history-request/user-history.service';
-import { HistoryEventRequest, HistoryPageResponse } from '@history/app/models/history.models';
+import { HistoryPageResponse } from '@history/app/models/history.models';
 import { HistoryList } from '@history/app/components/history-list/history-list';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { TodoHistoryDetailsDialog } from '@history/app/components/todo-history-details/todo-history-details-dialog';
 
 @Component({
   selector: 'app-user',
@@ -23,16 +25,18 @@ import { Sort } from '@angular/material/sort';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserComponent implements OnInit {
+  private isOneBasedPageIndexing = true;
   readonly user$ = inject(AuthUserService).user$;
   readonly #userHistoryService = inject(UserHistoryService);
   readonly #destroyRef = inject(DestroyRef);
+  readonly #dialog = inject(MatDialog);
   readonly #defaultSortField = 'date';
-  readonly #defaultSortDirection: 'asc' | 'desc' = 'desc';
-  private isOneBasedPageIndexing = true;
-  readonly historyList = signal<HistoryEventRequest[]>([]);
+  readonly #defaultSortDirection: 'ASC' | 'DESC' = 'ASC';
+  readonly historyList = signal<TodoHistoryEventPayload[]>([]);
   readonly pageSizeOptions = [5, 10, 15];
   readonly pageIndex = signal(0);
   readonly pageSize = signal(this.pageSizeOptions[0]);
+  readonly selectedEvent = signal<string | null>(null);
   readonly total = signal(0);
 
   ngOnInit(): void {
@@ -40,12 +44,33 @@ export class UserComponent implements OnInit {
   }
 
   sortField = signal<string>(this.#defaultSortField);
-  sortDirection = signal<'asc' | 'desc'>(this.#defaultSortDirection);
+  sortDirection = signal<'ASC' | 'DESC'>(this.#defaultSortDirection);
+
+  onEventFilterChange(event: string | null) {
+    this.selectedEvent.set(event);
+    this.pageIndex.set(0);
+    this.#getHistory();
+  }
+
+  openTodoDetails(history: TodoHistoryEventPayload) {
+    this.#dialog.open(TodoHistoryDetailsDialog, {
+      width: '560px',
+      maxWidth: '95vw',
+      panelClass: 'todo-history-dialog',
+      data: {
+        data: history.data ?? null,
+        todoId: history.todo_id,
+        event: history.event,
+      },
+    });
+  }
 
   onSortChange(sort: Sort): void {
-    this.sortField.set(sort.active || this.#defaultSortField);
+    console.log('SORT EVENT:', sort);
+    if (!sort.direction) return;
 
-    this.sortDirection.set((sort.direction || this.#defaultSortDirection) as 'asc' | 'desc');
+    this.sortField.set(sort.active);
+    this.sortDirection.set(sort.direction as 'ASC' | 'DESC');
 
     this.pageIndex.set(0);
     this.#getHistory();
@@ -54,26 +79,24 @@ export class UserComponent implements OnInit {
   onPageChange(event: PageEvent): void {
     this.pageIndex.set(event.pageIndex);
     this.pageSize.set(event.pageSize);
-
     this.#getHistory();
   }
 
   #getHistory(allowRetry = true): void {
     const pageIndex = this.pageIndex();
     const pageSize = this.pageSize();
-
     this.#userHistoryService
       .getUserHistory({
         page: this.#currentRequestPage(),
         limit: pageSize,
         sort: this.sortField(),
         order: this.sortDirection(),
+        event: this.selectedEvent(),
       })
       .pipe(takeUntilDestroyed(this.#destroyRef))
 
       .subscribe((response) => {
         this.#handleHistoryResponse(response, pageIndex, pageSize, allowRetry);
-        console.log(response, 'res');
       });
   }
 

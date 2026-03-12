@@ -1,26 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-
-// temporary here
-export interface BaseFileds {
-  id: string;
-  name: string;
-}
-
-export interface SubTask extends BaseFileds {
-  completed: boolean;
-}
-
-export interface Todo extends BaseFileds {
-  tasks: SubTask[];
-}
-
-export interface TodoHistoryDialogData {
-  todo: Todo | null;
-  todoId: string;
-}
+import { TodoHistoryDialogData } from '@history/app/models/history.models';
 
 @Component({
   selector: 'app-todo-history-details-dialog',
@@ -32,7 +14,7 @@ export interface TodoHistoryDialogData {
 export class TodoHistoryDetailsDialog {
   readonly data = inject<TodoHistoryDialogData>(MAT_DIALOG_DATA);
 
-  readonly getTaskStatus = computed(() => {
-    return (completed: boolean) => (completed ? 'Completed' : 'Pending');
-  });
+  getTaskStatus(completed: boolean): string {
+    return completed ? 'Completed' : 'Pending';
+  }
 }

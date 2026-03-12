@@ -1,13 +1,9 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '@env';
-import {
-  HistoryEventRequest,
-  HistoryPageRequest,
-  HistoryPageResponse,
-} from '@history/app/models/history.models';
-
-import { Observable, map, tap } from 'rxjs';
+import { HistoryPageRequest, HistoryPageResponse } from '@history/app/models/history.models';
+import { TodoHistoryEventPayload } from '@shared';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +17,7 @@ export class UserHistoryService {
     limit,
     sort,
     order,
+    event,
   }: HistoryPageRequest): Observable<HistoryPageResponse> {
     const params = new HttpParams({
       fromObject: {
@@ -28,27 +25,24 @@ export class UserHistoryService {
         limit: String(limit),
         sort: `_${sort}`,
         _order: order,
+        ...(event ? { event } : {}),
       },
     });
 
     return this.http
-      .get<HistoryEventRequest[]>(`${this.apiUrl}/history`, {
+      .get<TodoHistoryEventPayload[]>(`${this.apiUrl}/history`, {
         params,
         observe: 'response',
       })
 
-      .pipe(
-        map((response) => this.#pageLimit(response)),
-        tap((response) => console.log('HTTP response get:', response)),
-      );
+      .pipe(map((response) => this.#pageLimit(response)));
   }
 
-  postHistoryEvent(payload: HistoryEventRequest): Observable<HistoryEventRequest> {
-    console.log(payload, 'payload post');
-    return this.http.post<HistoryEventRequest>(`${this.apiUrl}/history`, payload);
+  postHistoryEvent(payload: TodoHistoryEventPayload): Observable<TodoHistoryEventPayload> {
+    return this.http.post<TodoHistoryEventPayload>(`${this.apiUrl}/history`, payload);
   }
 
-  #pageLimit(response: HttpResponse<HistoryEventRequest[]>): HistoryPageResponse {
+  #pageLimit(response: HttpResponse<TodoHistoryEventPayload[]>): HistoryPageResponse {
     const items = response.body ?? [];
     const headerTotal = Number(response.headers.get('total-count'));
 

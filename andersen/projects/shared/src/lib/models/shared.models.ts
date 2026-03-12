@@ -34,7 +34,8 @@ export interface TodoHistoryEventPayload {
   event: TODO_HISTORY_EVENTS;
   todo_id: string;
   task_id?: string;
-  todo?: Todo;
+  data?: Todo;
+  date?: string;
 }
 
 export type TodoHistoryEventData = {

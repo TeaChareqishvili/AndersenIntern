@@ -1,5 +1,6 @@
 <div
   class="history-paginator-scope w-full p-7.5 overflow-hidden rounded-lg bg-white/10 shadow-lg backdrop-blur-md flex flex-col items-center justify-center text-amber-100">
+  <app-event-drop-down (eventChange)="onEventFilterChange($event)"></app-event-drop-down>
   @if(historyList().length === 0) {
   <div class="p-10 text-center text-amber-200">
     No history events yet
@@ -26,12 +27,11 @@
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="openTodoDetails(row.todo_id)"
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="openTodoDetails(row)"
       class="cursor-pointer hover:bg-white/10">
     </tr>
   </table>
-  <mat-paginator [length]="total()" [pageIndex]="pageIndex()" [pageSize]="pageSize()"
-    [pageSizeOptions]="pageSizeOptions()" (page)="onPageChange($event)">
-  </mat-paginator>
+  <app-paginator [total]="total()" [pageIndex]="pageIndex()" [pageSize]="pageSize()"
+    [pageSizeOptions]="pageSizeOptions()" (pageChange)="onPageChange($event)"></app-paginator>
   }
 </div>
