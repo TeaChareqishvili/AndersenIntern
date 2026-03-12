@@ -1,0 +1,11 @@
+<div class="w-full px-10 py-10 flex flex-col items-center gap-6">
+  @if (user$ | async; as user) {
+  <h2 class="text-4xl font-bold text-amber-100">Welcome {{ user.email }}</h2>
+  <app-history-list [historyList]="historyList()" [pageSize]="pageSize()" [pageSizeOptions]="pageSizeOptions"
+    (onSortChange)="onSortChange($event)" (eventFilterChange)="onEventFilterChange($event)" [total]="total()"
+    [pageIndex]="pageIndex()"
+    (pageChange)="onPageChange($event)" (openTodo)="openTodoDetails($event)"></app-history-list>
+  } @else {
+  <h2 class="text-4xl font-bold text-amber-100">Session expired. Sign in again!</h2>
+  }
+</div>

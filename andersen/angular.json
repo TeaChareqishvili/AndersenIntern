@@ -35,7 +35,7 @@
             "styles": [
               "projects/shell/src/styles.scss",
               "projects/ui/src/styles/tailwind.css",
-              "projects/auth/src/styles/index.scss"
+              "projects/shell/src/styles/index.scss"
             ],
             "scripts": []
           },
@@ -98,7 +98,7 @@
             "styles": [
               "projects/shell/src/styles.scss",
               "projects/ui/src/styles/tailwind.css",
-              "projects/auth/src/styles/index.scss"
+              "projects/shell/src/styles/index.scss"
             ],
             "scripts": []
           }
@@ -143,7 +143,7 @@
             "styles": [
               "projects/ui/src/styles/tailwind.css",
               "projects/auth/src/styles.scss",
-              "projects/auth/src/styles/index.scss"
+              "projects/shell/src/styles/index.scss"
             ]
           },
           "configurations": {
@@ -227,9 +227,18 @@
               {
                 "glob": "**/*",
                 "input": "projects/history/public"
+              },
+              {
+                "glob": "**/*",
+                "input": "projects/shared/src/lib/assets",
+                "output": "/assets"
               }
             ],
-            "styles": ["projects/history/src/styles.scss"]
+            "styles": [
+              "projects/history/src/styles.scss",
+              "projects/ui/src/styles/tailwind.css",
+              "projects/shell/src/styles/index.scss"
+            ]
           },
           "configurations": {
             "production": {
@@ -322,7 +331,7 @@
             "styles": [
               "projects/todo/src/styles.scss",
               "projects/ui/src/styles/tailwind.css",
-              "projects/auth/src/styles/index.scss"
+              "projects/shell/src/styles/index.scss"
             ]
           },
           "configurations": {

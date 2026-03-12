@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline" class="event-filter w-64 mb-4">
+  <mat-select [value]="selectedEvent()" placeholder="All EVENTS" (selectionChange)="onEventFilterChange($event.value)">
+    <mat-option [value]="null">All EVENTS</mat-option>
+    @for (event of eventOptions; track event) {
+    <mat-option [value]="event">
+      {{ event }}
+    </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

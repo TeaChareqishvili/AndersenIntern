@@ -1,13 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TodoInput } from './todo-input';
 
-import { TodoUpdateService } from '../services/todo-service/todo-update.service';
+import { TodoUpdateService } from '../services/todo-service-update/todo-update.service';
 import { NEVER, of } from 'rxjs';
 import { fakeTodo } from '../models/test-mock-data';
-
-// const fakeTodoService = {
-//   addTodo: jasmine.createSpy('addTodo'),
-// };
 
 describe('TodoInputComponent', () => {
   let component: TodoInput;

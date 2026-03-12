@@ -6,7 +6,7 @@
         {{ todo().name }}
       </h2>
     </div>
-    <button mat-icon-button (click)="onDeleteTodo(todo().id)" [disabled]="taskLoading()">
+    <button mat-icon-button (click)="onDeleteTodo(todo())" [disabled]="taskLoading()">
       <mat-icon class="icon">delete</mat-icon>
     </button>
   </div>

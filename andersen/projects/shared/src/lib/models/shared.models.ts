@@ -1,3 +1,5 @@
+import { TODO_HISTORY_EVENTS } from '@shared';
+
 export type SessionState = {
   token?: string;
 };
@@ -14,3 +16,28 @@ export type ResponseMessage = {
 export enum INTERCEPTOR_NAV {
   LOGIN = 'sign-in',
 }
+
+export interface BaseFileds {
+  id: string;
+  name: string;
+}
+
+export interface SubTask extends BaseFileds {
+  completed: boolean;
+}
+
+export interface Todo extends BaseFileds {
+  tasks: SubTask[];
+}
+
+export interface TodoHistoryEventPayload {
+  event: TODO_HISTORY_EVENTS;
+  todo_id: string;
+  task_id?: string;
+  data?: Todo;
+  date?: string;
+}
+
+export type TodoHistoryEventData = {
+  todo_id: string;
+};

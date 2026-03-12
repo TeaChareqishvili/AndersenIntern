@@ -6,6 +6,7 @@ import { LogOutService } from '../user-log-out/log-out-service.service';
 export enum IN_GOING_EVENTS {
   LOGIN_SUCCESS = 'login-success',
   LOGOUT_SUCCESS = 'logout-success',
+  HISTORY_EVENT_CREATED = 'history-event-created',
 }
 
 export enum OUT_GOING_EVENTS {
