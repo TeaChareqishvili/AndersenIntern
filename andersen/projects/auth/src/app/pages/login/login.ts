@@ -4,6 +4,7 @@ import { createAuthForm } from '../../models/auth.models';
 
 import { switchMap } from 'rxjs';
 import { LoaderComponent } from '@ui';
+import { TranslateService } from '@ngx-translate/core';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
@@ -21,6 +22,7 @@ export class LoginComponent {
   readonly #authService = inject(AuthService);
   readonly #responseMessage = inject(ResponseMessageService);
   readonly #eventBusService = inject(EventBusService);
+  readonly #translate = inject(TranslateService);
   readonly loading = inject(LoadingService).isLoading;
 
   readonly #destroyRef = inject(DestroyRef);
@@ -32,7 +34,7 @@ export class LoginComponent {
       .pipe(
         switchMap((user: AuthResponse) =>
           this.#responseMessage.success({
-            message: `Welcome ${user?.email} 🎉`,
+            message: this.#translate.instant('auth.loginSuccess', { email: user?.email ?? '' }),
           }),
         ),
         takeUntilDestroyed(this.#destroyRef),
@@ -49,7 +51,7 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.#responseMessage.success({
-            message: 'Password reset link sent to your email 📩',
+            message: this.#translate.instant('auth.resetPasswordSuccess'),
           });
         },
       });

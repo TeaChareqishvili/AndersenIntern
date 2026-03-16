@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, output, signal } from '@angular/cor
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TODO_HISTORY_EVENTS } from '@shared';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-event-drop-down',
-  imports: [MatSelectModule, MatFormFieldModule],
+  imports: [MatSelectModule, MatFormFieldModule, TranslatePipe],
   templateUrl: './event-drop-down.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,

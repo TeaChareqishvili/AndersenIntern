@@ -3,25 +3,25 @@
   <app-event-drop-down (eventChange)="onEventFilterChange($event)"></app-event-drop-down>
   @if(historyList().length === 0) {
   <div class="p-10 text-center text-amber-200">
-    No history events yet
+    {{ 'history.noEventsYet' | translate }}
   </div>
   } @else {
   <table mat-table [dataSource]="historyList()" matSort [matSortActive]="'date'" [matSortDirection]="'desc'"
     matSortDisableClear (matSortChange)="onSortChange.emit($event)" class="w-full">
     <ng-container matColumnDef="N">
-      <th mat-header-cell *matHeaderCellDef> N</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'history.numberColumn' | translate }}</th>
       <td mat-cell *matCellDef="let item; let i = index">
         {{ pageIndex()*pageSize() +i+1 }}
       </td>
     </ng-container>
     <ng-container matColumnDef="event">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Event </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'history.eventColumn' | translate }}</th>
       <td mat-cell *matCellDef="let item">
         {{ item.event }}
       </td>
     </ng-container>
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'history.dateColumn' | translate }}</th>
       <td mat-cell *matCellDef="let item">
         {{ item.date | date:'medium' }}
       </td>

@@ -1,0 +1,51 @@
+{
+  "shell": {
+    "signOut": "Sign Out",
+    "todo": "Todo",
+    "user": "User",
+    "footer": "This is Shell 2026"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "logIn": "Log In",
+    "register": "Register",
+    "loginSuccess": "Welcome {{email}} 🎉",
+    "registrationSuccess": "Registration successful 🎉",
+    "resetPasswordSuccess": "Password reset link sent to your email 📩",
+    "resetPassword": "Reset Password",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "validEmail": "Please enter a valid email",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password"
+  },
+  "todo": {
+    "addNewTodo": "Add New Todo",
+    "enterTodo": "Enter todo",
+    "subtasks": "Subtasks",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "addSubtask": "Add Subtask",
+    "enterSubtask": "Add subtask",
+    "enterValue": "Enter value"
+  },
+  "history": {
+    "welcome": "Welcome",
+    "sessionExpired": "Session expired. Sign in again!",
+    "noEventsYet": "No history events yet",
+    "numberColumn": "N",
+    "eventColumn": "Event",
+    "dateColumn": "Date",
+    "allEvents": "All EVENTS",
+    "title": "Title",
+    "todoDeleted": "This todo was deleted and is no longer available.",
+    "subtask": "SubTask",
+    "status": "Status",
+    "completed": "Completed",
+    "pending": "Pending",
+    "noTasksInTodo": "No tasks in this todo.",
+    "close": "Close"
+  }
+}

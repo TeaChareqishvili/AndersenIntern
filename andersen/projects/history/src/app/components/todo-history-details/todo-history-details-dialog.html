@@ -1,22 +1,22 @@
 <div class="flex flex-col items-center justify-center p-7">
-  <h2 class="text-amber-200">Title: {{ data.data?.name }}</h2>
+  <h2 class="text-amber-200">{{ 'history.title' | translate }}: {{ data.data?.name }}</h2>
   <mat-dialog-content>
     @if (data.event === 'DELETE_TODO') {
-    <p class="text-amber-200">This todo was deleted and is no longer available.</p>
+    <p class="text-amber-200">{{ 'history.todoDeleted' | translate }}</p>
     } @else if (data.data?.tasks?.length) {
     <mat-list>
       @for (task of data.data?.tasks; track task.id) {
       <mat-list-item>
-        <span matListItemTitle>SubTask: {{ task.name }}</span>
-        <span matListItemLine>Status: {{ getTaskStatus(task.completed) }}</span>
+        <span matListItemTitle>{{ 'history.subtask' | translate }}: {{ task.name }}</span>
+        <span matListItemLine>{{ 'history.status' | translate }}: {{ getTaskStatus(task.completed) | translate }}</span>
       </mat-list-item>
       }
     </mat-list>
     } @else {
-    <p class="text-amber-200">No tasks in this todo.</p>
+    <p class="text-amber-200">{{ 'history.noTasksInTodo' | translate }}</p>
     }
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button mat-dialog-close>{{ 'history.close' | translate }}</button>
   </mat-dialog-actions>
 </div>

@@ -6,6 +6,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { TodoHistoryEventPayload } from '@shared';
 import { PaginatorComponent } from '../paginator/paginator';
 import { EventDropDownComponent } from '../event-drop-down/event-drop-down';
+import { TranslatePipe } from '@ngx-translate/core';
 
 function createHistoryPaginatorIntl(): MatPaginatorIntl {
   const intl = new MatPaginatorIntl();
@@ -18,7 +19,14 @@ function createHistoryPaginatorIntl(): MatPaginatorIntl {
 
 @Component({
   selector: 'app-history-list',
-  imports: [DatePipe, MatTableModule, MatSortModule, PaginatorComponent, EventDropDownComponent],
+  imports: [
+    DatePipe,
+    MatTableModule,
+    MatSortModule,
+    PaginatorComponent,
+    EventDropDownComponent,
+    TranslatePipe,
+  ],
   templateUrl: './history-list.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,

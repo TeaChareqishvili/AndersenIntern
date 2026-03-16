@@ -2,7 +2,13 @@
   <form [formGroup]="form()" (ngSubmit)="onSubmit()" class=" flex flex-col  items-start justify-center  gap-2  ">
 
     <mat-form-field appearance="outline" class="w-full ">
-      <input matInput type="text" formControlName="name" [placeholder]="placeholder()" class="text-lg input-custom" />
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        [placeholder]="(placeholder() ?? 'Enter value') | translate"
+        class="text-lg input-custom"
+      />
     </mat-form-field>
 
 
@@ -13,7 +19,7 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
         </svg>
-        {{ buttonText() }}
+        {{ (buttonText() ?? '') | translate }}
       </span>
     </button>
 

@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { AuthResponse, LoadingService, ResponseMessageService } from '@shared';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +22,7 @@ export class RegisterComponent {
   readonly #responseMessage = inject(ResponseMessageService);
   readonly #registrationService = inject(AuthService);
   readonly #destroyRef = inject(DestroyRef);
+  readonly #translate = inject(TranslateService);
 
   onRegister(data: AuthResponse): void {
     this.#registrationService
@@ -28,7 +30,7 @@ export class RegisterComponent {
       .pipe(
         switchMap(() =>
           this.#responseMessage.success({
-            message: 'Registration successful 🎉',
+            message: this.#translate.instant('auth.registrationSuccess'),
           }),
         ),
         takeUntilDestroyed(this.#destroyRef),

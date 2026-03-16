@@ -3,18 +3,19 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, TranslatePipe],
   templateUrl: './form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Form {
   readonly form = input.required<FormGroup>();
   readonly buttonText = input<string>();
-  readonly placeholder = input<string>('Enter value');
+  readonly placeholder = input<string>('todo.enterValue');
   readonly todoSubmitted = output<{ name: string }>();
 
   onSubmit(): void {
