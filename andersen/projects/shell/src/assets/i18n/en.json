@@ -45,6 +45,7 @@
     "status": "Status",
     "completed": "Completed",
     "pending": "Pending",
+    "itemsPerPage": "Items per page:",
     "noTasksInTodo": "No tasks in this todo.",
     "close": "Close"
   }

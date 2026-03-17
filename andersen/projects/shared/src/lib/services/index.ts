@@ -9,3 +9,4 @@ export {
   HEADER_EVENTS,
 } from './event-bus/event-bus.service';
 export * from './todo-history-event/todo-history-event.service';
+export * from './language-service/language-service.service';
