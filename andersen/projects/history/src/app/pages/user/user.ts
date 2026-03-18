@@ -16,10 +16,11 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { TodoHistoryDetailsDialog } from '@history/app/components/todo-history-details/todo-history-details-dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user',
-  imports: [AsyncPipe, HistoryList],
+  imports: [AsyncPipe, HistoryList, TranslatePipe],
   templateUrl: './user.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,

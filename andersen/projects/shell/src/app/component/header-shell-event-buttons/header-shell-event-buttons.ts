@@ -1,12 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuthUserService, EventBusService, LoadingService, OUT_GOING_EVENTS } from '@shared';
 import { MatButton } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header-shell-event-buttons',
-  imports: [AsyncPipe, MatButton],
+  imports: [AsyncPipe, MatButton, TranslatePipe],
   templateUrl: './header-shell-event-buttons.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class HeaderShellEventButtons {
   readonly user$ = inject(AuthUserService).user$;

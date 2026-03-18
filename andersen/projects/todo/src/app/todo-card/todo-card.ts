@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoaderComponent } from '@ui';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-todo-card',
@@ -22,6 +23,7 @@ import { LoaderComponent } from '@ui';
     ReactiveFormsModule,
     Form,
     LoaderComponent,
+    TranslatePipe,
   ],
   templateUrl: './todo-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -12,7 +12,7 @@
   </div>
   @if (subtasks.length > 0) {
   <div>
-    <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">Subtasks</p>
+    <p class="text-sm pb-2.5 font-semibold text-[#f7ede2] uppercase tracking-wide">{{ 'todo.subtasks' | translate }}</p>
     <ul class="flex flex-col gap-2 list-none ">
       @for (sub of subtasks.controls; track sub.value.id) {
       <li [formGroup]="sub"
@@ -29,10 +29,10 @@
           </mat-form-field>
           <div class="flex  items-center gap-1">
             <button mat-button (click)="onSaveSubtask(sub)" [disabled]="taskLoading()">
-              Save
+              {{ 'todo.save' | translate }}
             </button>
             <button mat-button (click)="cancelEditing()" [disabled]="taskLoading()">
-              Cancel
+              {{ 'todo.cancel' | translate }}
             </button>
           </div>
         </div>
@@ -43,7 +43,7 @@
         </span>
         <div class="flex items-center gap-1">
           <button mat-button (click)="startEditing(sub.value.id)" [disabled]="taskLoading()">
-            Edit
+            {{ 'todo.edit' | translate }}
           </button>
           <button mat-icon-button (click)="onDeleteSubtask(sub.value.id)" [disabled]="taskLoading()">
             <mat-icon class="icon">delete</mat-icon>
@@ -56,7 +56,7 @@
   </div>
   }
   <div class="mt-5 pt-4">
-    <app-form [form]="form" [buttonText]="'Add Subtask'" [placeholder]="'Add subtask'"
+    <app-form [form]="form" [buttonText]="'todo.addSubtask' | translate" [placeholder]="'todo.enterSubtask' | translate"
       (todoSubmitted)="onAddSubTask($event)" />
   </div>
 </div>

@@ -3,11 +3,12 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { TodoHistoryDialogData } from '@history/app/models/history.models';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-todo-history-details-dialog',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, MatListModule],
+  imports: [MatDialogModule, MatButtonModule, MatListModule, TranslatePipe],
   templateUrl: './todo-history-details-dialog.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -15,6 +16,6 @@ export class TodoHistoryDetailsDialog {
   readonly data = inject<TodoHistoryDialogData>(MAT_DIALOG_DATA);
 
   getTaskStatus(completed: boolean): string {
-    return completed ? 'Completed' : 'Pending';
+    return completed ? 'history.completed' : 'history.pending';
   }
 }

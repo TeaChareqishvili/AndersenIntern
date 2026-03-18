@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class Form {
   readonly form = input.required<FormGroup>();
   readonly buttonText = input<string>();
-  readonly placeholder = input<string>('Enter value');
+  readonly placeholder = input<string>('todo.enterValue');
   readonly todoSubmitted = output<{ name: string }>();
 
   onSubmit(): void {

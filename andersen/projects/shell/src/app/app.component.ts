@@ -18,13 +18,14 @@ import {
   OUT_GOING_EVENTS,
   TodoHistoryEventService,
 } from '@shared';
-
+import { TranslatePipe } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgComponentOutlet } from '@angular/common';
 import { LoaderComponent } from '@ui';
 import { HeaderShellEventButtons } from './component/header-shell-event-buttons/header-shell-event-buttons';
-import { filter, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { UserHistoryService } from '@history/app/services/user-history-request/user-history.service';
+import { LanguageSwitcher } from './component/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,8 @@ import { UserHistoryService } from '@history/app/services/user-history-request/u
     NgComponentOutlet,
     LoaderComponent,
     HeaderShellEventButtons,
+    TranslatePipe,
+    LanguageSwitcher,
   ],
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
