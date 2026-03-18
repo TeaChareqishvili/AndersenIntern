@@ -56,7 +56,7 @@
   </div>
   }
   <div class="mt-5 pt-4">
-    <app-form [form]="form" [buttonText]="'todo.addSubtask'" [placeholder]="'todo.enterSubtask'"
+    <app-form [form]="form" [buttonText]="'todo.addSubtask' | translate" [placeholder]="'todo.enterSubtask' | translate"
       (todoSubmitted)="onAddSubTask($event)" />
   </div>
 </div>

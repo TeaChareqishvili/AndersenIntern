@@ -4,7 +4,7 @@ import { createAuthForm } from '../../models/auth.models';
 
 import { switchMap } from 'rxjs';
 import { LoaderComponent } from '@ui';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
@@ -14,7 +14,7 @@ import { EventBusService, IN_GOING_EVENTS } from '@shared';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [AuthComponent, LoaderComponent],
+  imports: [AuthComponent, LoaderComponent, TranslatePipe],
   templateUrl: './login.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

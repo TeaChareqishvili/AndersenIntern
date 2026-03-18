@@ -6,12 +6,12 @@ import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { AuthResponse, LoadingService, ResponseMessageService } from '@shared';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [AuthComponent, LoaderComponent],
+  imports: [AuthComponent, LoaderComponent, TranslatePipe],
   templateUrl: './register.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

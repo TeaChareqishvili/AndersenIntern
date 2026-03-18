@@ -13,11 +13,12 @@ import { createTodoGroup, Todo } from '../models/models';
 import { TodoUpdateService } from '../services/todo-service-update/todo-update.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-todo-input',
   standalone: true,
-  imports: [Form, ReactiveFormsModule, LoaderComponent],
+  imports: [Form, ReactiveFormsModule, LoaderComponent, TranslatePipe],
   templateUrl: './todo-input.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

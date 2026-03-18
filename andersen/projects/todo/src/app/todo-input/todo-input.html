@@ -1,6 +1,6 @@
 <div class="bg-transparent backdrop-blur-lg p-3">
   <div>
-    <app-form [form]="form" [buttonText]="'todo.addNewTodo'" [placeholder]="'todo.enterTodo'"
+    <app-form [form]="form" [buttonText]="'todo.addNewTodo' | translate" [placeholder]="'todo.enterTodo' | translate"
       (todoSubmitted)="onAddTodo($event)" />
   </div>
 </div>

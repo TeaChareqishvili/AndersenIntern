@@ -48,5 +48,10 @@
     "itemsPerPage": "Items per page:",
     "noTasksInTodo": "No tasks in this todo.",
     "close": "Close"
+  },
+
+  "error": {
+    "404": "Opps... 404 !",
+    "errorText": "Sorry this page doesn't exist"
   }
 }

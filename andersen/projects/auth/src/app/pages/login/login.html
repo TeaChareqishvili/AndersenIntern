@@ -1,5 +1,6 @@
-<app-auth-form [form]="form" [title]="'auth.signIn'" [showRessetButton]="true" [submitText]="'auth.logIn'"
-  [ressetText]="'auth.resetPassword'" [loading]="loading()" (submitUser)="onLogin($event)"
+<app-auth-form [form]="form" [title]="'auth.signIn' | translate" [showRessetButton]="true"
+  [submitText]="'auth.logIn' | translate" [ressetText]="'auth.resetPassword' | translate" [loading]="loading()"
+  (submitUser)="onLogin($event)"
   (submitReset)="onResetPassword($event)" />
 
 @if (loading()) {
